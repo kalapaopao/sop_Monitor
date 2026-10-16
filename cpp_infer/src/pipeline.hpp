@@ -217,7 +217,7 @@ int runPipeline(const Args& args) {
         });
     }
     uint64_t displayed = 0, measured = 0, skippedWarmup = 0, stalePose = 0;
-    std::vector<double> gaps, latencies, poseAges;
+    std::vector<double> gaps, latencies, poseAges, renderTimes;
     PipelineTime previousDisplay{};
     ResultPtr lastDisplayResult;
     cv::VideoWriter writer;
@@ -262,10 +262,37 @@ int runPipeline(const Args& args) {
                 << ',' << (result ? result->poseCalls : 0) << ',' << (result ? resultFingerprint(*result) : 0) << '\n';
         }
         if (!args.headless || !args.record.empty()) {
-            cv::Mat painted = frame->image.clone();
+            const auto renderStarted = PipelineClock::now();
+            cv::Mat painted;
+            double scaleX = 1., scaleY = 1.;
+            if (args.previewFirst) {
+                const double scale = std::min({1., static_cast<double>(args.displayWidth) / frame->image.cols,
+                                               static_cast<double>(args.displayHeight) / frame->image.rows});
+                if (scale < 1.) {
+                    cv::resize(frame->image, painted, cv::Size(), scale, scale, cv::INTER_LINEAR);
+                    scaleX = static_cast<double>(painted.cols) / frame->image.cols;
+                    scaleY = static_cast<double>(painted.rows) / frame->image.rows;
+                } else painted = frame->image.clone();
+            } else painted = frame->image.clone();
             const std::vector<Detection> empty;
+            std::vector<Detection> previewDetections;
+            PoseResult previewPose;
+            const auto* drawDetections = obbVisible ? &result->detections : &empty;
+            const PoseResult* drawPose = poseVisible ? &result->pose : nullptr;
+            if (args.previewFirst) {
+                previewDetections = *drawDetections;
+                for (auto& d : previewDetections) for (auto& p : d.points) { p.x *= scaleX; p.y *= scaleY; }
+                drawDetections = &previewDetections;
+                if (drawPose) {
+                    previewPose = *drawPose;
+                    for (auto& p : previewPose.keypoints) { p.x *= scaleX; p.y *= scaleY; }
+                    previewPose.bbox.x *= scaleX; previewPose.bbox.y *= scaleY;
+                    previewPose.bbox.width *= scaleX; previewPose.bbox.height *= scaleY;
+                    drawPose = &previewPose;
+                }
+            }
             const double throughput = (displayed + 1) / std::max(milliseconds(started, now) / 1000., 1e-6);
-            draw(painted, obbVisible ? result->detections : empty, poseVisible ? &result->pose : nullptr,
+            draw(painted, *drawDetections, drawPose,
                  throughput, result ? result->stepMs : 0);
             std::ostringstream label;
             label << args.mode << (args.realtime ? " LIVE" : " MATCHED") << " | frame " << frame->id
@@ -284,6 +311,8 @@ int runPipeline(const Args& args) {
                 const int key = cv::waitKey(1);
                 if (key == 27 || key == 'q' || key == 'Q') break;
             }
+            if (skippedWarmup >= static_cast<uint64_t>(args.warmupFrames))
+                renderTimes.push_back(milliseconds(renderStarted, PipelineClock::now()));
         }
         ++displayed;
         if (skippedWarmup < static_cast<uint64_t>(args.warmupFrames)) { ++skippedWarmup; measuredStart = PipelineClock::now(); }
@@ -309,6 +338,7 @@ int runPipeline(const Args& args) {
         << " pose_calls=" << poseCalls << " pose_hz=" << poseCalls / totalSeconds
         << " gap_p50_ms=" << percentile(gaps, .5) << " gap_p95_ms=" << percentile(gaps, .95)
         << " capture_to_display_p95_ms=" << percentile(latencies, .95)
+        << " render_p95_ms=" << percentile(renderTimes, .95)
         << " pose_age_p95_ms=" << percentile(poseAges, .95) << " stale_pose_frames=" << stalePose
         << " dropped_jobs=" << droppedJobs << " dropped_previews=" << droppedPreviews << '\n';
     return 0;

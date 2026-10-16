@@ -33,6 +33,14 @@ target_link_libraries(sop_nx_infer PRIVATE
     ${CUDA_CUDART_LIBRARY})
 target_compile_options(sop_nx_infer PRIVATE -Wall -Wextra -Wpedantic -O3)
 
+# Experimental two-station probe reuses the exact model/pre/postprocessing code.
+add_executable(sop_nx_dual_probe src/dual_probe.cpp)
+target_include_directories(sop_nx_dual_probe PRIVATE
+    ${OpenCV_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
+target_link_libraries(sop_nx_dual_probe PRIVATE ${OpenCV_LIBS}
+    ${TENSORRT_LIBRARY} ${TENSORRT_PLUGIN_LIBRARY} Threads::Threads ${CUDA_CUDART_LIBRARY})
+target_compile_options(sop_nx_dual_probe PRIVATE -Wall -Wextra -Wpedantic -O3)
+
 include(CTest)
 if(BUILD_TESTING)
     add_executable(pipeline_queue_test tests/pipeline_queue_test.cpp)

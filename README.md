@@ -69,3 +69,28 @@ cd cpp_infer
 12d3dff921d16dd22408b49569cd0f46ef829142e67c5bb694d578c85eabf570  cpp_infer/models/yolox_tiny_8xb8-300e_humanart-6f3252f9.raw_trt.onnx
 68db326c5c6f3273456f803eae0faf5440478369f2c3ee67258d2f36512e8d76  cpp_infer/models/rtmw-dw-l-m_simcc-cocktail14_270e-256x192_20231122.onnx
 ```
+
+## 架构与最新测试
+
+- [详细架构图、模型尺寸与多路设计](cpp_infer/ARCHITECTURE.md)
+- [首轮多线程流水线实测](cpp_infer/PIPELINE_TEST_REPORT_20261016.md)
+- [预览优化与多路容量实验](cpp_infer/OPTIMIZATION_REPORT_20261016.md)
+
+当前实时并行显示：
+
+```bash
+cd cpp_infer
+./build/sop_nx_infer --source ../test_vedio/07.mp4 --model-dir models \
+  --mode parallel --realtime --preview-first
+```
+
+推理仍读取原图。`--preview-first` 只减少显示路径的处理量，省略后使用原显示路径。一个实例仍只处理一路；多路容量实验不代表已经实现单进程多路产品功能。
+两工位共享串行模型实验（左03、右07）：
+
+```bash
+./build/sop_nx_dual_probe --source ../test_vedio/03.mp4 \
+  --second-source ../test_vedio/07.mp4 --model-dir models \
+  --start-sec 180 --duration 30 --metrics output/dual.csv
+```
+
+新增实验入口共享一套三个引擎、公平轮询两路，尚不具备相机重连等产品功能。实际每路识别更新率请查看测试报告，不能用窗口播放帧率代替。
