@@ -53,3 +53,32 @@ SSH 无窗口性能测试：
 `--person-stride N`、`--pose-stride N` 可以分别降低三类模型的更新频率并复用上一帧结果，
 默认值都是 1，表示每帧推理。
 
+## 可选线程流水线实验
+
+旧命令默认使用 `--mode legacy`。可选模式：
+
+- `--mode serial`：带测量的单线程对照。
+- `--mode pipeline`：有界解码、推理和显示队列，三个模型仍串行。
+- `--mode parallel`：在 pipeline 基础上，OBB 和 YOLOX→RTMW 分支使用各自的工作线程、模型上下文与 CUDA stream。
+
+不带 `--realtime` 时，按帧编号合并同帧结果，不丢弃输入帧。`--max-frames 330 --warmup-frames 30` 固定读取 330 帧，统计后 300 帧吞吐量；三种模式应使用相同 source/start/stride 比较。
+
+```bash
+bash benchmark_07.sh
+```
+
+按原视频时间轴播放并异步识别：
+
+```bash
+./build/sop_nx_infer --source ../test_vedio/07.mp4 --model-dir models \
+  --mode parallel --realtime --obb-stride 1 --person-stride 1 --pose-stride 1
+```
+
+实时模式的视频解码和显示不等待每次推理。推理忙时替换尚未开始的旧任务，因此播放 FPS 不等于识别更新 Hz；日志分别报告 inferred/obb_calls/person_calls/pose_calls。结果带源帧编号，只允许画到相同或更晚的帧；默认隐藏源时间年龄超过 200ms 的框或骨架，可用 `--max-result-age-ms` 调整。年龄为 -1 表示尚无有效结果。此模式不包含跟踪、运动补偿或平滑，仍可能存在识别滞后。
+
+实时模式会对每个选中的推理帧重新检测人体框；`person-stride` 只控制离线匹配模式。姿态调用次数按实际人体裁剪计数，多人帧可能多于处理任务数。
+
+`--metrics output/test.csv` 记录帧编号、模型调用次数、源时间结果年龄、解码耗时、推理步骤耗时、显示间隔和结果指纹。无窗口模式的显示间隔实际是消费帧的间隔。`capture_to_display` 是从应用开始读取该帧到准备绘制的时间，不包含远程桌面传输或屏幕呈现延迟；模型加载发生在计时前。指纹用于比较相同帧的解码结果一致性，不能证明识别准确率。
+
+验证队列退出与取消：`(cd build && ctest --output-on-failure)`。
+
