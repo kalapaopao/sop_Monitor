@@ -1,0 +1,86 @@
+# Local input videos and generated results
+/test_vedio/
+output/
+outputs/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.h264
+*.h265
+
+# Model weights and hardware-specific inference engines.
+# Keep models/*.json and model documentation under version control.
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.plan
+*.engine
+*.timing.cache
+
+# CMake / C++ / CUDA build products
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+compile_commands.json
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dll
+*.exe
+*.pdb
+*.cu.o
+
+# Logs, caches, local environments and recovery copies
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+*.bak
+*.backup
+*.before-*
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.cache/
+
+# Old copy uploaded to the project root; CMake builds cpp_infer/src/main.cpp.
+/cpp_infer/main.cpp
+
+# Credentials and private machine configuration
+.env
+.env.*
+!.env.example
+!.env.template
+.ssh/
+.netrc
+.npmrc
+credentials.json
+credentials-*.json
+service-account*.json
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+
+# OS / IDE personal files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vs/
+*.user
+*.suo

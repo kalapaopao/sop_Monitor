@@ -1,0 +1,8 @@
+{
+  "model": "models/yolo_20261007_latest/best.onnx",
+  "sha256": "454482c4a3f9182f3c64d22aa7c4f18e62e4e580a2b3d6f5f827ef667ac176bb",
+  "source_checkpoint": "E:\\study\\X-AnyLabeling-main\\xanylabeling_data\\trainer\\ultralytics\\runs\\obb\\sop_test1\\weights\\best.pt",
+  "source_checkpoint_sha256": "0128f555b8bbce9836b22613c973c16d5f572733b74a56179b47e1f47c1f6eb0",
+  "cuda_use_tf32": false,
+  "note": "Current 2026-10-07 00:28 checkpoint; PT/ONNX checked on 42 frames. Frozen copy; warn when source PT changes."
+}
