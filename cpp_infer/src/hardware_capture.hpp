@@ -96,4 +96,3 @@ private:
 inline void openAcceleratedCapture(AcceleratedCapture& cap,const std::string& source,const std::string& decoder) {
     cap.open(source,decoder);
 }
-
