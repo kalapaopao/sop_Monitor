@@ -1,5 +1,7 @@
 # SOP YOLO + WholeBody C++ TensorRT 测试
 
+> 2026-10-19已核实目标192.168.137.230为Jetson Xavier NX（TensorRT计算能力7.2），不是此前文档沿用的Orin NX。新四分类联合OBB替换旧OBB及YOLOX，接RTMW的独立两模型入口见 [JOINT_MODEL_GUIDE.md](JOINT_MODEL_GUIDE.md)。原三模型入口保留。
+
 这是首轮 NX 迁移目录，只包含：
 
 - YOLO OBB：装配工具和手框；
@@ -96,4 +98,19 @@ bash benchmark_07.sh
 该选项只改变显示：原图先用双线性插值缩小，再缩放绘制副本的框/关键点并绘制文字。模型仍读取原图，显示插值和文字线条粗细会与原路径不同。省略选项即使用原预览路径。仅接受非legacy、有窗口且不录制的组合；其它组合报错。日志新增 `render_p95_ms`，包含绘制、imshow与waitKey，仍不包含远端实际屏幕呈现。
 
 `bash benchmark_capacity.sh` 比较两种预览路径，再分别启动1、2、3个独立进程模拟多路。每路用同一段07视频、无窗口实时调度；这不是单进程共享模型多路实现，也不能代替真实相机、网络、多画面显示和长时间运行测试。结果见 [OPTIMIZATION_REPORT_20261016.md](OPTIMIZATION_REPORT_20261016.md)。
+
+## 四路共享串行实验：两路03、两路07，从开头读取
+
+保留原实验入口名 `sop_nx_dual_probe`。只提供source和second-source仍运行两路；同时提供third-source和fourth-source则运行四路，四路各自独立解码、定时读取、排队及保存识别结果，共享三个模型引擎。推理线程公平轮询，每个选中的输入运行OBB→YOLOX→RTMW链路（无人框时跳过RTMW）。
+
+```bash
+./build/sop_nx_dual_probe --source ../test_vedio/03.mp4 \
+  --second-source ../test_vedio/03.mp4 --third-source ../test_vedio/07.mp4 \
+  --fourth-source ../test_vedio/07.mp4 --model-dir models \
+  --start-sec 0 --duration 300 --metrics output/four_live.csv
+```
+
+四宫格上排03/03，下排07/07。默认总窗口1100×620，每格约550×310；格内预留标签区域后，1080p图像约缩为508×286显示，保留宽高比。主线程按各路最高源FPS（本次约25）合批刷新，只重绘有新帧的格子。标签显示工位号、文件名、包含启动段的平均任务Hz、骨架结果年龄及HIDDEN状态。缩小只发生在绘制副本；算法仍从各路原始1920×1080帧分别准备640×640、416×416、人体裁剪192×256输入。窗口FPS是预览消费率；任务Hz才反映新识别频率。
+
+四路仍使用默认200ms结果过期保护，过旧结果会隐藏，未做运动补偿或平滑。`--max-result-age-ms`仅控制显示旧结果的容忍时间，提高它不会提高推理速度。自动运行无窗口/四画面对比：`bash benchmark_four_station.sh`。详见 [FOUR_STREAM_REPORT_20261016.md](FOUR_STREAM_REPORT_20261016.md)。
 

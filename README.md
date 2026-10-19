@@ -1,4 +1,8 @@
-# SOP Monitor - Jetson Orin NX
+# SOP Monitor - Jetson NX
+
+> 2026-10-19硬件核实：192.168.137.230实际为Jetson Xavier NX Developer Kit，TensorRT报告Xavier、计算能力7.2。此前文档沿用Orin NX名称不准确，历史实测属于这台Xavier NX，不能作为Orin NX性能。
+
+新联合OBB+RTMW两模型入口与四路测试说明见 [两模型指南](cpp_infer/JOINT_MODEL_GUIDE.md)。旧三模型入口继续保留。
 
 C++17 / TensorRT FP16 单路视频识别验证：YOLO OBB 工具与手框、YOLOX 人体检测、RTMW 人体及双手关键点。不包含 TCN。
 

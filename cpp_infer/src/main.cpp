@@ -27,6 +27,9 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#ifdef SOP_ACCEL
+#include "accel_preprocess.hpp"
+#endif
 
 #ifdef __linux__
 #include <unistd.h>
@@ -157,7 +160,7 @@ public:
         file.read(bytes.data(), size);
         runtime_.reset(nvinfer1::createInferRuntime(gLogger));
         if (!runtime_) throw std::runtime_error("createInferRuntime failed");
-        engine_.reset(runtime_->deserializeCudaEngine(bytes.data(), bytes.size()));
+        engine_.reset(runtime_->deserializeCudaEngine(bytes.data(), bytes.size()), DestroyEngine{});
         if (!engine_) throw std::runtime_error("deserializeCudaEngine failed: " + enginePath);
         context_.reset(engine_->createExecutionContext());
         if (!context_) throw std::runtime_error("createExecutionContext failed: " + enginePath);
@@ -171,7 +174,46 @@ public:
         if (inputIndex_ < 0) throw std::runtime_error("Engine has no input: " + enginePath);
     }
 
+#ifdef SOP_ACCEL
+    // Each worker shares weights but owns its context, stream and mutable buffers.
+    explicit TrtModel(std::shared_ptr<TrtModel> prototype) : owner_(prototype), engine_(prototype->engine_) {
+        context_.reset(engine_->createExecutionContext());
+        if (!context_) throw std::runtime_error("create worker context failed");
+        checkCuda(cudaStreamCreate(&stream_), "create worker stream");
+        for (int i=0; i<engine_->getNbBindings(); ++i) {
+            if (engine_->bindingIsInput(i)) inputIndex_=i;
+            else outputIndices_.push_back(i);
+        }
+    }
+    bool gpuPreprocess = false;
+    std::vector<TensorResult> inferLetterbox(const cv::Mat& image, int side=640) {
+        if (image.empty() || image.type()!=CV_8UC3) throw std::runtime_error("Invalid preprocessing image");
+        if (!context_->setBindingDimensions(inputIndex_,nvinfer1::Dims4{1,3,side,side}))
+            throw std::runtime_error("Invalid GPU input dimensions");
+        resizeBuffers();
+        const auto type=engine_->getBindingDataType(inputIndex_);
+        if (type!=nvinfer1::DataType::kFLOAT && type!=nvinfer1::DataType::kHALF)
+            throw std::runtime_error("GPU preprocessing requires FP32/FP16 input");
+        const size_t row=size_t(image.cols)*3, bytes=row*image.rows;
+        if (bytes>sourceBytes_) {
+            if (sourceDevice_) checkCuda(cudaFree(sourceDevice_),"free source");
+            sourceDevice_=nullptr; sourceBytes_=0;
+            checkCuda(cudaMalloc(&sourceDevice_,bytes),"allocate source"); sourceBytes_=bytes;
+        }
+        checkCuda(cudaMemcpy2DAsync(sourceDevice_,row,image.data,image.step,row,image.rows,
+                    cudaMemcpyHostToDevice,stream_),"upload source");
+        const float ratio=std::min(float(side)/image.cols,float(side)/image.rows);
+        const int w=std::max(1,int(std::round(image.cols*ratio))), h=std::max(1,int(std::round(image.rows*ratio)));
+        checkCuda(sopLetterbox(static_cast<unsigned char*>(sourceDevice_),image.cols,image.rows,row,
+                    deviceBuffers_[inputIndex_],type==nvinfer1::DataType::kHALF,side,w,h,(side-w)/2,(side-h)/2,stream_),
+                    "GPU letterbox");
+        return execute();
+    }
+#endif
     ~TrtModel() {
+#ifdef SOP_ACCEL
+        if (sourceDevice_) cudaFree(sourceDevice_);
+#endif
         for (void* ptr : deviceBuffers_) if (ptr) cudaFree(ptr);
         if (stream_) cudaStreamDestroy(stream_);
     }
@@ -189,6 +231,10 @@ public:
         } else {
             throw std::runtime_error("Unsupported input type in " + path_);
         }
+        return execute();
+    }
+
+    std::vector<TensorResult> execute() {
         if (!context_->enqueueV2(deviceBuffers_.data(), stream_, nullptr)) throw std::runtime_error("TensorRT enqueue failed");
         std::vector<TensorResult> results;
         for (int index : outputIndices_) {
@@ -229,8 +275,13 @@ private:
     struct DestroyEngine { void operator()(nvinfer1::ICudaEngine* p) const { if (p) p->destroy(); } };
     struct DestroyContext { void operator()(nvinfer1::IExecutionContext* p) const { if (p) p->destroy(); } };
     std::string path_;
+#ifdef SOP_ACCEL
+    std::shared_ptr<TrtModel> owner_;
+    void* sourceDevice_ = nullptr;
+    size_t sourceBytes_ = 0;
+#endif
     std::unique_ptr<nvinfer1::IRuntime, DestroyRuntime> runtime_;
-    std::unique_ptr<nvinfer1::ICudaEngine, DestroyEngine> engine_;
+    std::shared_ptr<nvinfer1::ICudaEngine> engine_;
     std::unique_ptr<nvinfer1::IExecutionContext, DestroyContext> context_;
     cudaStream_t stream_{};
     int inputIndex_ = -1;

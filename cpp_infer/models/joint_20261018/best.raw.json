@@ -1,0 +1,16 @@
+{
+  "source_sha256": "02db79031b7eea951d6120090cd3ba2e509c28235de0e043cb4bfc7b2aaaab57",
+  "raw_sha256": "ce0ebcf98519f3fa5d5aa6f70fa3688ed34cd4f7deedd7e3ce88becaa51b4d69",
+  "classes": {
+    "0": "screwdriver1",
+    "1": "screwdriver2",
+    "2": "hand",
+    "3": "person"
+  },
+  "output": [
+    1,
+    8400,
+    9
+  ],
+  "change": "Remove end-to-end TopK tail only; C++ uses classwise rotated NMS."
+}

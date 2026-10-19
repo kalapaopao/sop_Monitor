@@ -41,8 +41,24 @@ target_link_libraries(sop_nx_dual_probe PRIVATE ${OpenCV_LIBS}
     ${TENSORRT_LIBRARY} ${TENSORRT_PLUGIN_LIBRARY} Threads::Threads ${CUDA_CUDART_LIBRARY})
 target_compile_options(sop_nx_dual_probe PRIVATE -Wall -Wextra -Wpedantic -O3)
 
+include_directories(${TENSORRT_INCLUDE_DIR})
+cuda_add_library(sop_silu_plugin SHARED src/silu_plugin.cu OPTIONS -std=c++14
+    -gencode=arch=compute_72,code=sm_72 -gencode=arch=compute_72,code=compute_72)
+target_link_libraries(sop_silu_plugin ${TENSORRT_LIBRARY} ${CUDA_CUDART_LIBRARY})
+add_executable(sop_nx_joint_probe src/joint_probe.cpp)
+target_include_directories(sop_nx_joint_probe PRIVATE
+    ${OpenCV_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
+target_link_libraries(sop_nx_joint_probe PRIVATE sop_silu_plugin ${OpenCV_LIBS}
+    ${TENSORRT_LIBRARY} ${TENSORRT_PLUGIN_LIBRARY} Threads::Threads ${CUDA_CUDART_LIBRARY})
+target_compile_options(sop_nx_joint_probe PRIVATE -Wall -Wextra -Wpedantic -O3)
+
 include(CTest)
 if(BUILD_TESTING)
+    add_executable(silu_plugin_test tests/silu_plugin_test.cpp)
+    target_include_directories(silu_plugin_test PRIVATE ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
+    target_link_libraries(silu_plugin_test PRIVATE sop_silu_plugin ${TENSORRT_LIBRARY} ${CUDA_CUDART_LIBRARY})
+    add_test(NAME silu_plugin COMMAND silu_plugin_test)
+    set_tests_properties(silu_plugin PROPERTIES TIMEOUT 20)
     add_executable(pipeline_queue_test tests/pipeline_queue_test.cpp)
     target_include_directories(pipeline_queue_test PRIVATE src)
     target_link_libraries(pipeline_queue_test PRIVATE Threads::Threads)
@@ -50,3 +66,8 @@ if(BUILD_TESTING)
     set_tests_properties(pipeline_queue PROPERTIES TIMEOUT 15)
 endif()
 
+
+option(SOP_BUILD_ACCEL "Build experimental hardware decode and concurrent inference" OFF)
+if(SOP_BUILD_ACCEL)
+    include(accel.cmake)
+endif()
