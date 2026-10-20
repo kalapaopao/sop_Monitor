@@ -1,0 +1,15 @@
+cuda_add_library(sop_stage2_kernels STATIC src/stage2_kernels.cu OPTIONS -std=c++14 --fmad=false
+    -gencode=arch=compute_72,code=sm_72 -gencode=arch=compute_72,code=compute_72)
+target_link_libraries(sop_stage2_kernels ${CUDA_CUDART_LIBRARY})
+add_executable(sop_nx_stage2_probe src/stage2_probe.cpp)
+add_executable(stage2_test tests/stage2_test.cpp)
+foreach(target sop_nx_stage2_probe stage2_test)
+    target_include_directories(${target} PRIVATE src ${OpenCV_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
+    target_link_libraries(${target} PRIVATE sop_stage2_kernels sop_preprocess sop_silu_plugin ${OpenCV_LIBS}
+        ${TENSORRT_LIBRARY} ${TENSORRT_PLUGIN_LIBRARY} Threads::Threads ${CUDA_CUDART_LIBRARY} PkgConfig::ACCEL_MEDIA)
+    target_compile_options(${target} PRIVATE -O3 -Wall -Wextra)
+endforeach()
+if(BUILD_TESTING)
+    add_test(NAME stage2_warp COMMAND stage2_test)
+    set_tests_properties(stage2_warp PROPERTIES TIMEOUT 30)
+endif()

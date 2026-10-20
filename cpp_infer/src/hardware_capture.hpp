@@ -41,6 +41,11 @@ public:
     AcceleratedCapture()=default;
     AcceleratedCapture(const AcceleratedCapture&)=delete;
     AcceleratedCapture& operator=(const AcceleratedCapture&)=delete;
+#ifdef SOP_STAGE2
+    bool keepNative=false;
+    cv::Mat nativeI420() const { return native_; }
+    CaptureColor sourceColor() const { return color_; }
+#endif
     void open(const std::string& source,const std::string& decoder) {
         if(decoder=="opencv") {
             if(!capture_.open(source)) throw std::runtime_error("Cannot open video");
@@ -69,6 +74,9 @@ public:
         if(w<=0 || h<=0 || w%2 || h%2 || raw.type()!=CV_8UC1 || raw.cols!=w || raw.rows!=h*3/2)
             throw std::runtime_error("Unexpected I420 frame layout");
         if(!raw.isContinuous()) raw=raw.clone();
+#ifdef SOP_STAGE2
+        if(keepNative) native_=raw;
+#endif
         converter_=sws_getCachedContext(converter_,w,h,AV_PIX_FMT_YUV420P,w,h,AV_PIX_FMT_BGR24,
                                        SWS_BICUBIC,nullptr,nullptr,nullptr);
         if(!converter_) throw std::runtime_error("Cannot create YUV converter");
@@ -92,6 +100,9 @@ private:
     SwsContext* converter_=nullptr;
     CaptureColor color_;
     bool rawYuv_=false;
+#ifdef SOP_STAGE2
+    cv::Mat native_;
+#endif
 };
 inline void openAcceleratedCapture(AcceleratedCapture& cap,const std::string& source,const std::string& decoder) {
     cap.open(source,decoder);

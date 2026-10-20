@@ -29,6 +29,10 @@ private:
 struct PipelineFrame {
     uint64_t id = 0;
     cv::Mat image;
+#ifdef SOP_STAGE2
+    cv::Mat nativeI420;
+    int colorMatrix=5, fullRange=0;
+#endif
     PipelineTime captured;
     double decodeMs = 0;
 };

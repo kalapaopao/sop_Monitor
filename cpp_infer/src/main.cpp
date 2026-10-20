@@ -30,6 +30,9 @@
 #ifdef SOP_ACCEL
 #include "accel_preprocess.hpp"
 #endif
+#ifdef SOP_STAGE2
+#include "stage2_kernels.hpp"
+#endif
 
 #ifdef __linux__
 #include <unistd.h>
@@ -150,6 +153,12 @@ struct TensorResult {
     size_t size() const { return type == nvinfer1::DataType::kFLOAT ? floats.size() : ints.size(); }
 };
 
+#ifdef SOP_STAGE2
+#include "stage2_io.hpp"
+using ModelOutputs = const std::vector<TensorResult>&;
+#else
+using ModelOutputs = std::vector<TensorResult>;
+#endif
 class TrtModel {
 public:
     explicit TrtModel(const std::string& enginePath) : path_(enginePath) {
@@ -186,7 +195,10 @@ public:
         }
     }
     bool gpuPreprocess = false;
-    std::vector<TensorResult> inferLetterbox(const cv::Mat& image, int side=640) {
+#ifdef SOP_STAGE2
+#include "stage2_model.inc"
+#endif
+    ModelOutputs inferLetterbox(const cv::Mat& image, int side=640) {
         if (image.empty() || image.type()!=CV_8UC3) throw std::runtime_error("Invalid preprocessing image");
         if (!context_->setBindingDimensions(inputIndex_,nvinfer1::Dims4{1,3,side,side}))
             throw std::runtime_error("Invalid GPU input dimensions");
@@ -194,6 +206,11 @@ public:
         const auto type=engine_->getBindingDataType(inputIndex_);
         if (type!=nvinfer1::DataType::kFLOAT && type!=nvinfer1::DataType::kHALF)
             throw std::runtime_error("GPU preprocessing requires FP32/FP16 input");
+#ifdef SOP_STAGE2
+        if(!io_.prepared) beginFrame(image);
+        io_.prepared=false;
+        const size_t row=size_t(image.cols)*3;
+#else
         const size_t row=size_t(image.cols)*3, bytes=row*image.rows;
         if (bytes>sourceBytes_) {
             if (sourceDevice_) checkCuda(cudaFree(sourceDevice_),"free source");
@@ -202,6 +219,7 @@ public:
         }
         checkCuda(cudaMemcpy2DAsync(sourceDevice_,row,image.data,image.step,row,image.rows,
                     cudaMemcpyHostToDevice,stream_),"upload source");
+#endif
         const float ratio=std::min(float(side)/image.cols,float(side)/image.rows);
         const int w=std::max(1,int(std::round(image.cols*ratio))), h=std::max(1,int(std::round(image.rows*ratio)));
         checkCuda(sopLetterbox(static_cast<unsigned char*>(sourceDevice_),image.cols,image.rows,row,
@@ -218,11 +236,21 @@ public:
         if (stream_) cudaStreamDestroy(stream_);
     }
 
-    std::vector<TensorResult> infer(const std::vector<float>& input, const nvinfer1::Dims& inputDims) {
+    ModelOutputs infer(const std::vector<float>& input, const nvinfer1::Dims& inputDims) {
         if (!context_->setBindingDimensions(inputIndex_, inputDims)) throw std::runtime_error("setBindingDimensions failed");
         resizeBuffers();
         const auto inputType = engine_->getBindingDataType(inputIndex_);
+#ifdef SOP_STAGE2
+        io_.uploadBytes+=input.size()*typeSize(inputType);
+#endif
         if (inputType == nvinfer1::DataType::kFLOAT) {
+#ifdef SOP_STAGE2
+            if(reuseIO) {
+                void* pinned=io_.input.ensure(input.size()*sizeof(float));
+                std::memcpy(pinned,input.data(),input.size()*sizeof(float));
+                checkCuda(cudaMemcpyAsync(deviceBuffers_[inputIndex_],pinned,input.size()*sizeof(float),cudaMemcpyHostToDevice,stream_),"copy pinned tensor");
+            } else
+#endif
             checkCuda(cudaMemcpyAsync(deviceBuffers_[inputIndex_], input.data(), input.size() * sizeof(float), cudaMemcpyHostToDevice, stream_), "copy FP32 input");
         } else if (inputType == nvinfer1::DataType::kHALF) {
             std::vector<uint16_t> halfInput(input.size());
@@ -234,7 +262,10 @@ public:
         return execute();
     }
 
-    std::vector<TensorResult> execute() {
+    ModelOutputs execute() {
+#ifdef SOP_STAGE2
+        return executeStage2();
+#else
         if (!context_->enqueueV2(deviceBuffers_.data(), stream_, nullptr)) throw std::runtime_error("TensorRT enqueue failed");
         std::vector<TensorResult> results;
         for (int index : outputIndices_) {
@@ -253,6 +284,7 @@ public:
         }
         checkCuda(cudaStreamSynchronize(stream_), "cudaStreamSynchronize");
         return results;
+#endif
     }
 
     std::string name(int index) const { return engine_->getBindingName(index); }
@@ -279,6 +311,9 @@ private:
     std::shared_ptr<TrtModel> owner_;
     void* sourceDevice_ = nullptr;
     size_t sourceBytes_ = 0;
+#ifdef SOP_STAGE2
+    SopStage2IO io_;
+#endif
 #endif
     std::unique_ptr<nvinfer1::IRuntime, DestroyRuntime> runtime_;
     std::shared_ptr<nvinfer1::ICudaEngine> engine_;
@@ -375,20 +410,39 @@ std::vector<cv::Rect2f> yoloXPeople(TrtModel& model, const cv::Mat& frame) {
     return boxes;
 }
 
-cv::Mat poseWarp(const cv::Mat& image, const cv::Rect2f& box, cv::Point2f& center, cv::Size2f& scale) {
+cv::Mat poseAffine(const cv::Rect2f& box, cv::Point2f& center, cv::Size2f& scale) {
     center = cv::Point2f((box.x + box.x + box.width) * .5f, (box.y + box.y + box.height) * .5f); scale = cv::Size2f(box.width * 1.25f, box.height * 1.25f);
     const float aspect = 192.0f / 256.0f; if (scale.width > scale.height * aspect) scale.height = scale.width / aspect; else scale.width = scale.height * aspect;
     const cv::Point2f src0 = center, src1 = center + cv::Point2f(0, -scale.width * .5f), src2 = src1 + cv::Point2f(-(src0.y - src1.y), src0.x - src1.x);
     const cv::Point2f dst0(96, 128), dst1(96, 128 - 96), dst2(dst1 + cv::Point2f(-(dst0.y - dst1.y), dst0.x - dst1.x));
-    const cv::Mat warp = cv::getAffineTransform(std::vector<cv::Point2f>{src0, src1, src2}, std::vector<cv::Point2f>{dst0, dst1, dst2}); cv::Mat out; cv::warpAffine(image, out, warp, cv::Size(192, 256)); return out;
+    return cv::getAffineTransform(std::vector<cv::Point2f>{src0, src1, src2}, std::vector<cv::Point2f>{dst0, dst1, dst2});
+}
+cv::Mat poseWarp(const cv::Mat& image, const cv::Rect2f& box, cv::Point2f& center, cv::Size2f& scale) {
+    const cv::Mat warp=poseAffine(box,center,scale);
+    cv::Mat out; cv::warpAffine(image,out,warp,cv::Size(192,256)); return out;
 }
 
-PoseResult rtmwPose(TrtModel& model, const cv::Mat& frame, const cv::Rect2f& box) {
-    cv::Point2f center; cv::Size2f scale; cv::Mat crop = poseWarp(frame, box, center, scale); auto input = chwFloat(crop, true, cv::Scalar(123.675, 116.28, 103.53), cv::Scalar(58.395, 57.12, 57.375)); auto outputs = model.infer(input, nvinfer1::Dims4{1, 3, 256, 192}); if (outputs.size() < 2) throw std::runtime_error("Unexpected RTMW outputs");
+PoseResult decodeRtmw(const std::vector<TensorResult>& outputs,const cv::Rect2f& box,
+    const cv::Point2f& center,const cv::Size2f& scale) {
+    if(outputs.size()<2) throw std::runtime_error("Unexpected RTMW outputs");
     const auto& sx = outputs[0]; const auto& sy = outputs[1]; const size_t keypointCount = sx.size() / 384u; if (keypointCount == 0 || keypointCount > 134 || sx.size() != keypointCount * 384u || sy.size() != keypointCount * 512u) { std::cerr << "[rtmw] output sizes " << sx.size() << "," << sy.size() << " types " << static_cast<int>(sx.type) << "," << static_cast<int>(sy.type) << "\n"; throw std::runtime_error("Unexpected RTMW output shape"); } PoseResult result{}; result.bbox = box; result.valid = true;
     for (size_t k = 0; k < keypointCount; ++k) { size_t ix = 0, iy = 0; float maxx = -std::numeric_limits<float>::infinity(), maxy = -std::numeric_limits<float>::infinity(); for (size_t x = 0; x < 384; ++x) if (sx.value(k * 384 + x) > maxx) maxx = sx.value(k * 384 + x), ix = x; for (size_t y = 0; y < 512; ++y) if (sy.value(k * 512 + y) > maxy) maxy = sy.value(k * 512 + y), iy = y; result.scores[k] = (maxx + maxy) * .5f; const float px = static_cast<float>(ix) / 2.0f, py = static_cast<float>(iy) / 2.0f; result.keypoints[k] = cv::Point2f(px / 192.0f * scale.width + center.x - scale.width * .5f, py / 256.0f * scale.height + center.y - scale.height * .5f); }
     return result;
 }
+PoseResult rtmwPose(TrtModel& model,const cv::Mat& frame,const cv::Rect2f& box) {
+    cv::Point2f center; cv::Size2f scale; const auto crop=poseWarp(frame,box,center,scale);
+    auto input=chwFloat(crop,true,cv::Scalar(123.675,116.28,103.53),cv::Scalar(58.395,57.12,57.375));
+    const auto& outputs=model.infer(input,nvinfer1::Dims4{1,3,256,192});
+    return decodeRtmw(outputs,box,center,scale);
+}
+#ifdef SOP_STAGE2
+PoseResult rtmwPoseGpu(TrtModel& model,const TrtModel& source,const cv::Mat& frame,const cv::Rect2f& box) {
+    cv::Point2f center; cv::Size2f scale; const auto affine=poseAffine(box,center,scale);
+    cv::Mat inverse; cv::invertAffineTransform(affine,inverse);
+    const auto& outputs=model.inferWarp(source,frame.size(),inverse);
+    return decodeRtmw(outputs,box,center,scale);
+}
+#endif
 
 void draw(cv::Mat& frame, const std::vector<Detection>& detections, const PoseResult* pose, double fps, double latencyMs) {
     for (const auto& d : detections) { std::vector<cv::Point> polygon; for (const auto& p : d.points) polygon.emplace_back(cv::Point(cvRound(p.x), cvRound(p.y))); const cv::Scalar color = d.label == "hand" ? cv::Scalar(255, 80, 200) : d.label == "screwdriver1" ? cv::Scalar(0, 220, 255) : cv::Scalar(80, 230, 80); cv::polylines(frame, polygon, true, color, 3); cv::putText(frame, d.label + " " + cv::format("%.2f", d.confidence), polygon[0], cv::FONT_HERSHEY_SIMPLEX, .65, color, 2); }

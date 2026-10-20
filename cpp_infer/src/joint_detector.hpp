@@ -2,6 +2,15 @@
 std::vector<Detection> jointDetections(TrtModel& model, const cv::Mat& frame, float threshold) {
     float ratio=std::min(640.f/frame.cols,640.f/frame.rows);
     int left=(640-int(std::round(frame.cols*ratio)))/2, top=(640-int(std::round(frame.rows*ratio)))/2;
+#ifdef SOP_STAGE2
+    const auto& outputs = [&]() -> ModelOutputs {
+        if(model.gpuPreprocess) return model.inferLetterbox(frame);
+        const cv::Mat canvas=letterboxCentered(frame,640,ratio,left,top);
+        cv::Mat rgb; cv::cvtColor(canvas,rgb,cv::COLOR_BGR2RGB);
+        auto input=chwFloat(rgb,true,cv::Scalar(),cv::Scalar(255,255,255));
+        return model.infer(input,nvinfer1::Dims4{1,3,640,640});
+    }();
+#else
     std::vector<TensorResult> outputs;
 #ifdef SOP_ACCEL
     if (model.gpuPreprocess) outputs = model.inferLetterbox(frame);
@@ -13,6 +22,7 @@ std::vector<Detection> jointDetections(TrtModel& model, const cv::Mat& frame, fl
         auto input = chwFloat(rgb, true, cv::Scalar(0, 0, 0), cv::Scalar(255, 255, 255));
         outputs = model.infer(input, nvinfer1::Dims4{1, 3, 640, 640});
     }
+#endif
     if (outputs.empty() || outputs[0].size() != 8400u * 9u) throw std::runtime_error("Unexpected YOLO raw output shape");
     const auto& raw = outputs[0]; const std::array<std::string, 4> labels{"screwdriver1", "screwdriver2", "hand", "person"};
     struct Candidate { int anchor; int cls; float score; };

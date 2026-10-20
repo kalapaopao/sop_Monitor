@@ -26,6 +26,9 @@ int dualProbe(int argc, char** argv) {
     bool singleSource = false;
     std::string auditDir;
     int workerCount = 1;
+#ifdef SOP_STAGE2
+    std::string posePreprocessing="cuda", sourceLayout="bgr", reusableIO="on";
+#endif
 #ifdef SOP_ACCEL
     workerCount = 1;
     std::string decoder = "gst-h265", preprocessing = "cuda";
@@ -36,10 +39,22 @@ int dualProbe(int argc, char** argv) {
             std::cout << "--source VIDEO [--single-source | --second-source VIDEO [--third-source VIDEO --fourth-source VIDEO]] --duration SEC (>5) [--model-dir DIR] [--yolo-engine PLAN] [--start-sec SEC] [--headless] [--metrics CSV] [--audit-dir EXISTING_DIR] [--display-width PX] [--display-height PX]\n";
 #ifdef SOP_ACCEL
             std::cout << "--workers 1|2|4 --decoder opencv|gst-h265 --preprocess cpu|cuda (accelerated target only)\n";
+#ifdef SOP_STAGE2
+            std::cout << "--pose-preprocess cpu|cuda --source-layout bgr|i420 --reuse-io on|off (stage2 experiments)\n";
+#endif
 #endif
             return 0;
         }
         const std::string key = argv[i];
+#ifdef SOP_STAGE2
+        if(key=="--pose-preprocess" || key=="--source-layout" || key=="--reuse-io") {
+            if(++i>=argc) throw std::runtime_error("Missing "+key);
+            if(key=="--pose-preprocess") posePreprocessing=argv[i];
+            else if(key=="--source-layout") sourceLayout=argv[i];
+            else reusableIO=argv[i];
+            continue;
+        }
+#endif
 #ifdef SOP_ACCEL
         if (key=="--workers" || key=="--decoder" || key=="--preprocess") {
             if (++i>=argc) throw std::runtime_error("Missing "+key);
@@ -69,6 +84,12 @@ int dualProbe(int argc, char** argv) {
     if ((workerCount!=1 && workerCount!=2 && workerCount!=4) || workerCount>laneCount)
         throw std::runtime_error("workers must be 1,2,4 and not exceed the input count");
     if (preprocessing!="cpu" && preprocessing!="cuda") throw std::runtime_error("preprocess must be cpu or cuda");
+#ifdef SOP_STAGE2
+    if((posePreprocessing!="cpu" && posePreprocessing!="cuda") || (sourceLayout!="bgr" && sourceLayout!="i420") ||
+       (reusableIO!="on" && reusableIO!="off")) throw std::runtime_error("Invalid stage2 option");
+    if(sourceLayout=="i420" && decoder!="gst-h265") throw std::runtime_error("I420 requires hardware H.265 capture");
+    if(sourceLayout=="i420") throw std::runtime_error("I420 GPU conversion failed pose parity; use stage2_test --i420 for diagnostics");
+#endif
 #endif
     const int gridCols = laneCount == 1 ? 1 : 2;
     const int gridRows = laneCount == 4 ? 2 : 1;
@@ -78,6 +99,9 @@ int dualProbe(int argc, char** argv) {
 #endif
 #ifdef SOP_ACCEL
     windowTitle = "SOP accelerated | " + std::to_string(laneCount) + " lanes | " + std::to_string(workerCount) + " workers";
+#ifdef SOP_STAGE2
+    windowTitle="SOP stage2 | "+std::to_string(laneCount)+" lanes | "+posePreprocessing+" pose | "+sourceLayout;
+#endif
 #endif
     // Reuse parsing/engine overrides; no pipeline workers are instantiated here.
     char modeKey[] = "--mode", modeValue[] = "serial";
@@ -109,6 +133,11 @@ int dualProbe(int argc, char** argv) {
         poses.push_back(std::make_shared<TrtModel>(poseRoot));
     }
     for (auto& detector:detectors) detector->gpuPreprocess=preprocessing=="cuda";
+#ifdef SOP_STAGE2
+    for(auto& detector:detectors) detector->reuseIO=reusableIO=="on";
+    for(auto& pose:poses) pose->reuseIO=reusableIO=="on";
+    std::cout<<"pose_preprocess="<<posePreprocessing<<" source_layout="<<sourceLayout<<" reuse_io="<<reusableIO<<'\n';
+#endif
     std::cout << "workers=" << workerCount << " decoder=" << decoder << " preprocessing=" << preprocessing
               << " engines=2 contexts=" << workerCount*2 << " per_lane_inflight=1\n";
 #else
@@ -128,6 +157,9 @@ int dualProbe(int argc, char** argv) {
     for (int i = 0; i < laneCount; ++i) {
 #ifdef SOP_ACCEL
         openAcceleratedCapture(captures[i],sources[i],decoder);
+#ifdef SOP_STAGE2
+        captures[i].keepNative=sourceLayout=="i420";
+#endif
         std::cout << "capture_backend=" << captures[i].getBackendName() << '\n';
 #else
         if (!captures[i].open(sources[i])) throw std::runtime_error("Cannot open " + sources[i]);
@@ -175,6 +207,13 @@ int dualProbe(int argc, char** argv) {
                     if (stop) break;
                     auto f = std::make_shared<PipelineFrame>(); f->id = id; f->captured = PipelineClock::now();
                     if (!captures[i].read(f->image)) break;
+#ifdef SOP_STAGE2
+                    if(sourceLayout=="i420") {
+                        f->nativeI420=captures[i].nativeI420();
+                        const auto color=captures[i].sourceColor(); f->colorMatrix=color.matrix; f->fullRange=color.fullRange;
+                        if(f->nativeI420.empty()) throw std::runtime_error("Native source unavailable");
+                    }
+#endif
                     f->decodeMs = milliseconds(f->captured, PipelineClock::now());
                     ++lanes[i].decoded;
                     std::lock_guard<std::mutex> lock(lanes[i].mutex);
@@ -206,6 +245,9 @@ int dualProbe(int argc, char** argv) {
                 next = (selected + workerCount) % laneCount; // A lane has one owner; results cannot finish out of order.
                 auto result = std::make_shared<PipelineResult>(); result->frame = f;
                 const auto t = PipelineClock::now();
+#ifdef SOP_STAGE2
+                obb.beginFrame(f->image,f->nativeI420,f->colorMatrix,f->fullRange);
+#endif
 #ifdef SOP_JOINT_DETECTOR
                 result->detections = jointDetections(obb, f->image, .25f);
                 auto boxes = jointPeople(result->detections, f->image.size());
@@ -217,7 +259,12 @@ int dualProbe(int argc, char** argv) {
                 const auto poseStarted = PipelineClock::now();
                 float best = -1.; uint64_t crops = 0;
                 for (const auto& box : boxes) {
-                    auto pose = rtmwPose(poseModel, f->image, box); ++crops;
+#ifdef SOP_STAGE2
+                    auto pose=posePreprocessing=="cuda" ? rtmwPoseGpu(poseModel,obb,f->image,box) : rtmwPose(poseModel,f->image,box);
+#else
+                    auto pose = rtmwPose(poseModel, f->image, box);
+#endif
+                    ++crops;
                     const float score = std::accumulate(pose.scores.begin()+5, pose.scores.begin()+11, 0.f) / 6.f;
                     if (score > best) { best = score; result->pose = pose; result->hasPose = true; }
                 }
@@ -337,6 +384,9 @@ int dualProbe(int argc, char** argv) {
     const double measurementEnd = elapsed();
     guard.join();
     if (error) std::rethrow_exception(error);
+#ifdef SOP_STAGE2
+    for(int i=0;i<workerCount;++i) { detectors[i]->reportIO("detector"); poses[i]->reportIO("pose"); }
+#endif
     if (!args.headless) cv::destroyAllWindows();
     for (int i = 0; i < laneCount; ++i)
         std::cout << std::fixed << std::setprecision(3) << "status=complete lane=" << i << " shared_models=1 serial=" << (workerCount==1) << " workers=" << workerCount << " lanes=" << laneCount
