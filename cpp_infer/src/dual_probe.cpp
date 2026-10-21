@@ -215,6 +215,13 @@ int dualProbe(int argc, char** argv) {
                     }
 #endif
                     f->decodeMs = milliseconds(f->captured, PipelineClock::now());
+#ifdef SOP_PROFILE
+                    f->profileReadMs=captures[i].profileReadMs; f->profileColorMs=captures[i].profileColorMs;
+                    sop_profile::standalone(i,f->id,elapsed(),"capture",{
+                        {"capture","read_wait_download",f->profileReadMs},
+                        {"capture","color_conversion",f->profileColorMs},
+                        {"capture","decode_total",f->decodeMs}});
+#endif
                     ++lanes[i].decoded;
                     std::lock_guard<std::mutex> lock(lanes[i].mutex);
                     if (lanes[i].pending) ++lanes[i].dropped;
@@ -245,6 +252,11 @@ int dualProbe(int argc, char** argv) {
                 next = (selected + workerCount) % laneCount; // A lane has one owner; results cannot finish out of order.
                 auto result = std::make_shared<PipelineResult>(); result->frame = f;
                 const auto t = PipelineClock::now();
+#ifdef SOP_PROFILE
+                sop_profile::state().begin(selected,f->id,elapsed());
+                sop_profile::extra("job","queue_wait",milliseconds(f->captured,t)-f->decodeMs);
+                sop_profile::state().model="detector";
+#endif
 #ifdef SOP_STAGE2
                 obb.beginFrame(f->image,f->nativeI420,f->colorMatrix,f->fullRange);
 #endif
@@ -257,6 +269,10 @@ int dualProbe(int argc, char** argv) {
 #endif
                 result->obbMs = milliseconds(t, PipelineClock::now());
                 const auto poseStarted = PipelineClock::now();
+#ifdef SOP_PROFILE
+                sop_profile::extra("detector","stage_total_host",result->obbMs);
+                sop_profile::state().model="pose";
+#endif
                 float best = -1.; uint64_t crops = 0;
                 for (const auto& box : boxes) {
 #ifdef SOP_STAGE2
@@ -273,6 +289,11 @@ int dualProbe(int argc, char** argv) {
                 result->stepMs = milliseconds(t, PipelineClock::now());
                 result->personPoseMs = milliseconds(poseStarted, PipelineClock::now());
                 result->personCalls = boxes.size();
+#ifdef SOP_PROFILE
+                sop_profile::extra("pose","stage_total_host",result->personPoseMs);
+                sop_profile::extra("job","total_host",result->stepMs);
+                sop_profile::state().finish();
+#endif
                 if (!auditDir.empty() && lanes[selected].jobs == 0) {
                     const auto base = auditDir + "/lane" + std::to_string(selected);
                     if (!cv::imwrite(base + ".png", f->image)) throw std::runtime_error("Cannot write audit input");
@@ -330,6 +351,9 @@ int dualProbe(int argc, char** argv) {
             if (allEof()) break;
             continue;
         }
+#ifdef SOP_PROFILE
+        const auto composeStarted=PipelineClock::now();
+#endif
         for (int i = 0; i < laneCount; ++i) {
             FramePtr f = frames[i]; ResultPtr r = snapshots[i];
             if (!f) continue;
@@ -375,9 +399,18 @@ int dualProbe(int argc, char** argv) {
             }
         }
         if (!args.headless) {
+#ifdef SOP_PROFILE
+            const auto presentStarted=PipelineClock::now();
+#endif
             cv::imshow(windowTitle, mosaic);
             ++paints;
-            const int key = cv::waitKey(1); if (key == 27 || key == 'q' || key == 'Q') break;
+            const int key = cv::waitKey(1);
+#ifdef SOP_PROFILE
+            sop_profile::standalone(-1,paints,elapsed(),"display",{
+                {"display","compose",milliseconds(composeStarted,presentStarted)},
+                {"display","present_wait",milliseconds(presentStarted,PipelineClock::now())}});
+#endif
+            if (key == 27 || key == 'q' || key == 'Q') break;
         } else std::this_thread::sleep_for(std::chrono::milliseconds(2));
         if (allEof()) break;
     }

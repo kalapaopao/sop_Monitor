@@ -23,6 +23,9 @@ std::vector<Detection> jointDetections(TrtModel& model, const cv::Mat& frame, fl
         outputs = model.infer(input, nvinfer1::Dims4{1, 3, 640, 640});
     }
 #endif
+#ifdef SOP_PROFILE
+    sop_profile::CpuScope postHost("rotated_nms_host");
+#endif
     if (outputs.empty() || outputs[0].size() != 8400u * 9u) throw std::runtime_error("Unexpected YOLO raw output shape");
     const auto& raw = outputs[0]; const std::array<std::string, 4> labels{"screwdriver1", "screwdriver2", "hand", "person"};
     struct Candidate { int anchor; int cls; float score; };
@@ -49,6 +52,9 @@ std::vector<Detection> jointDetections(TrtModel& model, const cv::Mat& frame, fl
 
 
 std::vector<cv::Rect2f> jointPeople(const std::vector<Detection>& detections, cv::Size size) {
+#ifdef SOP_PROFILE
+    sop_profile::CpuScope roiHost("person_roi_host");
+#endif
     std::vector<cv::Rect2f> boxes;
     const cv::Rect2f bounds(0,0,static_cast<float>(size.width),static_cast<float>(size.height));
     for (const auto& d : detections) if (d.label == "person") {

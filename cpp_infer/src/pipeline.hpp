@@ -35,6 +35,9 @@ struct PipelineFrame {
 #endif
     PipelineTime captured;
     double decodeMs = 0;
+#ifdef SOP_PROFILE
+    double profileReadMs=0,profileColorMs=0;
+#endif
 };
 using FramePtr = std::shared_ptr<PipelineFrame>;
 

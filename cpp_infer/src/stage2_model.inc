@@ -2,6 +2,9 @@
     bool reuseIO=true;
     const unsigned char* sourcePixels() const { return static_cast<unsigned char*>(sourceDevice_); }
     void beginFrame(const cv::Mat& bgr,const cv::Mat& i420={},int matrix=5,int fullRange=0) {
+#ifdef SOP_PROFILE
+        sop_profile::CpuScope sourceHost("source_host_submit");
+#endif
         const size_t bytes=bgr.total()*3;
         if(bytes>sourceBytes_) {
             if(sourceDevice_) checkCuda(cudaFree(sourceDevice_),"free frame storage");
@@ -27,8 +30,16 @@
         if(reuseIO) {
             auto* host=static_cast<unsigned char*>(io_.source.ensure(upload));
             for(int y=0;y<rows;++y) std::memcpy(host+y*row,input.ptr(y),row);
+#ifdef SOP_PROFILE
+            sop_profile::GpuScope uploadGpu("source_upload",stream_);
+#endif
             checkCuda(cudaMemcpyAsync(dst,host,upload,cudaMemcpyHostToDevice,stream_),"upload pinned source");
-        } else checkCuda(cudaMemcpy2DAsync(dst,row,input.data,input.step,row,rows,cudaMemcpyHostToDevice,stream_),"upload source");
+        } else {
+#ifdef SOP_PROFILE
+            sop_profile::GpuScope uploadGpu("source_upload",stream_);
+#endif
+            checkCuda(cudaMemcpy2DAsync(dst,row,input.data,input.step,row,rows,cudaMemcpyHostToDevice,stream_),"upload source");
+        }
         io_.uploadBytes+=upload;
         if(native) checkCuda(sopI420ToBgr(static_cast<unsigned char*>(dst),bgr.cols,bgr.rows,
                            static_cast<unsigned char*>(sourceDevice_),stream_),"convert I420 on GPU");
@@ -41,16 +52,33 @@
         const auto type=engine_->getBindingDataType(inputIndex_);
         if(type!=nvinfer1::DataType::kFLOAT && type!=nvinfer1::DataType::kHALF)
             throw std::runtime_error("RTMW GPU input type unsupported");
+        {
+#ifdef SOP_PROFILE
+        sop_profile::CpuScope preHost("preprocess_host_submit");
+        sop_profile::GpuScope preGpu("preprocess",stream_);
+#endif
         SopInverseAffine affine{}; for(int r=0;r<2;++r) for(int c=0;c<3;++c) affine.m[r*3+c]=inverse.at<double>(r,c);
         // Source detection has already completed before CPU person boxes exist.
         checkCuda(sopPoseWarp(source.sourcePixels(),size.width,size.height,size.width*3,
                    deviceBuffers_[inputIndex_],type==nvinfer1::DataType::kHALF,affine,stream_),"RTMW GPU warp");
+        }
         return execute();
     }
     ModelOutputs executeStage2() {
+        {
+#ifdef SOP_PROFILE
+        sop_profile::CpuScope enqueueHost("enqueue_host");
+        sop_profile::GpuScope engineGpu("engine_span",stream_);
+#endif
         if(!context_->enqueueV2(deviceBuffers_.data(),stream_,nullptr)) throw std::runtime_error("TRT enqueue failed");
+        }
         if(!reuseIO) io_.results.clear();
         io_.results.resize(outputIndices_.size());
+        {
+#ifdef SOP_PROFILE
+        sop_profile::CpuScope copyHost("readback_host_submit");
+        sop_profile::GpuScope copyGpu("readback",stream_);
+#endif
         for(size_t k=0;k<outputIndices_.size();++k) {
             const int index=outputIndices_[k]; auto& result=io_.results[k];
             result.dims=context_->getBindingDimensions(index); result.type=engine_->getBindingDataType(index);
@@ -66,10 +94,19 @@
                 (result.type==nvinfer1::DataType::kFLOAT?static_cast<void*>(result.floats.data()):static_cast<void*>(result.ints.data()));
             checkCuda(cudaMemcpyAsync(destination,deviceBuffers_[index],bytes,cudaMemcpyDeviceToHost,stream_),"stage2 output copy");
         }
+        }
         if(reuseIO) {
             if(!io_.completed) checkCuda(cudaEventCreateWithFlags(&io_.completed,cudaEventDisableTiming),"create completion event");
             checkCuda(cudaEventRecord(io_.completed,stream_),"record completion");
+            {
+#ifdef SOP_PROFILE
+            sop_profile::CpuScope waitHost("completion_wait_host");
+#endif
             checkCuda(cudaEventSynchronize(io_.completed),"wait for CPU postprocessing inputs");
+            }
+#ifdef SOP_PROFILE
+            sop_profile::CpuScope materializeHost("readback_materialize_host");
+#endif
             for(size_t k=0;k<io_.results.size();++k) {
                 auto& r=io_.results[k]; const size_t n=volume(r.dims);
                 if(r.type==nvinfer1::DataType::kFLOAT) std::memcpy(r.floats.data(),io_.output[k].data,n*sizeof(float));

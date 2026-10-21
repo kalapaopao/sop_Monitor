@@ -1,0 +1,196 @@
+from pathlib import Path
+import json
+import re
+
+root=Path(__file__).parent;out=root/'output/batch_20261020'
+data=json.loads((out/'batch_analysis.json').read_text())
+def table_runs(prefix):
+    rows=[]
+    for name,item in data['runs'].items():
+        if not name.startswith(prefix):continue
+        age=max(float(x['pose_age_p95_ms']) for x in item['lanes'])
+        hidden=max(float(x['hidden_fraction']) for x in item['lanes'])*100
+        rows.append(f"| {name[len(prefix):]} | {item['mean_lane_hz']:.3f} | {item['total_steady_hz']:.3f} | {age:.2f} | {hidden:.2f}% | {item['mosaic_fps']:.2f} |")
+    return '\n'.join(rows)
+engine_rows=[]
+for name,item in data['engines'].items():
+    engine_rows.append(f"| {name} | {item['batch']} | {item['batches_per_second']:.2f} | {item['images_per_second']:.2f} | {item['gpu_ms_per_batch']:.3f} | {item['gpu_ms_per_image']:.3f} |")
+quality_rows=[]
+for name,item in data['quality'].items():
+    if name.endswith('_vs_legacy'):
+        common=item['visible_keypoint_difference_px'].get('all',{})
+        hands=item['visible_keypoint_difference_px'].get('hands',{})
+        quality_rows.append(f"| {name[:-10]} | {len(item['detection_count_changes'])} | {len(item['person_count_changes'])} | {common.get('p50',float('nan')):.2f} | {common.get('p95',float('nan')):.2f} | {hands.get('p95',float('nan')):.2f} | {item['keypoint_visibility_changes']} |")
+gui=[(name,item) for name,item in data['runs'].items() if name.startswith('gui_')]
+best_name,best=max(gui,key=lambda x:x[1]['mean_lane_hz'])
+bench_manifest=json.loads((out/'manifest.json').read_text())
+build_rows=[]
+for value in bench_manifest:
+    if value['name'].startswith('build_obb') or value['name'].startswith('build_rtmw'):
+        build_rows.append(f"- {value['name']}：退出{value['exit']}，总墙钟约{value['seconds']/60:.2f}分钟。")
+report=f'''# 640×384与batch=1/2/4实验报告（2026-10-20）
+
+## 1. 完成范围与结论
+
+本轮在192.168.137.230实际Xavier NX上测试矩形OBB输入和跨工位批量推理。未重新训练模型，未覆盖现有模型或默认程序。
+本轮新增独立C++实验入口，运行链路仍为硬解交付/CPU转色→GPU预处理→OBB→RTMW→四宫格。
+Python仅用于转换、构建、固定帧参考验证、实验调度和统计，不参与被测C++实时推理链路。
+
+**本轮GUI表中速度最高的观测组为{best_name}：平均每路{best['mean_lane_hz']:.3f}个新任务/秒，四路合计{best['total_steady_hz']:.3f}。这是速度结果，不代表已通过准确率验收。**
+
+已有单因素早测：原引擎、同一新入口、无画面约11.30Hz/路；矩形OBB＋原RTMW、batch1约13.74Hz/路，提高约22%。
+12张固定样本中矩形版本出现1张手框数量变化，人体检出数量相同，但骨架坐标有明显差异。未把矩形版称为无损优化，也未自动替换原版本。
+下面完整矩阵采用同一轮测试，以表中数据为准；早测单独保留，不能混为多次重复试验的均值。
+
+## 2. 平台与控制条件
+
+- 实际设备是Jetson Xavier NX Developer Kit，不是Orin NX；ARM64、Ubuntu20.04、TensorRT8.5.2、CUDA11.4、OpenCV4.5.4。
+- 四路文件为03/03/07/07，全部从开头，源图1920×1080，03约24.975FPS，07为25FPS。
+- 每组30秒，前5秒预热不计稳态任务率。每路最新待处理帧容量1，忙时替换旧待处理帧。
+- 单进程：4采集线程、1推理线程、主线程显示；两份模型权重各加载一次，各自持有执行上下文与CUDA stream。
+- batch组大小上限为检测/骨架batch的较大值，每路最多取一帧，最多等待5ms凑批，公平轮询。
+- OBB类别、置信度0.25、每类旋转NMS0.55、300候选上限、人体框水平包围/裁边和1.25扩框保持原规则。
+- RTMW仍从原始图像裁成宽192×高256；保留原通道顺序、归一化、SimCC解码、最佳单人骨架规则。
+- 没有增加跟踪、插值、平滑、低频检测或TCN。没有用重复显示、补齐项或缓存结果增加真实任务计数。
+- 未安装依赖、改功耗/时钟、驱动、网络或远程桌面设置。原程序和引擎仍保留；未commit/push。
+
+## 3. 输入与引擎准备
+
+### OBB
+
+1920×1080在两种输入中均等比例缩成640×360：
+
+- 方形：补边到640×640，上下各140；原始候选8400。
+- 矩形：补边到640×384，上下各12；原始候选5040。
+
+模型输入像素减少40%，完整图像内容及其像素尺寸保留。网络的边界/全局特征与引擎策略仍会变化，因此不能据此保证输出相同。
+使用原训练环境Ultralytics8.4.95和原best.pt，保留one-to-one分支，只移除TopK尾部，复用原93个精确SiLU插件。
+Windows ORT的固定随机输入对照中，新方形raw ONNX与原raw ONNX的FP32输出最大差为0。
+动态batch仅开放第0维，两种空间尺寸各建一份batch1..4、opt2引擎；比较同一引擎内的batch1/2/4，不是每个batch分别专门优化后的极限。
+
+### RTMW
+
+原ONNX已支持动态batch，原引擎只支持batch1。初次动态profile构建在CUDA即时编译器停留较久，短时调试确认位于libnvrtc；有界停止自有构建进程，保留日志，不能据此断言动态batch不支持。
+之后查阅项目保存的原batch1构建日志，原引擎首次构建耗时1358秒，约22.6分钟；此前动态尝试的停止仅因准备时间判断，不是构建失败证据。
+之后改为固定batch2/4的独立引擎，batch1继续用原引擎。只固定输入/输出批量维度，保留405个算子及全部权重。
+Windows FP32检查：原ONNX批量与逐张推理最大差约9e-8；固定维度后的ONNX与原ONNX最大差约3.3e-7。
+RTMW保持原生算子，没有套用OBB的激活插件，也没有改为INT8。FP16构建允许内部混合精度，不代表每层或IO都为FP16。
+固定引擎末批不足时重复最后一个真实ROI补齐，只解码并回写真实人体；补齐计算和等待均计入实际耗时。
+
+成功构建时间（含进程初始化，见manifest与各构建日志）：
+
+{chr(10).join(build_rows)}
+
+这些是准备成本，不能当作推理速度；引擎是本机硬件/版本相关产物，不可直接复制到任意GPU使用。
+
+## 4. 四路无画面完整任务吞吐
+
+legacy=新批量入口调用原640方形OBB与原RTMW，batch均为1；square11=重建方形OBB引擎与原RTMW。
+square/rect后的两位分别是检测batch与骨架batch，例如rect22表示640×384、检测2、骨架2。
+
+| 组别 | 每路Hz，平均 | 四路合计Hz | 四路最差骨架年龄P95 ms | 最差隐藏比例 | 四宫格提交FPS |
+|---|---:|---:|---:|---:|---:|
+{table_runs('headless_')}
+
+## 5. 四路带画面
+
+| 组别 | 每路Hz，平均 | 四路合计Hz | 四路最差骨架年龄P95 ms | 最差隐藏比例 | 四宫格提交FPS |
+|---|---:|---:|---:|---:|---:|
+{table_runs('gui_')}
+
+任务数按真实帧唯一完成计数；RTMW调用数按检出人体计数，没人时不调用骨架，有多人时逐个处理再选最佳。
+窗口刷新率不等于识别率。源时间年龄按预览帧与结果帧编号差计算，量化约40ms，不等同于真实RTSP端到端时延。
+隐藏比例包含没有有效骨架及超过原200ms保护线的情况。所有结果保持所属路号/帧号，禁止未来帧结果。
+groups.csv记录整组总耗时及阶段总耗时；metrics.csv的detector_ms/pose_ms为按组内真实帧数均摊的工作成本，不能当成每张图独立推理延迟。实际组延迟与均摊成本在analysis JSON中分列。
+
+## 6. 单引擎batch基准
+
+trtexec使用noDataTransfers，无视频、预处理、后处理或显示。QPS是批次/秒，乘以batch才是图像/人体裁剪数/秒。
+
+| 引擎 | batch | 批次/秒 | 图像/裁剪数/秒 | GPU ms/批 | GPU ms/项 |
+|---|---:|---:|---:|---:|---:|
+{chr(10).join(engine_rows)}
+
+这些数值不能直接相加来计算两模型链路FPS，也不能当作四路完整识别次数。引擎内执行区间包含内部转换和调度间隙。
+
+## 7. 固定帧结果差异
+
+03/07各取0、30、60、300、600、900帧，共12张固定PNG；所有方案使用同一批输入，与实时队列的选帧差异分开。
+下表对比当前legacy输出；不是与标注真值的准确率评估。
+
+| 组别 | 框数量变化的样本数 | 人体数量变化样本数 | 共同可见点差P50 px | 共同可见点差P95 px | 手部点差P95 px | 点可见性变化次数 |
+|---|---:|---:|---:|---:|---:|---:|
+{chr(10).join(quality_rows)}
+
+可见点定义为置信度至少0.35，且坐标位于1920×1080图像内；位移统计只计算双方都可见的点，可见性变化另外计数。
+body索引5–16，hands索引91–132。模型输出133点；原C++容器预留134项，CSV最后一项为零，不参与可见点统计。
+详细框角点、分数差、按类别统计、最差样本及square11参考对照见batch_analysis.json；JPEG叠画保存在NX对应quality目录。
+不能把框数变少直接叫漏检，也不能把坐标变化直接叫精度下降；同样不能把成功运行叫精度无损。RTMW会受人体ROI变化影响，本轮仍需要人工/标注复核。
+本轮样本未全面覆盖视频全长、所有工具类别、多人、遮挡、真实摄像头和光照变化。
+
+## 8. 验证、异常与保留项
+
+- C++批量入口及新CUDA库编译成功，现有4项加新增batch_preprocess测试 **5/5通过**。
+- 新GPU测试验证FP32/FP16的新旧方形预处理字节一致、矩形640×360内容与原方形内容字节一致、批内目标偏移一致。
+- 固定帧原引擎/新入口验证完成；实时完整任务数、人体裁剪数、真实引擎batch直方图和结果年龄均单独记录。
+- 初次Python构建脚本误将TensorRT8.5的set_shape返回None判作失败，已改为检查profile有效性，原错误日志保留。
+- 新测试首次编译因cudaMalloc指针类型转换失败，改为显式void**转换后编译及测试通过；没有隐藏初次失败。
+- 动态RTMW尝试已停止并保留日志。非特权GDB附加被ptrace策略拒绝；之后仅短时附加自有构建进程并自动分离，没有改系统策略。
+- 构建日志保留INT64到INT32转换、FP16极小/非正规权重、部分策略工作空间不足等提示。FP16权重提示是需要验证的精度风险，不是自动要求重新训练。
+- 原TensorRT destroy弃用、嵌入函数未使用、GStreamer流时长/位置查询、软件转色提示仍有；本轮未安装依赖消除这些提示。
+- Ultralytics首次配置目录未预建而回退到当前目录；该新建配置目录已移入本轮本地工作目录，导出脚本已显式设置工作目录和配置目录，没有覆盖既有配置。
+- Windows执行ONNX参考检查与脚本语法检查，ARM64/Linux执行被测C++程序；没有Windows C++构建或真实RTSP压力测试。
+
+## 9. 文件与现有功能影响
+
+对本轮开始时的原文件只修改：
+
+- cpp_infer/src/main.cpp：增加SOP_BATCH保护下的batch_model.inc入口，旧目标不定义该宏。
+- cpp_infer/stage2.cmake：新增独立批量CUDA库、程序和预处理测试目标。
+
+新增：
+
+- src/batch_probe.cpp：四路最新帧批量调度、显示和实验参数。
+- src/batch_runner.hpp：整组检测、按owner关联人体与骨架、固定帧验证。
+- src/batch_model.inc：原图复用、批量IO、GPU裁剪和末批补齐。
+- src/batch_decode.hpp：显式batch偏移的原旋转NMS与SimCC计算。
+- src/batch_kernels.hpp、src/batch_kernels.cu：矩形GPU预处理。
+- tests/batch_preprocess_test.cpp：预处理与批内偏移验证。
+- build_batch_engine.py、batch_experiments.py、analyze_batch.py：构建、调度、统计。
+- BATCH_GUIDE.md、BATCH_REPORT_20261020.md：使用、流程图与本报告。
+
+没有删除、移动或重命名既有项目文件。原启动方式、旧CLI、配置格式、模型数据、线程所有权及其他目标保持原样。
+新目标独立使用同一依赖，不增加系统SDK。原文件之前的计时修改和用户.gitignore修改保留，本轮未暂存、提交或推送。
+新调度仍为每路最新帧容量1，不增加无限队列；源GPU缓冲在所有人体推理完成前不复用，避免跨stream读写覆盖。
+本地另包含导出/形状准备/代码生成/报告辅助脚本、模型副本、JSON与__pycache__，均在本轮审阅目录，不是部署运行依赖。
+
+## 10. 产物与执行记录
+
+NX目录：/home/nvidia/Music/project/sop_Monitor/cpp_infer/output/batch_20261020。
+引擎目录：同项目models/batch_20261020。原引擎及视频未覆盖，大模型与视频仍被忽略规则排除。
+本地审阅目录：E:/study/SOP_train_model_resource/project/nx_batch_20261020。
+沿用现有build目录，新增批量可执行文件、静态CUDA库及测试中间文件；新增日志、CSV、JSON、固定帧、JPEG、备份和摘要包。
+
+只读查阅：当前Git状态/分支/diff、项目和父目录AGENTS、源码、构建脚本、模型元数据、训练环境、CUDA/TensorRT接口与帮助、日志、进程和资源。
+实际操作：SSH/SFTP、项目内备份、Windows ONNX导出与参考验证、模型上传、现有依赖构建、CMake/NVCC编译、CTest、固定帧推理、trtexec、四路有/无画面测试、遥测与分析。
+完整每组参数、返回码与耗时见manifest.json及构建/重试日志；原生动态构建中止、预检查编译失败等早期记录也保留。
+
+## 11. 验收与回退
+
+复现命令见BATCH_GUIDE.md；程序支持det-height、det-batch、pose-batch和独立结果日志。原stage2程序仍可直接使用。
+核对每路steady_job_hz、pose_calls、actual_batch计数、骨架年龄与隐藏比例；不要只看窗口FPS。
+人工查看12帧叠画并结合标注评价工具/手框和人体/手骨架后，才能决定是否用于实际工位。
+
+回退只需撤销main.cpp和stage2.cmake本轮diff，备份在output/batch_20261020/before，原源码包为current_sources.tar.gz。
+复制备份前检查是否有后续修改；只恢复本轮范围，保留前一轮计时修改和用户.gitignore。重新配置/编译后，新文件可暂留但不再被旧CMake引用。
+不执行reset/clean、不改写历史、不删除模型或视频；原数据无需恢复。
+
+## 12. 限制和下一步
+
+这是一次按相同文件片段顺序运行的实验，没有多轮置信区间；桌面负载、策略选择和运行温度仍会影响数值。
+四路文件模拟不证明真实RTSP四路的网络抖动、长期重连或多人容量；没有把TensorRT相对当前C++输出的差异当成标注准确率。
+RTMW采用固定batch2/4，是动态构建准备时间过长后的可回退修订；OBB仍用动态batch profile。代码和输出均单独保留。
+后续优先根据吞吐、延迟与人工复核共同选择，不能只追逐最高FPS。任何未测配置或准确率结论均不在本报告的已验证范围内。
+'''
+(root/'BATCH_REPORT_20261020.md').write_text(report,encoding='utf-8')
+print('Report written; fastest observed GUI group',best_name,best['mean_lane_hz'])

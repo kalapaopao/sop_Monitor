@@ -85,3 +85,21 @@ Desktop.ini
 .vs/
 *.user
 *.suo
+
+# Additional local build directories
+build_*/
+
+# NVIDIA profiler results
+*.nsys-rep
+*.qdrep
+*.ncu-rep
+
+# Generated model calibration and tensor dumps
+/cpp_infer/models/*.cache
+/cpp_infer/models/**/*.cache
+/cpp_infer/models/*.bin
+/cpp_infer/models/**/*.bin
+/cpp_infer/output-*/
+
+# Local experiment result archives (results, not source)
+*.tar.gz

@@ -197,6 +197,9 @@ public:
     bool gpuPreprocess = false;
 #ifdef SOP_STAGE2
 #include "stage2_model.inc"
+#ifdef SOP_BATCH
+#include "batch_model.inc"
+#endif
 #endif
     ModelOutputs inferLetterbox(const cv::Mat& image, int side=640) {
         if (image.empty() || image.type()!=CV_8UC3) throw std::runtime_error("Invalid preprocessing image");
@@ -220,11 +223,17 @@ public:
         checkCuda(cudaMemcpy2DAsync(sourceDevice_,row,image.data,image.step,row,image.rows,
                     cudaMemcpyHostToDevice,stream_),"upload source");
 #endif
+        {
+#ifdef SOP_PROFILE
+        sop_profile::CpuScope preHost("preprocess_host_submit");
+        sop_profile::GpuScope preGpu("preprocess",stream_);
+#endif
         const float ratio=std::min(float(side)/image.cols,float(side)/image.rows);
         const int w=std::max(1,int(std::round(image.cols*ratio))), h=std::max(1,int(std::round(image.rows*ratio)));
         checkCuda(sopLetterbox(static_cast<unsigned char*>(sourceDevice_),image.cols,image.rows,row,
                     deviceBuffers_[inputIndex_],type==nvinfer1::DataType::kHALF,side,w,h,(side-w)/2,(side-h)/2,stream_),
                     "GPU letterbox");
+        }
         return execute();
     }
 #endif
@@ -424,6 +433,9 @@ cv::Mat poseWarp(const cv::Mat& image, const cv::Rect2f& box, cv::Point2f& cente
 
 PoseResult decodeRtmw(const std::vector<TensorResult>& outputs,const cv::Rect2f& box,
     const cv::Point2f& center,const cv::Size2f& scale) {
+#ifdef SOP_PROFILE
+    sop_profile::CpuScope decodeHost("simcc_decode_host");
+#endif
     if(outputs.size()<2) throw std::runtime_error("Unexpected RTMW outputs");
     const auto& sx = outputs[0]; const auto& sy = outputs[1]; const size_t keypointCount = sx.size() / 384u; if (keypointCount == 0 || keypointCount > 134 || sx.size() != keypointCount * 384u || sy.size() != keypointCount * 512u) { std::cerr << "[rtmw] output sizes " << sx.size() << "," << sy.size() << " types " << static_cast<int>(sx.type) << "," << static_cast<int>(sy.type) << "\n"; throw std::runtime_error("Unexpected RTMW output shape"); } PoseResult result{}; result.bbox = box; result.valid = true;
     for (size_t k = 0; k < keypointCount; ++k) { size_t ix = 0, iy = 0; float maxx = -std::numeric_limits<float>::infinity(), maxy = -std::numeric_limits<float>::infinity(); for (size_t x = 0; x < 384; ++x) if (sx.value(k * 384 + x) > maxx) maxx = sx.value(k * 384 + x), ix = x; for (size_t y = 0; y < 512; ++y) if (sy.value(k * 512 + y) > maxy) maxy = sy.value(k * 512 + y), iy = y; result.scores[k] = (maxx + maxy) * .5f; const float px = static_cast<float>(ix) / 2.0f, py = static_cast<float>(iy) / 2.0f; result.keypoints[k] = cv::Point2f(px / 192.0f * scale.width + center.x - scale.width * .5f, py / 256.0f * scale.height + center.y - scale.height * .5f); }
@@ -437,8 +449,14 @@ PoseResult rtmwPose(TrtModel& model,const cv::Mat& frame,const cv::Rect2f& box) 
 }
 #ifdef SOP_STAGE2
 PoseResult rtmwPoseGpu(TrtModel& model,const TrtModel& source,const cv::Mat& frame,const cv::Rect2f& box) {
-    cv::Point2f center; cv::Size2f scale; const auto affine=poseAffine(box,center,scale);
-    cv::Mat inverse; cv::invertAffineTransform(affine,inverse);
+    cv::Point2f center; cv::Size2f scale; cv::Mat inverse;
+    {
+#ifdef SOP_PROFILE
+    sop_profile::CpuScope affineHost("affine_host");
+#endif
+    const auto affine=poseAffine(box,center,scale);
+    cv::invertAffineTransform(affine,inverse);
+    }
     const auto& outputs=model.inferWarp(source,frame.size(),inverse);
     return decodeRtmw(outputs,box,center,scale);
 }

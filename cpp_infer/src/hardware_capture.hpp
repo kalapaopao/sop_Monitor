@@ -66,10 +66,20 @@ public:
             throw std::runtime_error("H.265 pipeline failed; use --decoder opencv");
         rawYuv_=true;
     }
+#ifdef SOP_PROFILE
+    double profileReadMs=0,profileColorMs=0;
+#endif
     bool read(cv::Mat& frame) {
         if(!rawYuv_) return capture_.read(frame);
         cv::Mat raw;
+#ifdef SOP_PROFILE
+        const auto readStarted=sop_profile::Clock::now();
+#endif
         if(!capture_.read(raw)) return false;
+#ifdef SOP_PROFILE
+        profileReadMs=sop_profile::ms(readStarted,sop_profile::Clock::now());
+        const auto colorStarted=sop_profile::Clock::now();
+#endif
         const int w=int(capture_.get(cv::CAP_PROP_FRAME_WIDTH)), h=int(capture_.get(cv::CAP_PROP_FRAME_HEIGHT));
         if(w<=0 || h<=0 || w%2 || h%2 || raw.type()!=CV_8UC1 || raw.cols!=w || raw.rows!=h*3/2)
             throw std::runtime_error("Unexpected I420 frame layout");
@@ -90,6 +100,9 @@ public:
         const int outputStrides[4]={int(frame.step),0,0,0};
         if(sws_scale(converter_,planes,strides,0,h,output,outputStrides)!=h)
             throw std::runtime_error("YUV conversion failed");
+#ifdef SOP_PROFILE
+        profileColorMs=sop_profile::ms(colorStarted,sop_profile::Clock::now());
+#endif
         return true;
     }
     double get(int property) const { return capture_.get(property); }
