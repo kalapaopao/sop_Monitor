@@ -22,11 +22,11 @@ C++17 + TensorRT FP16 的现场视觉推理工程：读取工位视频，执行�
 
 **双路实时识别**（左 03 / 右 07，联合 OBB + RTMW，`sop_nx_joint_probe`）
 
-[![双路实时识别](cpp_infer/docs/media/twolane_10s.gif)](cpp_infer/docs/media/twolane_10s.mp4)
+[![双路实时识别](cpp_infer/docs/media/twolane_10s.gif?v=2)](cpp_infer/docs/media/twolane_10s.mp4)
 
 **四路识别 · 批量调度**（03 / 03 / 07 / 07，640×384 + batch 4，`sop_nx_batch_probe`）
 
-[![四路批量识别](cpp_infer/docs/media/fourlane_10s.gif)](cpp_infer/docs/media/fourlane_10s.mp4)
+[![四路批量识别](cpp_infer/docs/media/fourlane_10s.gif?v=2)](cpp_infer/docs/media/fourlane_10s.mp4)
 
 > 两段素材均为 2026-10-21 在 NX 桌面上实录的 10 秒片段，点图可看原速 MP4（1100×620 / 25 fps）。
 > 输入是 `03.mp4`、`07.mp4` **文件模拟**，不是真实 RTSP 摄像头；每格左上角的小字 `FPS … | … ms` 是程序叠加的绘制帧率与单帧耗时，不是源视频内容。
@@ -34,7 +34,7 @@ C++17 + TensorRT FP16 的现场视觉推理工程：读取工位视频，执行�
 
 ## 模块地图
 
-![cpp_infer 模块地图](cpp_infer/docs/media/module-map.png)
+![cpp_infer 模块地图](cpp_infer/docs/media/module-map.png?v=2)
 
 六个模块分别对应：采集解码、检测与姿态、调度流水、加速量化、观测验收、构建文档。每个框里的文件名都是真实存在的源文件，可直接跳读。更细的调用关系见 [cpp_infer/CODE_MAP.md](cpp_infer/CODE_MAP.md)。
 

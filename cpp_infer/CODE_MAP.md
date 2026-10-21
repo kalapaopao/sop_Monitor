@@ -9,7 +9,7 @@
 
 ## 1. 模块地图（思维导图）
 
-![cpp_infer 模块地图](docs/media/module-map.png)
+![cpp_infer 模块地图](docs/media/module-map.png?v=2)
 
 | 模块 | 关键文件 | 一句话职责 |
 |---|---|---|
