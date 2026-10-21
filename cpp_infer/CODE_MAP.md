@@ -7,9 +7,9 @@
 - 软件：JetPack 5.1.1、CUDA 11.4、TensorRT 8.5.2、OpenCV 4.5.4、C++17
 - 代码量：`cpp_infer/src` 约 2670 行，其中 `main.cpp` 495 行、`dual_probe.cpp` 438 行、`batch_probe.cpp` 437 行
 
-## 1. 模块地图（思维导图）
+## 1. 模块划分
 
-![cpp_infer 模块地图](docs/media/module-map.png?v=2)
+![架构图](docs/media/architecture.png)
 
 | 模块 | 关键文件 | 一句话职责 |
 |---|---|---|
