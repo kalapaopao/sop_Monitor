@@ -22,11 +22,11 @@ C++17 + TensorRT FP16 的现场视觉推理工程：读取工位视频，执行�
 
 **双路实时识别**（左 03 / 右 07，联合 OBB + RTMW，`sop_nx_joint_probe`）
 
-[![双路实时识别](cpp_infer/docs/media/twolane_10s.gif?v=2)](cpp_infer/docs/media/twolane_10s.mp4)
+[![双路实时识别](cpp_infer/docs/media/twolane_10s_v2.gif)](cpp_infer/docs/media/twolane_10s_v2.mp4)
 
 **四路识别 · 批量调度**（03 / 03 / 07 / 07，640×384 + batch 4，`sop_nx_batch_probe`）
 
-[![四路批量识别](cpp_infer/docs/media/fourlane_10s.gif?v=2)](cpp_infer/docs/media/fourlane_10s.mp4)
+[![四路批量识别](cpp_infer/docs/media/fourlane_10s_v2.gif)](cpp_infer/docs/media/fourlane_10s_v2.mp4)
 
 > 两段素材均为 2026-10-21 在 NX 桌面上实录的 10 秒片段，点图可看原速 MP4（1100×620 / 25 fps）。
 > 输入是 `03.mp4`、`07.mp4` **文件模拟**，不是真实 RTSP 摄像头；每格左上角的小字 `FPS … | … ms` 是程序叠加的绘制帧率与单帧耗时，不是源视频内容。
