@@ -103,3 +103,6 @@ build_*/
 
 # Local experiment result archives (results, not source)
 *.tar.gz
+
+# Demo clips referenced by the README (exception to the global *.mp4 rule)
+!cpp_infer/docs/media/*.mp4

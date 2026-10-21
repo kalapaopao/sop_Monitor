@@ -7,33 +7,18 @@
 - 软件：JetPack 5.1.1、CUDA 11.4、TensorRT 8.5.2、OpenCV 4.5.4、C++17
 - 代码量：`cpp_infer/src` 约 2670 行，其中 `main.cpp` 495 行、`dual_probe.cpp` 438 行、`batch_probe.cpp` 437 行
 
-## 1. 项目全景（思维导图）
+## 1. 模块地图（思维导图）
 
-```mermaid
-flowchart LR
-    ROOT["sop_Monitor<br/>NX 侧视觉推理实验台"]
+![cpp_infer 模块地图](docs/media/module-map.png)
 
-    ROOT --> IN["输入"]
-    IN --> IN1["视频文件 03/07<br/>1920×1080 约 25fps"]
-    IN --> IN2["GStreamer 硬解<br/>I420 → BGR"]
-    IN --> IN3["未实现：真实 RTSP<br/>断流重连"]
-
-    ROOT --> MOD["模型"]
-    MOD --> M1["YOLO-OBB 3 类<br/>screwdriver1/2 + hand"]
-    MOD --> M2["YOLOX-tiny person<br/>416×416"]
-    MOD --> M3["RTMW 133 点<br/>裁剪 192×256"]
-    MOD --> M4["联合 OBB 4 类<br/>加 person，替代 M1+M2"]
-
-    ROOT --> OUT["输出"]
-    OUT --> O1["OpenCV 窗口<br/>四宫格 1100×620"]
-    OUT --> O2["CSV 指标<br/>任务Hz / 年龄 / 指纹"]
-    OUT --> O3["--record MP4<br/>带框与骨架"]
-
-    ROOT --> ENG["工程约束"]
-    ENG --> E1["不进 Git：视频/权重<br/>plan/build/output"]
-    ENG --> E2["plan 绑定本机硬件<br/>与版本，不可移植"]
-    ENG --> E3["结论只覆盖<br/>文件模拟与单轮测试"]
-```
+| 模块 | 关键文件 | 一句话职责 |
+|---|---|---|
+| 采集与解码 | `main.cpp` 解码线程、`hardware_capture.hpp`、`bounded_queue.hpp` | 硬解出 I420，转 BGR，按源时间轴投递到容量 1 的帧槽 |
+| 检测与姿态 | `joint_detector.hpp`、`yoloDetections()`、`yoloXPeople()`、`rtmwPose()` | 工具/手/人检测与 133 点骨架 |
+| 调度与流水 | `main.cpp --mode`、`pipeline.hpp`、`dual_probe.cpp`、`batch_probe.cpp` | 四种单路模式 + 多路轮询 + 批量凑批 |
+| 加速与量化 | `silu_plugin.cu`、`stage2_model.inc`、`batch_model.inc`、`stage2_kernels.cu` | GPU 预处理、IO 复用、插件与批量内核 |
+| 观测与验收 | `profile_timing.hpp`、`--metrics` CSV、200 ms 规则、CTest | 分阶段计时与可复核的吞吐/年龄指标 |
+| 构建与文档 | `CMakeLists.txt`、`accel.cmake`、`stage2.cmake`、`.gitignore` | 目标划分、开关、忽略规则与轮次报告 |
 
 ## 2. 三个模型与两种链路
 
