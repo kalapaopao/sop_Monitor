@@ -29,7 +29,7 @@ C++17 + TensorRT FP16 的现场视觉推理工程：读取工位视频，执行�
 [![四路批量识别](cpp_infer/docs/media/fourlane_10s.gif)](cpp_infer/docs/media/fourlane_10s.mp4)
 
 > 两段素材均为 2026-10-21 在 NX 桌面上实录的 10 秒片段，点图可看原速 MP4（1100×620 / 25 fps）。
-> 输入是 `03.mp4`、`07.mp4` **文件模拟**，不是真实 RTSP 摄像头；画面左上角那行 `SOP C++ TensorRT | FPS …` 是源视频自带的烧录文字。
+> 输入是 `03.mp4`、`07.mp4` **文件模拟**，不是真实 RTSP 摄像头；每格左上角的小字 `FPS … | … ms` 是程序叠加的绘制帧率与单帧耗时，不是源视频内容。
 > 录制时板端正在报 `System throttled due to Over-current`（20W 6CORE），所以窗口里的任务 Hz 低于测试报告中的数值。
 
 ## 模块地图
