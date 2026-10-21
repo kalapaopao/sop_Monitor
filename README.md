@@ -69,28 +69,36 @@ Xavier 上 TensorRT 8.5 的启发式策略失效，四类联合 OBB 全候选构
 
 ```text
 cpp_infer/
-├── src/
-│   ├── main.cpp               单路入口：legacy / serial / pipeline / parallel
-│   ├── dual_probe.cpp         1/2/4 路共享引擎，单线程公平轮询
-│   ├── batch_probe.cpp        矩形输入 + 跨工位批量调度
-│   ├── joint_detector.hpp     四类联合 OBB 解码
-│   ├── hardware_capture.hpp   GStreamer 硬解与色度转换
-│   ├── pipeline.hpp           三队列流水线与推理线程
-│   ├── silu_plugin.cu         SiLU 插件（引擎依赖）
-│   └── stage2_* / batch_*     GPU 预处理、批量 IO、CUDA 内核
+├── src/                       按职责分模块
+│   ├── core/                  引擎封装、前后处理、绘制、队列、计时
+│   ├── capture/               视频采集与 H.265 硬解
+│   ├── preprocess/            GPU kernel：letterbox / warp / 色转
+│   ├── models/                模型后处理：OBB 解码、NMS、SimCC
+│   ├── pipeline/              单路流水线与批量调度
+│   ├── probes/                6 个可执行入口（每个文件 = 一个目标）
+│   ├── config/                参数系统（位置参数 / preset / 覆盖）
+│   └── silu_plugin.cu         SiLU 插件（引擎依赖）
+├── config/                    运行预设 YAML（1lane / 2lane / 4lane）
+├── scripts/                   构建、基准测试、数据分析、一键启动
+├── docs/                      架构文档、专题指南、测试报告、媒体
 ├── tests/                     CTest 5 项：插件 / 队列 / 预处理
-└── *.md                       分轮次实验报告与代码地图
+├── QUICKSTART.md              快速开始（三条命令跑起来）
+└── README.md                  本文件
 ```
 
-探针入口只有数行，通过宏 + 直接 `include` 复用主程序实现，保证模型变换、阈值与后处理完全一致。模块依赖与调用关系见 [CODE_MAP.md](cpp_infer/CODE_MAP.md)。
+探针入口通过宏 + 直接 `include` 复用 `core/main.cpp`，保证模型变换、阈值与后处理完全一致。
+模块依赖与调用关系见 [CODE_MAP.md](cpp_infer/docs/architecture/CODE_MAP.md)；
+日常运行见 [QUICKSTART.md](cpp_infer/QUICKSTART.md)。
 
 ## 构建
 
 ```bash
 cd cpp_infer
-bash build_engines.sh                                  # 生成 FP16 引擎（需在目标设备）
+bash scripts/build/build_engines.sh                      # 生成 FP16 引擎（需在目标设备）
 cmake -S . -B build -DSOP_BUILD_ACCEL=ON && cmake --build build -j2
 (cd build && ctest --output-on-failure)
+
+日常运行请看 [cpp_infer/QUICKSTART.md](cpp_infer/QUICKSTART.md)。
 ```
 
 依赖 JetPack 5.1.1 / CUDA 11.4 / TensorRT 8.5.2 / OpenCV 4.5.4；`-DSOP_BUILD_ACCEL=ON` 额外需要 `libavformat`、`libavutil`、`libswscale`。权重与引擎不入库，需自行放置。

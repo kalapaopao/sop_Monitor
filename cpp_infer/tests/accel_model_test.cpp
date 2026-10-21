@@ -1,9 +1,9 @@
 #define SOP_ACCEL
 #define SOP_INFER_EMBEDDED
-#include "main.cpp"
+#include "core/main.cpp"
 extern "C" int sopRegisterSiLU();
 namespace {
-#include "joint_detector.hpp"
+#include "models/joint_detector.hpp"
 }
 int main(int argc,char** argv) {
  try {

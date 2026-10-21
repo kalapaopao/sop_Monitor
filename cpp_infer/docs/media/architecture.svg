@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="840" viewBox="0 0 1200 840">
+<rect width="1200" height="840" fill="#FFFFFF"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#4D4D4D"/></marker></defs>
+<rect x="40" y="50" width="330" height="240" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="52" y="68" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#666666">runtime</text>
+<rect x="60" y="78" width="290" height="58" rx="0" fill="#D5E8D4" stroke="#82B366" stroke-width="1"/>
+<text x="205.0" y="96.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">capture/hardware_capture.hpp</text>
+<text x="205.0" y="120.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">GStreamer 硬解 · I420 → BGR</text>
+<rect x="60" y="150" width="290" height="58" rx="0" fill="#D5E8D4" stroke="#82B366" stroke-width="1"/>
+<text x="205.0" y="168.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">core/bounded_queue.hpp</text>
+<text x="205.0" y="192.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">最新帧槽 · 容量 1 · 忙时替换</text>
+<rect x="60" y="222" width="290" height="58" rx="0" fill="#D5E8D4" stroke="#82B366" stroke-width="1"/>
+<text x="205.0" y="240.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">pipeline/pipeline.hpp</text>
+<text x="205.0" y="264.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">解码 / 推理 / 显示 三队列</text>
+<rect x="400" y="50" width="500" height="240" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="412" y="68" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#666666">entry（6 个可执行目标）</text>
+<rect x="420" y="78" width="460" height="58" rx="0" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1"/>
+<text x="650.0" y="96.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">core/main.cpp</text>
+<text x="650.0" y="120.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">legacy / serial / pipeline / parallel</text>
+<rect x="420" y="150" width="460" height="58" rx="0" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1"/>
+<text x="650.0" y="168.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">probes/dual_probe.cpp</text>
+<text x="650.0" y="192.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">1 / 2 / 4 路共享引擎 · 公平轮询</text>
+<rect x="420" y="222" width="460" height="58" rx="0" fill="#DAE8FC" stroke="#6C8EBF" stroke-width="1"/>
+<text x="650.0" y="240.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">probes/batch_probe.cpp</text>
+<text x="650.0" y="264.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">凑批 5 ms · 末批补齐 · 按 owner 回写</text>
+<rect x="40" y="330" width="860" height="220" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="52" y="348" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#666666">inference（TensorRT FP16）</text>
+<rect x="60" y="358" width="400" height="74" rx="0" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+<text x="260.0" y="384.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">models/joint_detector.hpp</text>
+<text x="260.0" y="408.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">4 类联合 OBB：工具×2 / 手 / 人</text>
+<rect x="480" y="358" width="400" height="74" rx="0" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+<text x="680.0" y="384.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">yoloDetections()</text>
+<text x="680.0" y="408.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">3 类 OBB 解码 + 每类旋转 NMS</text>
+<rect x="60" y="450" width="400" height="74" rx="0" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+<text x="260.0" y="476.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">yoloXPeople()</text>
+<text x="260.0" y="500.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">YOLOX-tiny 人体框（旧三模型链路）</text>
+<rect x="480" y="450" width="400" height="74" rx="0" fill="#E1D5E7" stroke="#9673A6" stroke-width="1"/>
+<text x="680.0" y="476.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">rtmwPose()</text>
+<text x="680.0" y="500.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">133 关键点 · 192×256 · SimCC</text>
+<rect x="40" y="600" width="860" height="190" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="52" y="618" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#666666">acceleration</text>
+<rect x="60" y="628" width="260" height="76" rx="0" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+<text x="190.0" y="655.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">silu_plugin.cu</text>
+<text x="190.0" y="679.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">93 组 SiLU 插件</text>
+<rect x="340" y="628" width="260" height="76" rx="0" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+<text x="470.0" y="655.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">models/stage2_model.inc</text>
+<text x="470.0" y="679.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">GPU 端 RTMW 预处理</text>
+<rect x="620" y="628" width="260" height="76" rx="0" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+<text x="750.0" y="655.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">models/batch_model.inc</text>
+<text x="750.0" y="679.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">批量 IO / GPU 裁剪</text>
+<rect x="60" y="716" width="820" height="50" rx="0" fill="#FFF2CC" stroke="#D6B656" stroke-width="1"/>
+<text x="470.0" y="730.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">preprocess/ · stage2_kernels.cu · batch_kernels.cu · accel_preprocess.cu</text>
+<text x="470.0" y="754.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">sm72 + PTX 编译的预处理内核</text>
+<rect x="930" y="330" width="230" height="220" fill="none" stroke="#8C8C8C" stroke-width="1" stroke-dasharray="7 5"/>
+<text x="942" y="348" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="13" font-weight="bold" fill="#666666">output</text>
+<rect x="946" y="358" width="198" height="74" rx="0" fill="#F5F5F5" stroke="#999999" stroke-width="1"/>
+<text x="1045.0" y="384.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">draw()</text>
+<text x="1045.0" y="408.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">框 · 骨架 · 小字 HUD</text>
+<rect x="946" y="450" width="198" height="74" rx="0" fill="#F5F5F5" stroke="#999999" stroke-width="1"/>
+<text x="1045.0" y="476.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="15" font-weight="bold" fill="#1A1A1A" text-anchor="middle" dominant-baseline="central">--metrics CSV</text>
+<text x="1045.0" y="500.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12.5" fill="#4D4D4D" text-anchor="middle" dominant-baseline="central">任务数 / 年龄 / 指纹</text>
+<path d="M370 145 L400 145" fill="none" stroke="#4D4D4D" stroke-width="1.2" marker-end="url(#a)"/>
+<path d="M205 290 L205 330" fill="none" stroke="#4D4D4D" stroke-width="1.2" marker-end="url(#a)"/>
+<text x="213.0" y="306.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12" fill="#666666">帧</text>
+<path d="M650 290 L650 330" fill="none" stroke="#4D4D4D" stroke-width="1.2" marker-end="url(#a)"/>
+<text x="658.0" y="306.0" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12" fill="#666666">任务</text>
+<path d="M900 440 L930 440" fill="none" stroke="#4D4D4D" stroke-width="1.2" marker-end="url(#a)"/>
+<path d="M470 550 L470 600" fill="none" stroke="#4D4D4D" stroke-width="1.2" stroke-dasharray="6 4" marker-end="url(#a)"/>
+<text x="480" y="576" font-family="Helvetica, Arial, Microsoft YaHei, sans-serif" font-size="12" fill="#666666">GPU 支撑</text>
+</svg>

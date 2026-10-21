@@ -1,4 +1,4 @@
-#include "hardware_capture.hpp"
+#include "capture/hardware_capture.hpp"
 int main(int argc,char** argv) {
  try {
     if(argc!=3 && argc!=4) throw std::runtime_error("usage: accel_decode_test VIDEO EXISTING_OUTPUT_DIR [--seek]");

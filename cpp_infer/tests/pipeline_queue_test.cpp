@@ -1,4 +1,4 @@
-#include "bounded_queue.hpp"
+#include "core/bounded_queue.hpp"
 #include <future>
 #include <iostream>
 #include <stdexcept>

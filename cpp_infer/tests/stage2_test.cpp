@@ -1,11 +1,11 @@
 #define SOP_STAGE2
 #define SOP_ACCEL
 #define SOP_INFER_EMBEDDED
-#include "main.cpp"
-#include "hardware_capture.hpp"
+#include "core/main.cpp"
+#include "capture/hardware_capture.hpp"
 extern "C" int sopRegisterSiLU();
 namespace {
-#include "joint_detector.hpp"
+#include "models/joint_detector.hpp"
 }
 void warpNumerics() {
     cv::Mat storage(513,713,CV_8UC3); cv::randu(storage,0,256);

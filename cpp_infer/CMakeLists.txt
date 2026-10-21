@@ -20,7 +20,7 @@ if(NOT TENSORRT_INCLUDE_DIR OR NOT TENSORRT_LIBRARY)
     message(FATAL_ERROR "TensorRT headers/libraries were not found")
 endif()
 
-add_executable(sop_nx_infer src/main.cpp)
+add_executable(sop_nx_infer src/core/main.cpp)
 target_include_directories(sop_nx_infer PRIVATE
     ${OpenCV_INCLUDE_DIRS}
     ${CUDA_INCLUDE_DIRS}
@@ -34,7 +34,7 @@ target_link_libraries(sop_nx_infer PRIVATE
 target_compile_options(sop_nx_infer PRIVATE -Wall -Wextra -Wpedantic -O3)
 
 # Experimental two-station probe reuses the exact model/pre/postprocessing code.
-add_executable(sop_nx_dual_probe src/dual_probe.cpp)
+add_executable(sop_nx_dual_probe src/probes/dual_probe.cpp)
 target_include_directories(sop_nx_dual_probe PRIVATE
     ${OpenCV_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
 target_link_libraries(sop_nx_dual_probe PRIVATE ${OpenCV_LIBS}
@@ -45,7 +45,7 @@ include_directories(${TENSORRT_INCLUDE_DIR})
 cuda_add_library(sop_silu_plugin SHARED src/silu_plugin.cu OPTIONS -std=c++14
     -gencode=arch=compute_72,code=sm_72 -gencode=arch=compute_72,code=compute_72)
 target_link_libraries(sop_silu_plugin ${TENSORRT_LIBRARY} ${CUDA_CUDART_LIBRARY})
-add_executable(sop_nx_joint_probe src/joint_probe.cpp)
+add_executable(sop_nx_joint_probe src/probes/joint_probe.cpp)
 target_include_directories(sop_nx_joint_probe PRIVATE
     ${OpenCV_INCLUDE_DIRS} ${CUDA_INCLUDE_DIRS} ${TENSORRT_INCLUDE_DIR})
 target_link_libraries(sop_nx_joint_probe PRIVATE sop_silu_plugin ${OpenCV_LIBS}
@@ -69,5 +69,5 @@ endif()
 
 option(SOP_BUILD_ACCEL "Build experimental hardware decode and concurrent inference" OFF)
 if(SOP_BUILD_ACCEL)
-    include(accel.cmake)
+    include(cmake/accel.cmake)
 endif()

@@ -1,0 +1,27 @@
+# 四路生产配置 —— 日常运行的默认预设
+#
+# 用法:
+#   ./sop_nx_batch_probe --preset 4lane
+#   ./sop_nx_batch_probe --preset 4lane --duration 10      # 临时改时长
+#   ./sop_nx_batch_probe 1.mp4 2.mp4 3.mp4 4.mp4 --preset 4lane   # 位置参数优先
+#
+# 路径相对 build/ 目录（程序约定从 build/ 启动）
+
+sources:
+  - ../../test_vedio/03.mp4
+  - ../../test_vedio/03.mp4
+  - ../../test_vedio/07.mp4
+  - ../../test_vedio/07.mp4
+
+duration: 40
+headless: true
+
+# 实测最优，不建议改
+det_width: 640
+det_height: 384
+det_batch: 4
+pose_batch: 4
+batch_wait_ms: 5
+
+model_dir: ../models
+max_result_age_ms: 200
