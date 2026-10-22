@@ -81,6 +81,7 @@ cpp_infer/
 ├── config/                    运行预设 YAML（1lane / 2lane / 4lane）
 ├── scripts/                   构建、基准测试、数据分析、一键启动
 ├── docs/                      架构文档、专题指南、测试报告、媒体
+│   └── design/                需求基线与技术方案
 ├── tests/                     CTest 5 项：插件 / 队列 / 预处理
 ├── QUICKSTART.md              快速开始（三条命令跑起来）
 └── README.md                  本文件
