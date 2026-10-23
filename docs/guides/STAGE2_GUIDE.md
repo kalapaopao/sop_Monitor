@@ -53,7 +53,7 @@ I420 上传可将1080p源图的主机到GPU数据从6,220,800字节减为3,110,4
 ## 构建与启动
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 cmake -S . -B build -DSOP_BUILD_ACCEL=ON
 cmake --build build -j2
 (cd build && ctest --output-on-failure)

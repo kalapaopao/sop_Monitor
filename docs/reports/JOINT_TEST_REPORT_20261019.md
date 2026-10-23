@@ -108,7 +108,7 @@ lane0采样结果的中位步骤耗时：
 修改：
 
 - 根README：更正实际硬件，链接新指南。
-- cpp_infer/README.md、ARCHITECTURE.md：注明两模型入口与设备更正，保留此前图解。
+- README.md、ARCHITECTURE.md：注明两模型入口与设备更正，保留此前图解。
 - CMakeLists.txt：新两模型目标、SiLU CUDA共享库及GPU数值测试；旧目标保留。
 - src/dual_probe.cpp：宏隔离新检测路径、不加载YOLOX、新入口默认引擎、单路/审计选项、追加测量列，旧三模型路径保留。
 
@@ -127,7 +127,7 @@ lane0采样结果的中位步骤耗时：
 最终完整构建成功；CTest2/2通过。新入口默认联合引擎短时运行验证和显式旧三分类引擎拒绝测试用于确认不会误用旧权重；数值一致性整体未通过的hand置信度项保留。没有业务准确率、真实相机接口或长时间稳定性通过结论。
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 ./build/sop_nx_joint_probe --source ../test_vedio/03.mp4 \
   --second-source ../test_vedio/03.mp4 --third-source ../test_vedio/07.mp4 \
   --fourth-source ../test_vedio/07.mp4 --model-dir models \

@@ -16,10 +16,10 @@ OBB → RTMW 的依赖不变；统一主线程显示，200 ms 过期隐藏规则
 
 本轮修改：
 
-- `cpp_infer/src/main.cpp`：engine 共享所有权、独立执行上下文、可选 GPU OBB 输入。
-- `cpp_infer/src/dual_probe.cpp`：加速目标专用参数、硬解捕获、固定分组的工作线程。
-- `cpp_infer/src/joint_detector.hpp`：可选 CUDA letterbox；CPU 路径保留。
-- `cpp_infer/CMakeLists.txt`：新增默认关闭的 `SOP_BUILD_ACCEL` 构建选项。
+- `src/main.cpp`：engine 共享所有权、独立执行上下文、可选 GPU OBB 输入。
+- `src/dual_probe.cpp`：加速目标专用参数、硬解捕获、固定分组的工作线程。
+- `src/joint_detector.hpp`：可选 CUDA letterbox；CPU 路径保留。
+- `CMakeLists.txt`：新增默认关闭的 `SOP_BUILD_ACCEL` 构建选项。
 
 本轮新增：
 
@@ -151,7 +151,7 @@ python3 benchmark_accel.py --phase soak --duration 120 --workers 1
 
 最简单回退是运行原 `./build/sop_nx_joint_probe`。若需撤销本轮源代码集成，
 从持久备份 `output/accel_20261019/before/`（另有 `/tmp/sop-accel-before-20261019/` 副本）恢复 main.cpp、dual_probe.cpp、joint_detector.hpp
-到 src/，恢复 CMakeLists.txt 到 cpp_infer/，再重新构建。备份包含之前未提交的两模型工作；
+到 src/，恢复 CMakeLists.txt 到 ，再重新构建。备份包含之前未提交的两模型工作；
 不要对整个仓库执行 reset/clean。新文件可保留为未引用文件，视频、模型和旧报告不需要恢复。
 使用 `git diff` 查看本轮集成时应注意工作区本来就有前一轮未提交改动，不能全部归于本轮。
 

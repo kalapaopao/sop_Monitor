@@ -66,14 +66,14 @@
 
 两路实验的预览样式也使用新增标签、标签留白及合批刷新，原两路启动方式保留；单路程序行为不变。推理及旧CSV列保持原定义，日志新增lanes/mosaic_presents字段。只在Linux ARM64 NX验证，Windows和其它平台未编译。
 
-生成的构建产物在已有build中；日志/CSV/监控/临时复测脚本位于NX `cpp_infer/output/four_03_07_20261016/`；本地下载归档、分析脚本和summary.json位于本地镜像output中。均不纳入Git。本轮未提交或推送新改动，先前远端提交保留。
+生成的构建产物在已有build中；日志/CSV/监控/临时复测脚本位于NX `output/four_03_07_20261016/`；本地下载归档、分析脚本和summary.json位于本地镜像output中。均不纳入Git。本轮未提交或推送新改动，先前远端提交保留。
 
 ## 执行命令与验证
 
 - 只读：工作区/分支、进程、代码、构建日志、模型预处理、系统内存和CSV检查；未读取Git历史。
-- SSH连接指定NX，备份后传送本轮源文件，执行`cmake --build cpp_infer/build -j2`，初版及合批显示版均构建成功。
-- `(cd cpp_infer/build && ctest --output-on-failure)`：1/1通过。
-- `bash -n cpp_infer/benchmark_four_station.sh`：通过。
+- SSH连接指定NX，备份后传送本轮源文件，执行`cmake --build build -j2`，初版及合批显示版均构建成功。
+- `(cd build && ctest --output-on-failure)`：1/1通过。
+- `bash -n benchmark_four_station.sh`：通过。
 - `benchmark_four_station.sh`：从0秒运行四路无窗口/四宫格各30秒；额外运行最终合批显示版30秒。
 - 原两路参数无窗口回归6秒：正常完成、两路各150个预览消费帧；预热后的有效统计窗口仅1秒，不将此短测用作性能结论。
 - 只指定third-source、未指定fourth-source：按预期报参数错误，退出1。
@@ -85,7 +85,7 @@
 ## 启动、检查与回退
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 ./build/sop_nx_dual_probe --source ../test_vedio/03.mp4 \
   --second-source ../test_vedio/03.mp4 --third-source ../test_vedio/07.mp4 \
   --fourth-source ../test_vedio/07.mp4 --model-dir models \
@@ -94,4 +94,4 @@ cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
 
 上排03/03，下排07/07；按q/Esc退出。标签中的jobs Hz包含启动段，最终日志steady_job_hz去前5秒，两者不应混为一个统计窗口。HIDDEN表示没有有效骨架或结果超时。性能问题检查output日志、CSV及监控；避免同时运行旧推理程序造成额外争用。
 
-只提供source/second-source仍回到两路。完整文件级回退：备份在NX `/tmp/sop-four-before-20261016/`，将其中dual_probe.cpp恢复到src，README.md和ARCHITECTURE.md恢复到cpp_infer，旧sop_nx_dual_probe可恢复到build；也可恢复源文件后重新构建。新增脚本/报告可保留，不影响旧程序。可用限定上述文件的Git diff检查本轮改动，回退前检查是否又有后续修改，避免覆盖；不删除模型、视频或未知文件，不改写Git历史。
+只提供source/second-source仍回到两路。完整文件级回退：备份在NX `/tmp/sop-four-before-20261016/`，将其中dual_probe.cpp恢复到src，README.md和ARCHITECTURE.md恢复到repository root，旧sop_nx_dual_probe可恢复到build；也可恢复源文件后重新构建。新增脚本/报告可保留，不影响旧程序。可用限定上述文件的Git diff检查本轮改动，回退前检查是否又有后续修改，避免覆盖；不删除模型、视频或未知文件，不改写Git历史。

@@ -18,17 +18,17 @@ C++17 + TensorRT FP16 的实时推理工程：输入工位视频，联合 OBB �
 
 **双路实时**（联合 OBB + RTMW）
 
-[![双路实时识别](cpp_infer/docs/media/twolane_10s_v2.gif)](cpp_infer/docs/media/twolane_10s_v2.mp4)
+[![双路实时识别](docs/media/twolane_10s_v2.gif)](docs/media/twolane_10s_v2.mp4)
 
 **四路 · 批量调度**（640×384 + batch 4）
 
-[![四路批量识别](cpp_infer/docs/media/fourlane_10s_v2.gif)](cpp_infer/docs/media/fourlane_10s_v2.mp4)
+[![四路批量识别](docs/media/fourlane_10s_v2.gif)](docs/media/fourlane_10s_v2.mp4)
 
 > 录屏为 10 秒实机片段，点图看原速 MP4。输入是两段工位视频文件，非真实 RTSP。
 
 ## 架构
 
-![架构图](cpp_infer/docs/media/architecture.png)
+![架构图](docs/media/architecture.png)
 
 采集层硬解交付 I420 并转 BGR，投递到容量 1 的最新帧槽；三个入口（单路 / 多路探针 / 批量探针）共用同一套模型与后处理；加速层通过 SiLU 插件、GPU 预处理和批量内核支撑推理。
 
@@ -68,7 +68,7 @@ Xavier 上 TensorRT 8.5 的启发式策略失效，四类联合 OBB 全候选构
 ## 代码结构
 
 ```text
-cpp_infer/
+sop_Monitor/
 ├── src/                       按职责分模块
 │   ├── core/                  引擎封装、前后处理、绘制、队列、计时
 │   ├── capture/               视频采集与 H.265 硬解
@@ -88,18 +88,18 @@ cpp_infer/
 ```
 
 探针入口通过宏 + 直接 `include` 复用 `core/main.cpp`，保证模型变换、阈值与后处理完全一致。
-模块依赖与调用关系见 [CODE_MAP.md](cpp_infer/docs/architecture/CODE_MAP.md)；
-日常运行见 [QUICKSTART.md](cpp_infer/QUICKSTART.md)。
+模块依赖与调用关系见 [CODE_MAP.md](docs/architecture/CODE_MAP.md)；
+日常运行见 [QUICKSTART.md](QUICKSTART.md)。
 
 ## 构建
 
 ```bash
-cd cpp_infer
+cd /path/to/sop_Monitor
 bash scripts/build/build_engines.sh                      # 生成 FP16 引擎（需在目标设备）
 cmake -S . -B build -DSOP_BUILD_ACCEL=ON && cmake --build build -j2
 (cd build && ctest --output-on-failure)
 
-日常运行请看 [cpp_infer/QUICKSTART.md](cpp_infer/QUICKSTART.md)。
+日常运行请看 [QUICKSTART.md](QUICKSTART.md)。
 ```
 
 依赖 JetPack 5.1.1 / CUDA 11.4 / TensorRT 8.5.2 / OpenCV 4.5.4；`-DSOP_BUILD_ACCEL=ON` 额外需要 `libavformat`、`libavutil`、`libswscale`。权重与引擎不入库，需自行放置。

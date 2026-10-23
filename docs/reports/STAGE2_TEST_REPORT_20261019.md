@@ -157,7 +157,7 @@ Q/Esc退出。失败时查看 `output/stage2_20261019/` 对应日志。对照原
 `sop_nx_accel_probe`，无需改文件。
 
 源码回退副本在 `output/stage2_20261019/before/`：恢复其中5个源头文件到src/，恢复
-accel.cmake到cpp_infer/，重新构建；新文件可保留为未引用文件。不要reset/clean整个仓库，
+accel.cmake到，重新构建；新文件可保留为未引用文件。不要reset/clean整个仓库，
 也不需要撤销已保存的基线提交。模型、视频和前轮报告不需要恢复。
 
 

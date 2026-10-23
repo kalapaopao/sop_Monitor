@@ -2,7 +2,7 @@
 
 > 唯一的需求基线。目标、范围、验收标准变化时更新本文档并记录变更，不靠对话记忆。
 > **怎么做**见配套的[技术方案](NX推理侧技术方案.md)。
-> 当前 **v2.1**，2026-10-22。适用路径 `/home/nvidia/Music/project/sop_Monitor/cpp_infer/`。
+> 当前 **v2.1**，2026-10-22。适用路径 `/home/nvidia/Music/project/sop_Monitor/`。
 
 ---
 
@@ -372,7 +372,7 @@ P7–P9 只是省算力。**在闭环未跑通前，性能优化没有可验证�
 **标准命令**：
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 bash scripts/run.sh 4lane                    # 四路生产配置
 bash scripts/run.sh 2lane --duration 20      # 两路
 ```

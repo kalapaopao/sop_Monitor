@@ -11,7 +11,7 @@
 - RTMW WholeBody：人体关键点和双手 21 点；
 - 不包含 TCN。
 
-模块关系、编译期包含关系与各入口调度流程图见 [CODE_MAP.md](docs/architecture/CODE_MAP.md)；仓库级入口与性能速查见 [../README.md](../README.md)。
+模块关系、编译期包含关系与各入口调度流程图见 [CODE_MAP.md](docs/architecture/CODE_MAP.md)；仓库级入口与性能速查见 [README.md](README.md)。
 
 ## 构建
 

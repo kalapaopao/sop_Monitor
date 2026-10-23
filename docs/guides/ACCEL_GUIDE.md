@@ -36,7 +36,7 @@ target for color metadata and YUV conversion. Hardware decoding uses OpenCV's
 existing GStreamer backend. No package installation.
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 cmake -S . -B build -DSOP_BUILD_ACCEL=ON
 cmake --build build -j2
 (cd build && ctest --output-on-failure)

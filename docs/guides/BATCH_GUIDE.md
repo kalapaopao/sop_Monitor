@@ -15,7 +15,7 @@
 ## 启动四路
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 ./build/sop_nx_batch_probe \
   --source ../test_vedio/03.mp4 \
   --second-source ../test_vedio/03.mp4 \
@@ -78,7 +78,7 @@ mkdir -p output/my_batch_validation
 metrics.csv的检测/骨架耗时按组内真实帧数均摊；它们是单位工作成本。整组推理延迟与阶段总耗时查看groups.csv，不把均摊成本当成单张图独立完成延迟。
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 ctest --output-on-failure
 ```
 

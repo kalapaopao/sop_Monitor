@@ -50,14 +50,14 @@ struct BatchArgs {
 namespace sopcfg {
 
 inline void applyPreset(BatchArgs& a, const std::string& name) {
-    // 程序约定从 build/ 启动，但用户可能在 cpp_infer/ 下运行。
+    // 程序约定从 build/ 启动，但用户也可能在仓库根目录下运行。
     // 依次尝试：绝对/相对原样 → ../config/ → config/
     std::vector<std::string> candidates;
     if (name.find('/') != std::string::npos || name[0] == '/') {
         candidates.push_back(name);
     } else {
         candidates.push_back("../config/" + name + ".yaml");  // 从 build/ 启动
-        candidates.push_back("config/" + name + ".yaml");      // 从 cpp_infer/ 启动
+        candidates.push_back("config/" + name + ".yaml");      // 从仓库根目录启动
         candidates.push_back(name + ".yaml");                  // 当前目录
     }
 

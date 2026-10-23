@@ -83,7 +83,7 @@ parallel 实时模式：
 推荐先观察新的实时模式，所有间隔保持 1，让每个选中的推理任务都产生新结果：
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 ./build/sop_nx_infer --source ../test_vedio/07.mp4 --model-dir models \
   --mode parallel --realtime --start-sec 180
 ```

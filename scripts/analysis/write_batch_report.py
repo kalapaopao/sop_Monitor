@@ -145,8 +145,8 @@ body索引5–16，hands索引91–132。模型输出133点；原C++容器预留
 
 对本轮开始时的原文件只修改：
 
-- cpp_infer/src/main.cpp：增加SOP_BATCH保护下的batch_model.inc入口，旧目标不定义该宏。
-- cpp_infer/stage2.cmake：新增独立批量CUDA库、程序和预处理测试目标。
+- src/main.cpp：增加SOP_BATCH保护下的batch_model.inc入口，旧目标不定义该宏。
+- stage2.cmake：新增独立批量CUDA库、程序和预处理测试目标。
 
 新增：
 
@@ -166,7 +166,7 @@ body索引5–16，hands索引91–132。模型输出133点；原C++容器预留
 
 ## 10. 产物与执行记录
 
-NX目录：/home/nvidia/Music/project/sop_Monitor/cpp_infer/output/batch_20261020。
+NX目录：/home/nvidia/Music/project/sop_Monitor/output/batch_20261020。
 引擎目录：同项目models/batch_20261020。原引擎及视频未覆盖，大模型与视频仍被忽略规则排除。
 本地审阅目录：E:/study/SOP_train_model_resource/project/nx_batch_20261020。
 沿用现有build目录，新增批量可执行文件、静态CUDA库及测试中间文件；新增日志、CSV、JSON、固定帧、JPEG、备份和摘要包。

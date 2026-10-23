@@ -115,7 +115,7 @@ GPU预处理单项已不足0.3ms，输出回传各约0.02–0.03ms，CPU两项�
 
 ## 9. 修改、新增与行为影响
 
-修改文件（均在cpp_infer）：
+修改文件（均在repository root）：
 
 - `src/main.cpp`：仅SOP_PROFILE启用的预处理和SimCC计时，仿射计算局部作用域调整。
 - `src/stage2_model.inc`：源图准备、GPU阶段、enqueue、回传和原有等待的计时。
@@ -163,7 +163,7 @@ GPU预处理单项已不足0.3ms，输出回传各约0.02–0.03ms，CPU两项�
 本轮范围与“先测耗时”一致；原先推荐的GPU后处理优先级根据真实数据下调。
 实际测试后发现并纠正了CTest旧版参数兼容问题，以及打包输出位置问题。
 
-回退备份在NX `cpp_infer/output/profile_20261020/before`，完整原源码包为同目录source_before.tar.gz。
+回退备份在NX `output/profile_20261020/before`，完整原源码包为同目录source_before.tar.gz。
 仅将备份中的main.cpp、stage2_model.inc、dual_probe.cpp、joint_detector.hpp、hardware_capture.hpp、pipeline.hpp和stage2.cmake复制回原位置，再重编译stage2入口即可撤销对原文件的改动。
 复制前先确认这些文件在本轮之后没有新修改；有后续修改时只撤销本轮diff，避免覆盖新工作。新增分析文件可暂留，不被旧CMake引用就不会运行。
 不恢复.gitignore，不执行reset/clean或改写历史；视频和模型数据无需恢复。

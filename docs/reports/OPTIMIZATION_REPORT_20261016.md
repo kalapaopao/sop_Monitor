@@ -15,7 +15,7 @@
 - 03和07均1920×1080；读取到的源帧率分别约24.9795和24.9998 FPS。
 - 所有测试从源视频180秒开始。本轮不录制视频。
 - 单路模型输入保持：OBB 640×640；YOLOX 416×416；RTMW人体裁剪宽192×高256。
-- `cpp_infer/output/optimization_20261016/` 保存CSV、日志和监控；不提交Git。
+- `output/optimization_20261016/` 保存CSV、日志和监控；不提交Git。
 - `benchmark_capacity.sh` 使用原程序模拟1/2/3个独立输入实例，每路500帧、前75个消费帧预热。进程没有启动屏障，不是严格同步启动压力实验。
 - 两工位探针先加载三个共享模型、打开两个视频，再用共同应用时钟按各自源FPS读取；前5秒不计入任务更新率，启动段仍写入CSV。
 
@@ -107,10 +107,10 @@
 ### 修改文件
 
 - 根README：新增详细架构和报告入口、单路与两工位启动方式。
-- `cpp_infer/CMakeLists.txt`：新增独立探针构建目标，原目标保留。
-- `cpp_infer/README.md`：新增可选预览、测试说明，并澄清录制时长与墙钟截止/丢帧的关系。
-- `cpp_infer/src/main.cpp`：增加可选预览参数及组合校验、供探针复用实现的入口编译保护；原默认legacy不变。
-- `cpp_infer/src/pipeline.hpp`：缩小后绘制路径、显示副本坐标变换、绘制耗时统计。
+- `CMakeLists.txt`：新增独立探针构建目标，原目标保留。
+- `README.md`：新增可选预览、测试说明，并澄清录制时长与墙钟截止/丢帧的关系。
+- `src/main.cpp`：增加可选预览参数及组合校验、供探针复用实现的入口编译保护；原默认legacy不变。
+- `src/pipeline.hpp`：缩小后绘制路径、显示副本坐标变换、绘制耗时统计。
 
 ### 新增文件
 
@@ -125,12 +125,12 @@
 ### 执行与验证
 
 - 只读：Git工作区/分支/远端、源文件、构建配置、已有报告、进程、内存、日志检查；未读取Git历史。
-- 实际操作：SSH连接指定NX，备份当前文件，复制本轮源文件；`cmake -S cpp_infer -B cpp_infer/build -DCMAKE_BUILD_TYPE=Release`、`cmake --build cpp_infer/build -j2` 均成功。
-- `(cd cpp_infer/build && ctest --output-on-failure)`：队列测试1/1通过。`bash -n` 两个新增测试脚本通过。
+- 实际操作：SSH连接指定NX，备份当前文件，复制本轮源文件；`cmake -S repository root -B build -DCMAKE_BUILD_TYPE=Release`、`cmake --build build -j2` 均成功。
+- `(cd build && ctest --output-on-failure)`：队列测试1/1通过。`bash -n` 两个新增测试脚本通过。
 - `benchmark_capacity.sh`：四组预览、1/2/3路独立进程全部完成。
 - `benchmark_dual_station.sh`：03+07两组各30秒完成；额外两路07双画面20秒完成；单路实时新预览300帧完成。
 - 非法探针时限4秒、非法headless+preview-first组合：均按预期退出1。
-- 故意将探针RTMW引擎指向OBB引擎：`timeout 20 ... --rtmw-engine cpp_infer/build/yolo.plan --duration 6 --headless` 按预期报`setBindingDimensions failed`并退出1，没有超时挂起，未修改任何引擎。
+- 故意将探针RTMW引擎指向OBB引擎：`timeout 20 ... --rtmw-engine build/yolo.plan --duration 6 --headless` 按预期报`setBindingDimensions failed`并退出1，没有超时挂起，未修改任何引擎。
 - 原TensorRT过时API警告仍在；探针嵌入实现带来未使用runPipeline函数警告。GTK缺canberra模块提示仍在，窗口测试完成，未安装系统依赖。
 - 初次差异检查发现根README末行CRLF/空白，已规范本次新增文本后重新检查通过。
 - 单路四组指纹一致、两工位帧时序检查通过；没有新增标注准确率、真实相机接口或长时间测试。
@@ -140,7 +140,7 @@
 ### 验收
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 ./build/sop_nx_infer --source ../test_vedio/07.mp4 --model-dir models \
   --mode parallel --realtime --preview-first
 

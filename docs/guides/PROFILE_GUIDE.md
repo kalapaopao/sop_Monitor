@@ -7,7 +7,7 @@
 在NX中：
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 cmake -S . -B build -DSOP_BUILD_ACCEL=ON
 cmake --build build --target sop_nx_profile_probe -j2
 ```
@@ -56,7 +56,7 @@ python3 scripts/analysis/analyze_nsys.py output/profile_20261020
 Nsight原始报告位于：
 
 ```text
-/home/nvidia/Music/project/sop_Monitor/cpp_infer/output/profile_20261020/four_headless.nsys-rep
+/home/nvidia/Music/project/sop_Monitor/output/profile_20261020/four_headless.nsys-rep
 ```
 
 该实验使用现有工具，不需要安装新SDK或修改系统设置。
@@ -66,7 +66,7 @@ Nsight原始报告位于：
 设备CTest版本较旧，请显式进入构建目录：
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 ctest --output-on-failure
 ```
 

@@ -5,7 +5,7 @@
 
 - 目标设备：**Jetson Xavier NX Developer Kit**（Compute Capability 7.2 / 6 SM / 可见显存 6848 MiB）
 - 软件：JetPack 5.1.1、CUDA 11.4、TensorRT 8.5.2、OpenCV 4.5.4、C++17
-- 代码量：`cpp_infer/src` 约 2900 行，按职责分 7 个模块（`core/` `capture/` `preprocess/` `models/` `pipeline/` `probes/` `config/`），其中 `core/main.cpp` 约 520 行、`probes/dual_probe.cpp` 438 行、`probes/batch_probe.cpp` 338 行
+- 代码量：`src` 约 2900 行，按职责分 7 个模块（`core/` `capture/` `preprocess/` `models/` `pipeline/` `probes/` `config/`），其中 `core/main.cpp` 约 520 行、`probes/dual_probe.cpp` 438 行、`probes/batch_probe.cpp` 338 行
 
 ## 1. 模块划分
 

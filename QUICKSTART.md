@@ -2,7 +2,7 @@
 
 > 本文档回答一个问题：**在 Jetson Xavier NX 上，怎样把这个项目跑起来。**
 >
-> 更新日期：2026-10-21　适用版本：目录重构后的 `cpp_infer/`
+> 更新日期：2026-10-21　适用版本：目录重构后的仓库根目录
 
 ---
 
@@ -30,14 +30,14 @@
 
 - 设备已开机、已连网
 - 已登录过 NX 桌面（GDM 会话存在）
-- `cpp_infer/build/` 里已有编译好的程序，`cpp_infer/models/` 里已有 `.plan` 引擎
+- `build/` 里已有编译好的程序，`models/` 里已有 `.plan` 引擎
 
 ---
 
 ### 日常使用（推荐）：三种给参数的方式
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 
 # 方式 1：预设（最常用）
 bash scripts/run.sh           # 四路
@@ -93,7 +93,7 @@ model_dir: ../models
 #### 快速验证（不带画面，纯性能）
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 
 ./sop_nx_batch_probe \
   ../../test_vedio/03.mp4 ../../test_vedio/07.mp4 \
@@ -114,7 +114,7 @@ actual_batch=4 pose_calls=NNN
 去掉 `--headless`，并设置 DISPLAY：
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 export DISPLAY=:0 XAUTHORITY=/run/user/1000/gdm/Xauthority
 
 ./sop_nx_batch_probe \
@@ -128,7 +128,7 @@ export DISPLAY=:0 XAUTHORITY=/run/user/1000/gdm/Xauthority
 ### 四路生产配置
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 
 ./sop_nx_batch_probe \
   ../../test_vedio/03.mp4 ../../test_vedio/03.mp4 \
@@ -166,9 +166,9 @@ Cannot open TensorRT engine: models/batch_20261020/obb_640x384_b1_4.plan
 
 ### 坑 3：视频路径是 `../../test_vedio/`
 
-`test_vedio/` 在**项目根目录**，不在 `cpp_infer/` 下。
+`test_vedio/` 在**项目根目录**，不在 `sop_Monitor/` 下。
 
-从 `cpp_infer/build/` 出发，正确路径是 `../../test_vedio/03.mp4`。
+从 `build/` 出发，正确路径是 `../../test_vedio/03.mp4`。
 
 写 `../test_vedio/` 会报 `Cannot inspect file color metadata` 或 `Cannot open video`。
 
@@ -184,7 +184,7 @@ export DISPLAY=:0 XAUTHORITY=/run/user/1000/gdm/Xauthority
 
 ## 四、哪个程序该用哪个
 
-`cpp_infer/build/` 下有 7 个可执行文件，但**日常只用 `sop_nx_batch_probe`**。
+`build/` 下有 7 个可执行文件，但**日常只用 `sop_nx_batch_probe`**。
 
 | 程序 | 用途 | 状态 |
 |---|---|---|
@@ -278,21 +278,21 @@ export DISPLAY=:0 XAUTHORITY=/run/user/1000/gdm/Xauthority
 ### 只改 C++ 源码（最常见）
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 make -j2 sop_nx_batch_probe
 ```
 
 ### 改了 CMake 配置（新增文件、改目标）
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer/build
+cd /home/nvidia/Music/project/sop_Monitor/build
 cmake .. && make -j2
 ```
 
 ### 完整构建
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSOP_BUILD_ACCEL=ON
 cmake --build build -j2
 cd build && ctest --output-on-failure
@@ -303,7 +303,7 @@ cd build && ctest --output-on-failure
 ### 重新生成引擎（耗时约 10 分钟）
 
 ```bash
-cd /home/nvidia/Music/project/sop_Monitor/cpp_infer
+cd /home/nvidia/Music/project/sop_Monitor
 bash scripts/build/build_engines.sh                        # 旧三模型
 bash scripts/build/build_joint_engine.sh                   # 联合 OBB
 python3 scripts/build/build_batch_engine.py --help         # batch 引擎
@@ -314,7 +314,7 @@ python3 scripts/build/build_batch_engine.py --help         # batch 引擎
 ## 七、目录结构
 
 ```
-cpp_infer/
+sop_Monitor/
 ├── CMakeLists.txt          CMake 入口
 ├── README.md               详细说明
 ├── QUICKSTART.md           本文档
@@ -350,7 +350,7 @@ cpp_infer/
 └── output/                 运行结果（不入库）
 ```
 
-**重要**：所有脚本都要从 `cpp_infer/` 或其子目录运行，脚本会自己 `cd` 到 `cpp_infer/` 根目录。
+**重要**：所有脚本都要从仓库根目录或其子目录运行，脚本会自己 `cd` 到仓库根目录。
 
 ---
 
