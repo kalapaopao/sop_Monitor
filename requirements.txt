@@ -1,2 +1,21 @@
-openai>=1.0.0
-opencv-python>=4.8.0
+# 运行依赖（括号内为 2026-11-14 在本机 .venv 实测通过的版本）
+#
+# 说明：此前本文件只写了 openai / opencv，而 run_local_pose.py 实际还依赖
+# onnxruntime（RTMW 推理）和 ultralytics（YOLO 人体检测），新建环境会直接 ImportError。
+
+# 教师模型调用（api_teacher/run_video.py、api_teacher/run_ablation.py）
+openai>=1.0.0            # 实测 2.45.0
+
+# 视频解码与图像处理（api_teacher/*.py、src/fastener_counter.py 的调用方）
+opencv-python>=4.8.0     # 实测 5.0.0
+
+# 数值计算（关键点插值、坐标变换）
+numpy>=1.24.0            # 实测 2.5.1
+
+# RTMW whole-body 关键点推理（api_teacher/run_local_pose.py）
+onnxruntime>=1.17.0      # 实测 1.27.0
+
+# YOLO 人体检测（api_teacher/run_local_pose.py）
+# 注意：ultralytics 会拉起 torch，安装体积较大；若只想跑纯 ONNX 推理，
+# 改装 model/yolo/best.onnx 走 onnxruntime 可省掉这个依赖（需改代码）。
+ultralytics>=8.3.0       # 实测 8.4.95
