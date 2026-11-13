@@ -1,0 +1,10 @@
+type: yolo26
+name: personM
+provider: Ultralytics
+display_name: personM
+model_path: best.onnx
+conf_threshold: 0.25
+iou_threshold: 0.45
+max_det: 300
+classes:
+- person
