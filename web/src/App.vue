@@ -9,9 +9,8 @@ const HAND_MERGE_GAP = 0.6   // 10 Hz 采样下短时遮挡更明显，合并间
 const VIDEO_SRC = '/video/v2_5m_7m_pose.mp4'
 const PALETTE = ['#7b8fd4', '#8fbf6a', '#57b8c9', '#d9a05b', '#b48ad4', '#6fae8f', '#c98b8b', '#a8b0c0']
 
-const runs = ref({ A: [], B: [], C: [] })
+const runItems = ref([])
 const segments = ref({ steps: [], duration: 0, coverage: [0, 0], note: '' })
-const selectedRun = ref('A')
 const selectedIndex = ref(0)
 const video = ref(null)
 const videoError = ref(false)
@@ -21,7 +20,7 @@ const handSegments = ref({ left: [], right: [] })
 const currentSec = ref(0)
 const loadError = ref('')
 
-const items = computed(() => runs.value[selectedRun.value] || [])
+const items = computed(() => runItems.value || [])
 const current = computed(() => items.value[selectedIndex.value] || {})
 const detail = computed(() => { try { return JSON.parse(current.value.response || '{}') } catch { return {} } })
 const duration = computed(() => poseDuration.value || segments.value.duration || Number(items.value.at(-1)?.end || 30))
@@ -301,12 +300,12 @@ onMounted(async () => {
   const seekParam = Number(new URLSearchParams(location.search).get('t'))
   if (Number.isFinite(seekParam) && seekParam > 0) pendingSeek = seekParam
   try {
-    const [a, b, c, seg, pose] = await Promise.all([
-      ...['A', 'B', 'C'].map(k => fetch(`/data/ablation_14_${k}.json`).then(r => r.json())),
+    const [a, seg, pose] = await Promise.all([
+      fetch('/data/ablation_14_A.json').then(r => r.json()),
       fetch('/data/segments.json').then(r => r.json()).catch(() => null),
       fetch('/data/local_pose_2min.json').then(r => r.json()),
     ])
-    runs.value = { A: a.A || [], B: b.B || [], C: c.C || [] }
+    runItems.value = a.A || []
     if (seg) segments.value = seg
     const rows = pose.frames || []
     poseDuration.value = Number(pose.duration || 0)
@@ -330,7 +329,6 @@ onBeforeUnmount(() => {
     <header>
       <div><h1>动作分割结果 · SOP 装配分析</h1><p>周期工序 → 当前动作 / 左手动作 / 右手动作 / 操作器件与目标</p></div>
       <div class="head-right">
-        <nav><button v-for="run in ['A','B','C']" :key="run" :class="{active: selectedRun === run}" @click="selectedRun = run; selectedIndex = 0">{{ run }} 运行</button></nav>
         <button class="roi-toggle" :class="{ active: editing }" @click="toggleEdit">{{ editing ? '退出 ROI 编辑' : 'ROI 编辑' }}</button>
       </div>
     </header>
