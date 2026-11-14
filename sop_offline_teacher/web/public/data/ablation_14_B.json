@@ -1,0 +1,156 @@
+{
+  "A": [],
+  "B": [
+    {
+      "start": 0,
+      "end": 3.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"screwing\",\n  \"phase\": \"tightening_screw\",\n  \"left_hand\": \"holding_black_plastic_housing\",\n  \"right_hand\": \"operating_electric_screwdriver\",\n  \"tool\": \"electric_screwdriver_with_orange_handle\",\n  \"object\": \"black_plastic_housing\",\n  \"relation\": \"right_hand_operates_tool_on_object; left_hand_stabilizes_object\",\n  \"change\": \"screw_inserted_into_housing\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0000_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0000_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0000_02.jpg"
+      ]
+    },
+    {
+      "start": 3.0,
+      "end": 6.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"使用电动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持电动螺丝刀并操作\",\n  \"tool\": \"电动螺丝刀（带橙色手柄、绿色环）\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体进行拧紧操作，左手稳定壳体\",\n  \"change\": \"螺丝被旋入壳体，壳体部件连接更紧密\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0001_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0001_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0001_02.jpg"
+      ]
+    },
+    {
+      "start": 6.0,
+      "end": 9.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"使用电动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持橙色手柄电动螺丝刀并操作\",\n  \"tool\": \"电动螺丝刀（橙色手柄，带绿色环）\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体内部某位置施加旋转力，左手稳定壳体\",\n  \"change\": \"壳体内部螺丝被拧入固定（可见螺丝已部分旋入）\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0002_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0002_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0002_02.jpg"
+      ]
+    },
+    {
+      "start": 9.0,
+      "end": 12.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"使用气动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持并操作橙色气动螺丝刀\",\n  \"tool\": \"橙色气动螺丝刀\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体内部进行螺丝紧固，左手稳定壳体\",\n  \"change\": \"螺丝被旋入壳体；气动螺丝刀在9.0–12.0秒间完成一次或多次拧紧动作，12.0秒时工具短暂抬离工件\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0003_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0003_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0003_02.jpg"
+      ]
+    },
+    {
+      "start": 12.0,
+      "end": 15.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"使用白色细长工具（疑似棉签或清洁棒）对黑色塑料部件内部进行擦拭或清理\",\n  \"phase\": \"部件清洁/预处理\",\n  \"left_hand\": \"持握白色细长工具，执行擦拭动作\",\n  \"right_hand\": \"扶稳黑色塑料部件，保持其位置稳定\",\n  \"tool\": \"白色细长杆状工具（疑似棉签或清洁棒）\",\n  \"object\": \"黑色塑料部件（外形似车灯壳体或电子外壳，内含线束）\",\n  \"relation\": \"左手持工具伸入部件内部操作，右手固定部件\",\n  \"change\": \"部件内部可见轻微扰动；工具尖端接触部件内壁，可能去除碎屑或残留物\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0004_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0004_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0004_02.jpg"
+      ]
+    },
+    {
+      "start": 15.0,
+      "end": 18.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"安装线束接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持握黑色线束组件\",\n  \"right_hand\": \"操作金属接头或夹具，进行插接或固定\",\n  \"tool\": \"无明显手持工具，可能使用台面固定夹具辅助\",\n  \"object\": \"黑色线束组件、金属接头/端子\",\n  \"relation\": \"右手将金属接头插入或压接到左手所持线束上\",\n  \"change\": \"线束与接头从分离状态变为连接状态（可见接头被推入线束护套）\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0005_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0005_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0005_02.jpg"
+      ]
+    },
+    {
+      "start": 18.0,
+      "end": 21.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"插入线缆接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持握黑色线缆接头前端\",\n  \"right_hand\": \"持握线缆接头后部并施加推力\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色线缆接头、设备接口（位于右侧金属支架上）\",\n  \"relation\": \"双手协同将线缆接头对准并插入设备接口\",\n  \"change\": \"线缆接头从悬空状态变为部分插入接口\",\n  \"unknown\": \"具体设备型号、接头类型、是否锁紧\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0006_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0006_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0006_02.jpg"
+      ]
+    },
+    {
+      "start": 21.0,
+      "end": 24.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"插接线缆连接器\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持黑色线缆主体\",\n  \"right_hand\": \"持黑色矩形连接器，对准插口\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色线缆与黑色矩形连接器\",\n  \"relation\": \"右手将连接器插入左侧线缆端部接口\",\n  \"change\": \"连接器从分离状态变为接近/部分插入线缆端口\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0007_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0007_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0007_02.jpg"
+      ]
+    },
+    {
+      "start": 24.0,
+      "end": 27.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"插入线缆接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持线缆接头靠近工件\",\n  \"right_hand\": \"辅助定位或稳定线缆\",\n  \"tool\": \"无明显手持工具\",\n  \"object\": \"黑色线缆带方形接头、黑色塑料壳体工件\",\n  \"relation\": \"右手将线缆接头对准并插入壳体预留接口\",\n  \"change\": \"线缆接头从悬空状态变为部分插入壳体接口\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0008_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0008_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0008_02.jpg"
+      ]
+    },
+    {
+      "start": 27.0,
+      "end": 30.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 15,
+        "person_present": true
+      },
+      "response": "{\n  \"action\": \"取放零件\",\n  \"phase\": \"装配准备\",\n  \"left_hand\": \"伸向右侧金属架，手指张开，似在取物或放置\",\n  \"right_hand\": \"在27.0s时持小件黑色零件；28.5s–30.0s移向右侧金属架，动作延续\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色小零件（疑似螺丝或卡扣），右侧金属架/料盒\",\n  \"relation\": \"右手持零件→移向右侧架体；左手配合定位或支撑\",\n  \"change\": \"右手所持零件在27.0s存在，28.5s后手部移离原位，零件未见于画面中，推测已放入右侧区域\",\n  \"unknown\": \"具体零件类型、是否完成放置、是否使用工具辅助\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_B\\frames\\frame_0009_00.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0009_01.jpg",
+        "api_runs\\ablation_14_B\\frames\\frame_0009_02.jpg"
+      ]
+    }
+  ],
+  "C": []
+}

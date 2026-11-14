@@ -1,0 +1,116 @@
+{
+  "A": [
+    {
+      "start": 0,
+      "end": 3.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"使用电动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持电动螺丝刀并操作\",\n  \"tool\": \"电动螺丝刀（橙色手柄，带延长杆与导向臂）\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体内部某位置进行拧紧；左手稳定壳体\",\n  \"change\": \"螺丝被旋入壳体；右手指尖在1.50秒时短暂离开工具触碰蓝色螺丝盒，3.00秒时重新握持工具继续操作\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0000_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0000_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0000_02.jpg"
+      ]
+    },
+    {
+      "start": 3.0,
+      "end": 6.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"using electric screwdriver to fasten screw\",\n  \"phase\": \"screwing\",\n  \"left_hand\": \"holding black plastic housing steady\",\n  \"right_hand\": \"operating electric screwdriver\",\n  \"tool\": \"electric screwdriver with articulated arm support\",\n  \"object\": \"black plastic housing (likely automotive headlamp assembly)\",\n  \"relation\": \"right hand operates tool on object; left hand stabilizes object\",\n  \"change\": \"screw being driven into black plastic housing\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0001_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0001_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0001_02.jpg"
+      ]
+    },
+    {
+      "start": 6.0,
+      "end": 9.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"使用电动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持并操作橙色手柄电动螺丝刀\",\n  \"tool\": \"橙色手柄电动螺丝刀\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体内侧进行拧紧操作，左手稳定壳体\",\n  \"change\": \"壳体内某处螺丝被旋入固定（可见螺丝刀头持续旋转接触螺孔位置）\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0002_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0002_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0002_02.jpg"
+      ]
+    },
+    {
+      "start": 9.0,
+      "end": 12.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"使用气动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持并操作橙色气动螺丝刀\",\n  \"tool\": \"橙色气动螺丝刀\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体内部某位置施加旋转力，左手稳定壳体\",\n  \"change\": \"螺丝被旋入壳体；气动螺丝刀前端在9.0–12.0秒间由静止变为工作状态（10.5秒可见蓝色环亮起，12.0秒可见绿色环亮起，指示不同工作阶段）\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0003_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0003_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0003_02.jpg"
+      ]
+    },
+    {
+      "start": 12.0,
+      "end": 15.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"用白色细长工具拨动线束或部件\",\n  \"phase\": \"线束整理/定位\",\n  \"left_hand\": \"持白色细长工具（疑似棉签或塑料棒）在黑色部件内部操作\",\n  \"right_hand\": \"扶住黑色塑料壳体部件\",\n  \"tool\": \"白色细长杆状工具（非金属，一端略黄）\",\n  \"object\": \"黑色塑料壳体部件（含内部线束）\",\n  \"relation\": \"左手持工具伸入壳体内部进行拨动/调整，右手稳定壳体\",\n  \"change\": \"壳体内部线束位置被微调；工具从12.0秒未出现→13.5秒出现并使用\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0004_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0004_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0004_02.jpg"
+      ]
+    },
+    {
+      "start": 15.0,
+      "end": 18.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"安装线束接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色线束组件\",\n  \"right_hand\": \"将黑色塑料接头插入线束端口\",\n  \"tool\": \"无明显工具，徒手操作\",\n  \"object\": \"黑色线束组件、黑色塑料接头\",\n  \"relation\": \"右手将接头对准并压入线束端口，左手稳定线束组件\",\n  \"change\": \"接头从分离状态变为部分插入线束端口\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0005_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0005_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0005_02.jpg"
+      ]
+    },
+    {
+      "start": 18.0,
+      "end": 21.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"组装线缆接头\",\n  \"phase\": \"接头装配\",\n  \"left_hand\": \"持握黑色线缆主体\",\n  \"right_hand\": \"持握绿色端子并插入线缆\",\n  \"tool\": \"无明显工具，徒手操作\",\n  \"object\": \"黑色线缆、绿色塑料端子\",\n  \"relation\": \"右手将绿色端子套入/插入左手所持线缆末端\",\n  \"change\": \"线缆末端从裸露状态变为装入绿色端子\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0006_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0006_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0006_02.jpg"
+      ]
+    },
+    {
+      "start": 21.0,
+      "end": 24.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"插接线缆连接器\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持黑色线缆主体\",\n  \"right_hand\": \"持黑色矩形连接器，对准插口\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色线缆与黑色矩形连接器\",\n  \"relation\": \"右手将连接器插入左侧线缆端部接口\",\n  \"change\": \"连接器从分离状态变为部分插入状态\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0007_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0007_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0007_02.jpg"
+      ]
+    },
+    {
+      "start": 24.0,
+      "end": 27.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"插入线缆接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持握黑色线缆接头，将其对准设备接口\",\n  \"right_hand\": \"辅助定位或稳定线缆\",\n  \"tool\": \"无明显工具，徒手操作\",\n  \"object\": \"黑色线缆接头、设备接口（位于黑色外壳组件上）\",\n  \"relation\": \"线缆接头正被插入设备接口中\",\n  \"change\": \"24.0s时接头悬停于接口上方；25.5s时接头部分插入；27.0s时接头已基本插入到位，右手移开\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0008_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0008_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0008_02.jpg"
+      ]
+    },
+    {
+      "start": 27.0,
+      "end": 30.0,
+      "evidence": {},
+      "response": "{\n  \"action\": \"取放零件\",\n  \"phase\": \"装配准备\",\n  \"left_hand\": \"伸向右侧金属架，手指张开，似在取物或放置\",\n  \"right_hand\": \"在27.0s时持小件（疑似螺丝），28.5–30.0s移向右侧金属架，动作延续\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色小零件（疑似螺丝或卡扣），位于蓝色料盒及工作台面；右侧金属架上有多格黑色塑料件托盘\",\n  \"relation\": \"右手从工作台面拾取小零件后，向右侧金属架方向移动；左手同步配合定位/支撑\",\n  \"change\": \"27.0s右手持小零件→28.5s手移至右侧架体附近→30.0s手仍在架体区域，未见明确放置完成\",\n  \"unknown\": \"具体零件类型、是否完成放置、金属架上目标位置\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_A\\frames\\frame_0009_00.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0009_01.jpg",
+        "api_runs\\ablation_14_A\\frames\\frame_0009_02.jpg"
+      ]
+    }
+  ],
+  "B": [],
+  "C": []
+}

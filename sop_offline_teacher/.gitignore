@@ -1,0 +1,45 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+
+# ===== Node / 前端 =====
+web/node_modules/
+web/dist/
+web/.vite/
+npm-debug.log*
+
+# ===== 大体积媒体与模型权重（本地放置或按 README 生成，不入库）=====
+vedio/*.mp4
+clips/*.mp4
+web/public/video/*.mp4
+*.onnx
+ffmpeg-download.zip
+.ffmpeg/
+.ffmpeg2/
+
+# ===== 运行产物 =====
+api_runs/
+# 手部 ROI 裁图：由姿态 JSON + 视频 4 秒重算得出（api_teacher/extract_roi.py），不入库
+web/public/data/roi/
+web/public/data/station_roi/
+# 疑似误生成的嵌套副本（web/web/public 与 web/public 内容重复），确认后应删除
+web/web/
+
+# ===== 本地备份 / 临时文件 =====
+.backup/
+*.bak
+*.orig
+tmp/
+
+# ===== 凭据：绝不入库 =====
+.env
+.env.*
+!.env.example
+
+# ===== 编辑器 / 系统 =====
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

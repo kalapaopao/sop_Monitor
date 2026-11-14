@@ -1,0 +1,266 @@
+{
+  "A": [],
+  "B": [],
+  "C": [
+    {
+      "start": 0,
+      "end": 3.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 60,
+        "left_wrist": [
+          1147.8,
+          283.7,
+          0.7
+        ],
+        "right_wrist": [
+          947.0,
+          163.8,
+          0.74
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"screwing\",\n  \"phase\": \"tightening_screw\",\n  \"left_hand\": \"holding_black_plastic_housing\",\n  \"right_hand\": \"operating_electric_screwdriver\",\n  \"tool\": \"electric_screwdriver_with_orange_handle\",\n  \"object\": \"black_plastic_housing\",\n  \"relation\": \"right_hand_operates_tool_on_object; left_hand_stabilizes_object\",\n  \"change\": \"screw_inserted_and_tightened_into_black_housing\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0000_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0000_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0000_02.jpg"
+      ]
+    },
+    {
+      "start": 3.0,
+      "end": 6.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 61,
+        "left_wrist": [
+          1303.3,
+          355.6,
+          0.54
+        ],
+        "right_wrist": [
+          1156.8,
+          270.0,
+          0.68
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"using electric screwdriver to fasten screw\",\n  \"phase\": \"screwing\",\n  \"left_hand\": \"holding black plastic housing steady\",\n  \"right_hand\": \"operating electric screwdriver\",\n  \"tool\": \"electric screwdriver with articulated arm support\",\n  \"object\": \"black plastic housing (likely automotive headlamp assembly)\",\n  \"relation\": \"right hand operates tool on object; left hand stabilizes object\",\n  \"change\": \"screw being driven into black plastic housing\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0001_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0001_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0001_02.jpg"
+      ]
+    },
+    {
+      "start": 6.0,
+      "end": 9.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 60,
+        "left_wrist": [
+          1300.0,
+          361.4,
+          0.68
+        ],
+        "right_wrist": [
+          1149.9,
+          299.1,
+          0.71
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"screwing\",\n  \"phase\": \"tightening_screw\",\n  \"left_hand\": \"holding_black_plastic_housing_steady\",\n  \"right_hand\": \"operating_screwdriver_on_screw\",\n  \"tool\": \"electric_screwdriver_with_orange_handle\",\n  \"object\": \"black_plastic_housing\",\n  \"relation\": \"right_hand_operates_tool_on_object; left_hand_supports_object\",\n  \"change\": \"screw_being_inserted_and_tightened_into_black_housing\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0002_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0002_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0002_02.jpg"
+      ]
+    },
+    {
+      "start": 9.0,
+      "end": 12.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 60,
+        "left_wrist": [
+          1287.6,
+          362.8,
+          0.7
+        ],
+        "right_wrist": [
+          873.4,
+          344.3,
+          0.58
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"使用气动螺丝刀拧紧螺丝\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"扶住黑色塑料壳体\",\n  \"right_hand\": \"握持并操作橙色气动螺丝刀\",\n  \"tool\": \"橙色气动螺丝刀\",\n  \"object\": \"黑色塑料壳体（疑似车灯组件）\",\n  \"relation\": \"右手持工具对壳体进行紧固，左手稳定壳体\",\n  \"change\": \"螺丝被旋入壳体，壳体位置基本保持稳定\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0003_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0003_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0003_02.jpg"
+      ]
+    },
+    {
+      "start": 12.0,
+      "end": 15.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 57,
+        "left_wrist": [
+          1305.8,
+          290.2,
+          0.78
+        ],
+        "right_wrist": [
+          1078.3,
+          366.0,
+          0.8
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"使用棉签清洁线束接口\",\n  \"phase\": \"装配前清洁\",\n  \"left_hand\": \"持白色棉签，进行擦拭动作\",\n  \"right_hand\": \"扶住黑色线束组件，保持稳定\",\n  \"tool\": \"白色棉签\",\n  \"object\": \"黑色线束组件（含多根导线与接插件）\",\n  \"relation\": \"左手指尖持棉签接触线束接口部位，右手固定组件\",\n  \"change\": \"线束接口区域被反复擦拭，表面可见轻微移动痕迹\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0004_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0004_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0004_02.jpg"
+      ]
+    },
+    {
+      "start": 15.0,
+      "end": 18.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 56,
+        "left_wrist": [
+          1307.3,
+          244.2,
+          0.51
+        ],
+        "right_wrist": [
+          1323.2,
+          262.8,
+          0.79
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"安装线束接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持握线束组件，稳定其位置\",\n  \"right_hand\": \"操作小型工具（疑似压接钳或螺丝刀）对线束接头进行紧固/压接\",\n  \"tool\": \"小型手持工具（金属杆状，末端有夹持结构），可能为压接工具或精密螺丝刀\",\n  \"object\": \"黑色线束组件（含多根导线与塑料接头）\",\n  \"relation\": \"双手协同操作：左手固定线束，右手使用工具作用于接头部位\",\n  \"change\": \"线束接头被逐步压紧/锁固；15.0→16.5→18.0秒间，右手持续施力，接头位置微调并趋于固定\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0005_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0005_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0005_02.jpg"
+      ]
+    },
+    {
+      "start": 18.0,
+      "end": 21.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 47,
+        "left_wrist": [
+          1449.3,
+          99.1,
+          0.69
+        ],
+        "right_wrist": [
+          1049.1,
+          129.9,
+          0.81
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"hand_assembling_cable_connector\",\n  \"phase\": \"connecting_wires_to_connector\",\n  \"left_hand\": \"holding_black_cable_near_connector\",\n  \"right_hand\": \"inserting_or_securing_wire_into_connector\",\n  \"tool\": \"none_visible\",\n  \"object\": \"black_cable_with_green_tipped_wire_and_black_plastic_connector\",\n  \"relation\": \"hands_manipulating_cable_and_connector_on_workbench\",\n  \"change\": \"connector_progressively_attached_to_cable_end\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0006_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0006_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0006_02.jpg"
+      ]
+    },
+    {
+      "start": 21.0,
+      "end": 24.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 49,
+        "left_wrist": [
+          1536.5,
+          16.1,
+          0.29
+        ],
+        "right_wrist": [
+          1095.1,
+          141.9,
+          0.76
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"插接线缆连接器\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持黑色线缆主体，稳定线缆位置\",\n  \"right_hand\": \"持黑色矩形连接器，对准接口进行插入\",\n  \"tool\": \"unknown\",\n  \"object\": \"黑色线缆与黑色矩形连接器\",\n  \"relation\": \"右手将连接器插入左侧线缆末端的接口\",\n  \"change\": \"连接器从分离状态变为部分插入线缆接口\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0007_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0007_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0007_02.jpg"
+      ]
+    },
+    {
+      "start": 24.0,
+      "end": 27.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 30,
+        "hand_detections": 30,
+        "left_wrist": [
+          1395.4,
+          4.3,
+          0.36
+        ],
+        "right_wrist": [
+          1082.8,
+          277.5,
+          0.76
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"插入线缆接头\",\n  \"phase\": \"装配\",\n  \"left_hand\": \"持握黑色线缆接头，将其对准设备接口\",\n  \"right_hand\": \"辅助定位或稳定线缆/接头\",\n  \"tool\": \"无明显工具，仅用手操作\",\n  \"object\": \"黑色线缆及其塑料接头、被装配的黑色设备（含接口）\",\n  \"relation\": \"左手指尖捏持接头前端，正将其插入设备上的对应插孔；右手指向/靠近接头后部\",\n  \"change\": \"接头从悬空状态逐步进入设备接口，27.0s时已部分插入\",\n  \"unknown\": \"\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0008_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0008_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0008_02.jpg"
+      ]
+    },
+    {
+      "start": 27.0,
+      "end": 30.0,
+      "evidence": {
+        "frames": 30,
+        "person_frames": 15,
+        "hand_detections": 31,
+        "left_wrist": [
+          1538.8,
+          34.5,
+          0.46
+        ],
+        "right_wrist": [
+          1565.1,
+          49.1,
+          0.75
+        ],
+        "hand_keypoints_available": true
+      },
+      "response": "{\n  \"action\": \"取放小零件\",\n  \"phase\": \"装配准备\",\n  \"left_hand\": \"在右侧金属架附近移动，未持物\",\n  \"right_hand\": \"伸向右侧金属架结构，似在取或放小型黑色零件\",\n  \"tool\": \"unknown\",\n  \"object\": \"小型黑色塑料/金属零件（疑似卡扣或连接件），位于右侧分格托盘及金属架上\",\n  \"relation\": \"右手与右侧金属架上的零件发生接触或邻近交互\",\n  \"change\": \"右手位置从工作台中部移至右侧金属架区域；左侧托盘中零件数量无明显变化\",\n  \"unknown\": \"具体零件类型、是否完成取放、左手确切动作\"\n}",
+      "frame_paths": [
+        "api_runs\\ablation_14_C\\frames\\frame_0009_00.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0009_01.jpg",
+        "api_runs\\ablation_14_C\\frames\\frame_0009_02.jpg"
+      ]
+    }
+  ]
+}
