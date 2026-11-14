@@ -70,13 +70,25 @@ def draw_hand(frame, pts, color, label):
     cv2.putText(frame, label, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2, cv2.LINE_AA)
 
 
-def draw_box(frame, box, color, label):
-    """画手框。框坐标来自姿态 JSON 的 left_box / right_box（由 extract_roi.py 写入）。"""
+def draw_box(frame, box, color, label, dashed=False, thickness=2):
+    """画框。dashed=True 用于"上下文 ROI"（模型实际看的范围），实线用于手框。"""
     if not box:
         return
     x0, y0, x1, y1 = [int(v) for v in box]
-    cv2.rectangle(frame, (x0, y0), (x1, y1), color, 2, cv2.LINE_AA)
-    # 标签贴在框左上角外侧，避免遮住手
+    if dashed:
+        # OpenCV 没有虚线矩形，手工画四段的短划
+        def seg(p, q, step=18):
+            px, py = p; qx, qy = q
+            length = max(abs(qx - px), abs(qy - py))
+            n = max(1, length // step)
+            for k in range(0, n, 2):
+                a = k / n; b = min(1.0, (k + 1) / n)
+                cv2.line(frame, (int(px + (qx - px) * a), int(py + (qy - py) * a)),
+                         (int(px + (qx - px) * b), int(py + (qy - py) * b)), color, thickness, cv2.LINE_AA)
+        seg((x0, y0), (x1, y0)); seg((x1, y0), (x1, y1))
+        seg((x1, y1), (x0, y1)); seg((x0, y1), (x0, y0))
+    else:
+        cv2.rectangle(frame, (x0, y0), (x1, y1), color, thickness, cv2.LINE_AA)
     ty = max(20, y0 - 8)
     cv2.putText(frame, label, (x0 + 4, ty), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (20, 20, 20), 4, cv2.LINE_AA)
     cv2.putText(frame, label, (x0 + 4, ty), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
@@ -147,6 +159,12 @@ def main():
         if has_boxes:
             lb = box_at(rows, ts, 'left_box', t)
             rb = box_at(rows, ts, 'right_box', t)
+            lr = box_at(rows, ts, 'left_roi', t)
+            rr = box_at(rows, ts, 'right_roi', t)
+            if lr:
+                draw_box(frame, lr, LEFT_COLOR, 'L roi', dashed=True, thickness=2); boxed += 1
+            if rr:
+                draw_box(frame, rr, RIGHT_COLOR, 'R roi', dashed=True, thickness=2); boxed += 1
             if lb:
                 draw_box(frame, lb, LEFT_COLOR, 'L'); boxed += 1
             if rb:
