@@ -21,3 +21,28 @@
 .dot.cy{background:#43c7c0}.dot.or{background:#df9b61}.dot.st{background:#7b8fd4}
 .hb-warn{color:#f4c15d;font-size:12px;margin:6px 0 0}
 .card-warn{grid-column:1/-1;background:#261d12;border:1px solid #6b4a1f;color:#f4c15d;font-size:12px;line-height:1.5;padding:9px 12px;border-radius:8px;margin:0}
+
+/* ===== 固定 ROI 编辑器 ===== */
+.head-right{display:flex;align-items:center;gap:10px}
+.roi-toggle{padding:9px 16px;border:1px solid #29415b;border-radius:8px;background:#0c1a2b;color:#9ab0c3;cursor:pointer}
+.roi-toggle.active{background:#f4a261;border-color:#f4a261;color:#1a1206;font-weight:600}
+.roi-layer{position:absolute;left:0;top:0;width:100%;height:100%;cursor:crosshair;touch-action:none;border-radius:7px}
+.video-wrap.editing video{border:1px dashed #4a6b8a}
+.roi-panel{margin-top:10px;border-top:1px solid #29415b;padding-top:10px}
+.roi-hint{color:#8fa5b8;font-size:12px;line-height:1.6;margin:0 0 8px}
+.roi-hint strong{color:#f4c15d}
+.roi-list{display:grid;gap:6px}
+.roi-item{display:flex;align-items:center;gap:8px;background:#0c1a2b;border:1px solid #29415b;border-radius:8px;padding:6px 8px}
+.roi-item.off{opacity:.45}
+.roi-item .sw{width:10px;height:10px;border-radius:2px;flex:none}
+.roi-name{flex:1;min-width:90px;background:#0a1626;border:1px solid #22374d;border-radius:6px;color:#eaf2f8;padding:4px 8px;font:inherit;font-size:12px}
+.roi-type{background:#0a1626;border:1px solid #22374d;border-radius:6px;color:#eaf2f8;padding:4px 6px;font-size:12px}
+.roi-en{color:#9ab0c3;font-size:12px;display:flex;align-items:center;gap:4px}
+.roi-del{background:#2a1520;border:1px solid #5c2436;color:#e08a9b;border-radius:6px;padding:4px 10px;font-size:12px;cursor:pointer}
+.roi-empty{color:#6f8599;font-size:12px;margin:4px 0}
+.roi-actions{display:flex;align-items:center;gap:10px;margin-top:10px}
+.roi-actions button{background:#55d6be;border:0;color:#06131f;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-weight:600}
+.roi-actions button:nth-child(2){background:#22374d;color:#b6c6d5}
+.roi-actions button:disabled{opacity:.5;cursor:default}
+.roi-msg{color:#7fd1a0;font-size:12px}
+.roi-msg.bad{color:#ff8a8a}

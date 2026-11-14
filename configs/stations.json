@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "stations": [
+    {
+      "id": "ST01",
+      "name": "默认工位",
+      "frame": [
+        1920,
+        1080
+      ],
+      "regions": [
+        {
+          "id": "rmwglnklx",
+          "name": "装配区",
+          "type": "focus",
+          "rect_norm": [
+            0.42,
+            0.55,
+            0.68,
+            0.88
+          ],
+          "color": "#7bd6be",
+          "enabled": true
+        },
+        {
+          "id": "rmwglnktc",
+          "name": "承接面",
+          "type": "state",
+          "rect_norm": [
+            0.7,
+            0.62,
+            0.92,
+            0.95
+          ],
+          "color": "#f4a261",
+          "enabled": true
+        }
+      ]
+    }
+  ]
+}

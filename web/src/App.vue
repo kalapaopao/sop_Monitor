@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 // 手骨架判定口径：与生成视频/ROI 的脚本保持一致
 const HAND_SCORE = 0.18
@@ -54,6 +54,172 @@ const inCoverage = computed(() => {
   const [a, b] = segments.value.coverage || [0, 0]
   return currentSec.value >= a && currentSec.value <= b
 })
+
+// ===== 固定 ROI 编辑器 =====
+// 这些区域是「工位配置」：坐标归一化保存，不裁剪画面，只作为额外输入通道，
+// 让模型在保留全局画面的同时重点关注这些区域。
+const ROI_PALETTE = ['#7bd6be', '#f4a261', '#8fb8ff', '#d59bf4', '#c9d66b', '#7fd1e0']
+const editing = ref(false)
+const regions = ref([])
+const roiCanvas = ref(null)
+const saving = ref(false)
+const saveMsg = ref('')
+const saveBad = ref(false)
+const stationMeta = ref({ id: 'ST01', name: '默认工位', frame: [1920, 1080] })
+let dragging = false
+let draft = null
+
+function normFromEvent(event) {
+  const c = roiCanvas.value
+  if (!c) return null
+  const box = c.getBoundingClientRect()
+  if (!box.width || !box.height) return null
+  const x = Math.min(1, Math.max(0, (event.clientX - box.left) / box.width))
+  const y = Math.min(1, Math.max(0, (event.clientY - box.top) / box.height))
+  return { x, y }
+}
+function fitCanvas() {
+  const c = roiCanvas.value; const el = video.value
+  if (!c || !el) return null
+  const w = el.clientWidth, h = el.clientHeight
+  if (!w || !h) return null
+  const dpr = window.devicePixelRatio || 1
+  const bw = Math.round(w * dpr), bh = Math.round(h * dpr)
+  if (c.width !== bw || c.height !== bh) { c.width = bw; c.height = bh }
+  const ctx = c.getContext('2d')
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+  return { w, h, ctx }
+}
+function drawRois() {
+  const fit = fitCanvas()
+  if (!fit) return
+  const { w, h, ctx } = fit
+  ctx.clearRect(0, 0, w, h)
+  const stroke = (r, color, dashed, label) => {
+    const x = r[0] * w, y = r[1] * h, rw = (r[2] - r[0]) * w, rh = (r[3] - r[1]) * h
+    ctx.save()
+    ctx.setLineDash(dashed ? [8, 6] : [])
+    ctx.strokeStyle = color
+    ctx.lineWidth = 2
+    ctx.strokeRect(x, y, rw, rh)
+    ctx.setLineDash([])
+    ctx.fillStyle = 'rgba(7,17,30,.72)'
+    ctx.font = 'bold 12px Arial'
+    const tw = ctx.measureText(label).width
+    ctx.fillRect(x, Math.max(0, y - 16), tw + 10, 16)
+    ctx.fillStyle = color
+    ctx.fillText(label, x + 5, Math.max(11, y - 4))
+    ctx.restore()
+  }
+  for (const r of regions.value) {
+    if (!r.enabled) continue
+    stroke(r.rect_norm, r.color, r.type === 'state', r.name || '区域')
+  }
+  if (draft) stroke(draft, '#ffffff', true, '新区域')
+}
+function onDown(event) {
+  if (!editing.value) return
+  const p = normFromEvent(event)
+  if (!p) return
+  dragging = true
+  draft = [p.x, p.y, p.x, p.y]
+  roiCanvas.value?.setPointerCapture?.(event.pointerId)
+  drawRois()
+}
+function onMove(event) {
+  if (!dragging || !draft) return
+  const p = normFromEvent(event)
+  if (!p) return
+  draft = [Math.min(draft[0], p.x), Math.min(draft[1], p.y), Math.max(draft[0], p.x), Math.max(draft[1], p.y)]
+  drawRois()
+}
+function onUp(event) {
+  if (!dragging) return
+  dragging = false
+  const p = normFromEvent(event)
+  if (draft && p) {
+    draft = [Math.min(draft[0], p.x), Math.min(draft[1], p.y), Math.max(draft[0], p.x), Math.max(draft[1], p.y)]
+  }
+  const d = draft
+  draft = null
+  if (d && (d[2] - d[0]) > 0.02 && (d[3] - d[1]) > 0.02) {
+    const n = regions.value.length
+    regions.value.push({
+      id: 'r' + Date.now().toString(36),
+      name: '区域 ' + (n + 1),
+      type: 'focus',
+      rect_norm: d.map(v => Math.round(v * 10000) / 10000),
+      color: ROI_PALETTE[n % ROI_PALETTE.length],
+      enabled: true,
+    })
+    saveMsg.value = '已添加 ' + regions.value.length + ' 个区域（还没保存）'
+    saveBad.value = false
+  }
+  drawRois()
+}
+function removeRegion(id) {
+  regions.value = regions.value.filter(r => r.id !== id)
+  saveMsg.value = '已删除（还没保存）'
+  saveBad.value = false
+  drawRois()
+}
+function clearRegions() {
+  regions.value = []
+  saveMsg.value = '已清空（还没保存）'
+  saveBad.value = false
+  drawRois()
+}
+async function loadStations() {
+  try {
+    const data = await fetch('/api/stations').then(r => r.json())
+    const st = (data.stations || [])[0]
+    if (st) {
+      stationMeta.value = { id: st.id || 'ST01', name: st.name || '默认工位', frame: st.frame || [1920, 1080] }
+      regions.value = (st.regions || []).map(r => ({ ...r }))
+    }
+  } catch (err) {
+    saveMsg.value = '读取配置失败：' + err.message
+    saveBad.value = true
+  }
+}
+async function saveStations() {
+  saving.value = true
+  saveMsg.value = ''
+  saveBad.value = false
+  try {
+    const payload = {
+      version: 1,
+      stations: [{ ...stationMeta.value, regions: regions.value }],
+    }
+    const res = await fetch('/api/stations', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+    const out = await res.json()
+    if (!res.ok) throw new Error(out.error || res.statusText)
+    saveMsg.value = '已保存 ' + out.stations + ' 个工位到 ' + out.file
+  } catch (err) {
+    saveMsg.value = '保存失败：' + err.message
+    saveBad.value = true
+  } finally {
+    saving.value = false
+  }
+}
+// 开发期调试钩子：只在本机 dev build 里挂到 window，方便自动化测试画框流程
+if (import.meta.env.DEV) {
+  window.__roi = { regions, editing, getDraft: () => draft, getDragging: () => dragging }
+}
+
+function toggleEdit() {
+  editing.value = !editing.value
+  if (editing.value) {
+    video.value?.pause()
+    nextTick(drawRois)
+  } else {
+    drawRois()
+  }
+}
 
 function pct(sec) {
   const total = duration.value || 1
@@ -130,6 +296,8 @@ function onLoadedMetadata() {
 
 onMounted(async () => {
   rafId = requestAnimationFrame(loop)
+  window.addEventListener('resize', drawRois)
+  loadStations()
   const seekParam = Number(new URLSearchParams(location.search).get('t'))
   if (Number.isFinite(seekParam) && seekParam > 0) pendingSeek = seekParam
   try {
@@ -153,6 +321,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   if (rafId) cancelAnimationFrame(rafId)
   rafId = 0
+  window.removeEventListener('resize', drawRois)
 })
 </script>
 
@@ -160,14 +329,47 @@ onBeforeUnmount(() => {
   <main class="app">
     <header>
       <div><h1>动作分割结果 · SOP 装配分析</h1><p>周期工序 → 当前动作 / 左手动作 / 右手动作 / 操作器件与目标</p></div>
-      <nav><button v-for="run in ['A','B','C']" :key="run" :class="{active: selectedRun === run}" @click="selectedRun = run; selectedIndex = 0">{{ run }} 运行</button></nav>
+      <div class="head-right">
+        <nav><button v-for="run in ['A','B','C']" :key="run" :class="{active: selectedRun === run}" @click="selectedRun = run; selectedIndex = 0">{{ run }} 运行</button></nav>
+        <button class="roi-toggle" :class="{ active: editing }" @click="toggleEdit">{{ editing ? '退出 ROI 编辑' : 'ROI 编辑' }}</button>
+      </div>
     </header>
 
     <section class="layout">
       <div class="left-panel">
-        <div class="video-wrap">
+        <div class="video-wrap" :class="{ editing }">
           <video v-show="!videoError" ref="video" controls preload="metadata" poster="/data/frame_0000_00.jpg" :src="VIDEO_SRC" @timeupdate="syncVideo" @seeked="syncVideo" @loadedmetadata="onLoadedMetadata" @error="videoError = true" />
+          <canvas
+            ref="roiCanvas"
+            class="roi-layer"
+            v-show="editing"
+            @pointerdown="onDown"
+            @pointermove="onMove"
+            @pointerup="onUp"
+            @pointerleave="onUp"
+          />
           <div v-if="videoError" class="fallback"><img :src="`/data/frame_${String(selectedIndex).padStart(4,'0')}_00.jpg`" /><p>视频解码失败，当前显示分析抽帧。</p></div>
+        </div>
+        <div v-if="editing" class="roi-panel">
+          <p class="roi-hint">在画面上按住左键拖拽即可画框。这些区域是<strong>工位配置</strong>：不裁剪画面，而是作为额外输入让模型重点关注。</p>
+          <div class="roi-list">
+            <div v-for="r in regions" :key="r.id" class="roi-item" :class="{ off: !r.enabled }">
+              <i class="sw" :style="{ background: r.color }"></i>
+              <input v-model="r.name" class="roi-name" placeholder="区域名称" />
+              <select v-model="r.type" class="roi-type">
+                <option value="focus">注意力引导</option>
+                <option value="state">状态判定</option>
+              </select>
+              <label class="roi-en"><input type="checkbox" v-model="r.enabled" /> 启用</label>
+              <button class="roi-del" @click="removeRegion(r.id)">删除</button>
+            </div>
+            <p v-if="!regions.length" class="roi-empty">还没有区域，拖拽画面开始画第一个。</p>
+          </div>
+          <div class="roi-actions">
+            <button @click="saveStations" :disabled="saving">{{ saving ? '保存中…' : '保存到 configs/stations.json' }}</button>
+            <button @click="clearRegions">清空</button>
+            <span class="roi-msg" :class="{ bad: saveBad }">{{ saveMsg }}</span>
+          </div>
         </div>
         <div class="counter"><strong>{{ count }}</strong><div><b>放钉关联紧固件计数</b><p>按视觉结果关联展示。当前数据仍是固定采样窗口。</p></div></div>
       </div>
