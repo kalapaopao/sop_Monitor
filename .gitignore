@@ -21,6 +21,8 @@ ffmpeg-download.zip
 
 # ===== 运行产物 =====
 api_runs/
+# 手部 ROI 裁图：由姿态 JSON + 视频 4 秒重算得出（api_teacher/extract_roi.py），不入库
+web/public/data/roi/
 # 疑似误生成的嵌套副本（web/web/public 与 web/public 内容重复），确认后应删除
 web/web/
 
