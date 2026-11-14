@@ -97,30 +97,43 @@ def hand_extent(points, score_thr=SCORE_THR):
 
 
 def smooth_scale(rows, key, win_sec=1.6):
-    """对手部尺度与中心做时间中值平滑，返回与 rows 等长的序列。
+    """对手部尺度与中心做**高斯加权均值**平滑，返回与 rows 等长的序列。
 
     手张开/握拳会让关键点外接框在 59~648 px 之间跳（10 倍），
     直接用瞬时值当 ROI 边长，同一只手会被裁成完全不同的比例，
-    CNN 学到的外观特征就不可比。取窗内中值可以压住这种抖动。
+    CNN 学到的外观特征就不可比。
+
+    这里刻意用高斯加权均值而不是中值：中值是"分段常数"，相邻采样点经常取到
+    完全相同的值，插值后仍然是一段一段静止，看起来卡顿（实测零位移帧占 26~32%）。
+    均值则每个采样点都略有变化，配合渲染时插值，运动是连续的。
+    底层每个样本的尺度已经过 MAD 剔离群，所以均值不会被"飞点"带偏。
     """
     stats = [hand_extent(r.get(key) or []) for r in rows]
     ts = np.asarray([r['timestamp'] for r in rows], np.float32)
     out = []
     half = win_sec / 2.0
+    sigma = max(win_sec / 4.0, 1e-3)
     for i, cur in enumerate(stats):
         if cur is None:
             out.append(None)
             continue
         lo = int(np.searchsorted(ts, ts[i] - half))
         hi = int(np.searchsorted(ts, ts[i] + half, side='right'))
-        win = [stats[j] for j in range(lo, hi) if stats[j] is not None]
-        if not win:
+        exts, cxs, cys, wts = [], [], [], []
+        for j in range(lo, hi):
+            s = stats[j]
+            if s is None:
+                continue
+            w = float(np.exp(-0.5 * ((ts[j] - ts[i]) / sigma) ** 2))
+            exts.append(s['extent']); cxs.append(s['cx']); cys.append(s['cy']); wts.append(w)
+        if not wts:
             out.append(cur)
             continue
+        wsum = sum(wts)
         out.append({
-            'extent': float(np.median([w['extent'] for w in win])),
-            'cx': float(np.median([w['cx'] for w in win])),
-            'cy': float(np.median([w['cy'] for w in win])),
+            'extent': float(sum(e * w for e, w in zip(exts, wts)) / wsum),
+            'cx': float(sum(c * w for c, w in zip(cxs, wts)) / wsum),
+            'cy': float(sum(c * w for c, w in zip(cys, wts)) / wsum),
         })
     return out, stats
 

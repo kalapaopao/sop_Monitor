@@ -94,15 +94,33 @@ def draw_box(frame, box, color, label, dashed=False, thickness=2):
     cv2.putText(frame, label, (x0 + 4, ty), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
 
 
-def box_at(rows, ts, idx_key, t, max_gap=0.25):
-    """取 t 时刻最近的框（不做插值：框是离散判定，插值反而会画出不存在的中间态）。"""
+def box_at(rows, ts, idx_key, t, max_gap=0.35):
+    """取 t 时刻的框，相邻两帧都有效时**线性插值**坐标。
+
+    早期版本这里直接取最近帧、不插值，理由是"框是离散判定"——这个理由只对
+    "有没有框"成立，对"框在哪、多大"不成立。姿态只有 5 Hz，视频 24.7 fps，
+    约 5 个视频帧共用同一个姿态样本，所以不插值的框看起来每 0.2 秒卡一下。
+    现在：两端都有效 → 按时间线性插值；只有一端有效 → 用最近的那个（限 max_gap）。
+    """
     if len(ts) == 0:
         return None
-    i = min(max(int(np.searchsorted(ts, t)), 0), len(ts) - 1)
-    for j in (i, i - 1):
-        if 0 <= j < len(rows):
-            if abs(ts[j] - t) <= max_gap:
-                return rows[j].get(idx_key)
+    i = int(np.searchsorted(ts, t))
+    if i <= 0:
+        b = rows[0].get(idx_key)
+        return b if (b and ts[0] - max_gap <= t) else None
+    if i >= len(ts):
+        b = rows[-1].get(idx_key)
+        return b if (b and t - ts[-1] <= max_gap) else None
+    a, bb = i - 1, i
+    pa, pb = rows[a].get(idx_key), rows[bb].get(idx_key)
+    if pa and pb:
+        span = float(ts[bb] - ts[a])
+        w = 0.0 if span <= 0 else float(np.clip((t - ts[a]) / span, 0.0, 1.0))
+        return [pa[k] * (1 - w) + pb[k] * w for k in range(4)]
+    if pa and t - ts[a] <= max_gap:
+        return pa
+    if pb and ts[bb] - t <= max_gap:
+        return pb
     return None
 
 

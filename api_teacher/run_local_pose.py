@@ -101,7 +101,8 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--start', type=float, default=0)
     p.add_argument('--duration', type=float, default=30)
-    p.add_argument('--rate', type=float, default=5)
+    p.add_argument('--rate', type=float, default=10,
+                   help='采样频率 Hz。10 比 5 明显更顺（5Hz 时框每 0.2s 才更新一次），耗时约 2 倍')
     p.add_argument('--pad', type=float, default=0.1, help='人物框外扩比例，避免手贴边被裁掉')
     p.add_argument('--max-palm-ratio', type=float, default=5.0, help='掌骨长度 max/min 上限，超过视为假检测；0=不过滤')
     a = p.parse_args()

@@ -4,7 +4,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 // 手骨架判定口径：与生成视频/ROI 的脚本保持一致
 const HAND_SCORE = 0.18
 const HAND_MIN_POINTS = 4
-const HAND_MERGE_GAP = 0.35
+const HAND_MERGE_GAP = 0.6   // 10 Hz 采样下短时遮挡更明显，合并间隔调大避免碎片过多
 // 骨架已由 api_teacher/render_pose_video.py 烧进画面；手框由 extract_roi.py 写入姿态 JSON
 const VIDEO_SRC = '/video/v2_5m_7m_pose.mp4'
 const PALETTE = ['#7b8fd4', '#8fbf6a', '#57b8c9', '#d9a05b', '#b48ad4', '#6fae8f', '#c98b8b', '#a8b0c0']
@@ -64,18 +64,17 @@ function fmt(sec) {
   const m = Math.floor(tenths / 600)
   return `${m}:${((tenths - m * 600) / 10).toFixed(1).padStart(4, '0')}`
 }
-// 把 5Hz 的关键点帧序列压成 [start, end] 识别片段
+// 把 10Hz 的关键点帧序列压成 [start, end] 识别片段。
+// 注意：遇到无效帧时**不能立刻收尾**，否则下面的 MERGE_GAP 永远没有机会合并，
+// 短时遮挡会把时间轴切成一堆碎条（此前就是这个 bug：gap 调多大都没用）。
 function buildSegments(rows, key) {
   const segs = []
-  const half = 1 / (2 * (poseRate.value || 5))
+  const half = 1 / (2 * (poseRate.value || 10))
   let cur = null
   for (const row of rows) {
     const pts = row[key] || []
     const valid = pts.filter(p => p[2] > HAND_SCORE).length >= HAND_MIN_POINTS
-    if (!valid) {
-      if (cur) { segs.push(cur); cur = null }
-      continue
-    }
+    if (!valid) continue                       // 先挂着，交给下一个有效帧决定是否断开
     const t0 = Math.max(0, row.timestamp - half)
     const t1 = row.timestamp + half
     if (!cur) cur = [t0, t1]
