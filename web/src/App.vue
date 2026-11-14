@@ -14,9 +14,7 @@ const segments = ref({ steps: [], duration: 0, coverage: [0, 0], note: '' })
 const selectedRun = ref('A')
 const selectedIndex = ref(0)
 const video = ref(null)
-const overlay = ref(null)
 const videoError = ref(false)
-const poseRows = ref([])
 const poseDuration = ref(0)
 const poseRate = ref(5)
 const handSegments = ref({ left: [], right: [] })
@@ -66,6 +64,7 @@ function fmt(sec) {
   const m = Math.floor(tenths / 600)
   return `${m}:${((tenths - m * 600) / 10).toFixed(1).padStart(4, '0')}`
 }
+// 把 5Hz 的关键点帧序列压成 [start, end] 识别片段
 function buildSegments(rows, key) {
   const segs = []
   const half = 1 / (2 * (poseRate.value || 5))
@@ -86,19 +85,6 @@ function buildSegments(rows, key) {
   if (cur) segs.push(cur)
   return segs
 }
-function poseRowAt(time) {
-  const rows = poseRows.value
-  if (!rows.length) return null
-  let lo = 0; let hi = rows.length - 1
-  while (lo < hi) {
-    const mid = (lo + hi) >> 1
-    if (rows[mid].timestamp < time) lo = mid + 1
-    else hi = mid
-  }
-  const next = rows[lo]; const prev = rows[lo - 1]
-  if (prev && Math.abs(prev.timestamp - time) <= Math.abs(next.timestamp - time)) return prev
-  return next
-}
 
 function setIndex(index) {
   selectedIndex.value = index
@@ -108,7 +94,6 @@ function seekTo(sec) {
   const target = Math.min(Math.max(0, sec), Math.max(0, duration.value - 0.05))
   currentSec.value = target
   if (video.value && !videoError.value) video.value.currentTime = target
-  drawBoxes(target)
 }
 function seekFromTimeline(event) {
   const box = event.currentTarget.getBoundingClientRect()
@@ -120,36 +105,6 @@ function seekToStep(seg) {
   seekTo(Number(seg.start) || 0)
 }
 
-// 在画面上画左右手框（骨架已经烧进视频，这里只补实时框）
-function drawBoxes(time) {
-  const canvas = overlay.value; const el = video.value
-  if (!canvas || !el || !el.videoWidth) return
-  const cssW = el.clientWidth, cssH = el.clientHeight
-  if (!cssW || !cssH) return
-  const dpr = window.devicePixelRatio || 1
-  const w = Math.round(cssW * dpr), h = Math.round(cssH * dpr)
-  if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h }
-  const ctx = canvas.getContext('2d')
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-  ctx.clearRect(0, 0, cssW, cssH)
-  const row = poseRowAt(time)
-  if (!row || Math.abs(row.timestamp - time) > 0.6) return
-  const sx = cssW / el.videoWidth, sy = cssH / el.videoHeight
-  const drawBox = (box, color, label) => {
-    if (!box) return
-    const x = box[0] * sx, y = box[1] * sy, bw = (box[2] - box[0]) * sx, bh = (box[3] - box[1]) * sy
-    ctx.strokeStyle = color; ctx.lineWidth = 2
-    ctx.strokeRect(x, y, bw, bh)
-    ctx.font = 'bold 12px Arial'
-    const tw = ctx.measureText(label).width
-    ctx.fillStyle = color
-    ctx.fillRect(x, Math.max(0, y - 15), tw + 8, 15)
-    ctx.fillStyle = '#06131f'
-    ctx.fillText(label, x + 4, Math.max(11, y - 4))
-  }
-  drawBox(row.left_box, '#55d6be', 'L')
-  drawBox(row.right_box, '#f4a261', 'R')
-}
 
 function syncVideo() {
   const el = video.value
@@ -157,33 +112,25 @@ function syncVideo() {
   currentSec.value = el.currentTime
   const idx = items.value.findIndex(item => el.currentTime >= item.start && el.currentTime < item.end)
   if (idx >= 0) selectedIndex.value = idx
-  drawBoxes(el.currentTime)
 }
 
 let rafId = 0
-let resizeObserver = null
 let pendingSeek = null
 function loop() {
   rafId = requestAnimationFrame(loop)
   const el = video.value
   if (!el || el.paused || el.ended) return
   currentSec.value = el.currentTime
-  drawBoxes(el.currentTime)
 }
 function onLoadedMetadata() {
   const el = video.value
   if (!el) return
   if (pendingSeek != null) { el.currentTime = Math.min(pendingSeek, Math.max(0, el.duration - 0.05)); pendingSeek = null }
   currentSec.value = el.currentTime || 0
-  drawBoxes(el.currentTime || 0)
 }
 
 onMounted(async () => {
   rafId = requestAnimationFrame(loop)
-  if (video.value && 'ResizeObserver' in window) {
-    resizeObserver = new ResizeObserver(() => drawBoxes(video.value?.currentTime || 0))
-    resizeObserver.observe(video.value)
-  }
   const seekParam = Number(new URLSearchParams(location.search).get('t'))
   if (Number.isFinite(seekParam) && seekParam > 0) pendingSeek = seekParam
   try {
@@ -195,7 +142,6 @@ onMounted(async () => {
     runs.value = { A: a.A || [], B: b.B || [], C: c.C || [] }
     if (seg) segments.value = seg
     const rows = pose.frames || []
-    poseRows.value = rows
     poseDuration.value = Number(pose.duration || 0)
     poseRate.value = Number(pose.rate || 5)
     handSegments.value = { left: buildSegments(rows, 'left_hand'), right: buildSegments(rows, 'right_hand') }
@@ -203,13 +149,11 @@ onMounted(async () => {
     loadError.value = `数据加载失败：${err?.message || err}`
   }
   if (!poseDuration.value && video.value?.duration) poseDuration.value = video.value.duration
-  drawBoxes(video.value?.currentTime || 0)
 })
 
 onBeforeUnmount(() => {
   if (rafId) cancelAnimationFrame(rafId)
   rafId = 0
-  if (resizeObserver) resizeObserver.disconnect()
 })
 </script>
 
@@ -224,7 +168,6 @@ onBeforeUnmount(() => {
       <div class="left-panel">
         <div class="video-wrap">
           <video v-show="!videoError" ref="video" controls preload="metadata" poster="/data/frame_0000_00.jpg" :src="VIDEO_SRC" @timeupdate="syncVideo" @seeked="syncVideo" @loadedmetadata="onLoadedMetadata" @error="videoError = true" />
-          <canvas ref="overlay" class="pose-overlay" v-show="!videoError" />
           <div v-if="videoError" class="fallback"><img :src="`/data/frame_${String(selectedIndex).padStart(4,'0')}_00.jpg`" /><p>视频解码失败，当前显示分析抽帧。</p></div>
         </div>
         <div class="counter"><strong>{{ count }}</strong><div><b>放钉关联紧固件计数</b><p>按视觉结果关联展示。当前数据仍是固定采样窗口。</p></div></div>

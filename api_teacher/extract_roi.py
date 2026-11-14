@@ -25,11 +25,13 @@ SCORE_THR = 0.18      # 与 run_local_pose.py / render_pose_video.py 保持一�
 MIN_POINTS = 4
 
 
-def hand_box(points, frame_w, frame_h, pad=0.4, max_side_ratio=0.4):
-    """21 个关键点 → 正方形手框（含外扩，剔除离群点）。
+def hand_box(points, frame_w, frame_h, pad=0.4, max_side_ratio=0.4, robust=True):
+    """21 个关键点 → 正方形手框（含外扩）。
 
-    直接用 min/max 会被个别"飞点"带偏：实测最大框边长到过 963 px（画面一半），
-    手只占框面积 12%，等于裁了一大片背景。所以先按中位数 + MAD 剔除离群点。
+    robust=True  （ROI 裁图用）：先按中位数 + MAD 剔除离群点，避免被"飞点"带偏，
+                                实测裁图最大框到过 963 px（画面一半）。
+    robust=False （画面显示框用）：用全部有效点的范围，保证框住整只手、不被 MAD 切掉指尖，
+                                只用 max_side_ratio 兜住极端情况。
     """
     valid = [p for p in points if p[2] > SCORE_THR]
     if len(valid) < MIN_POINTS:
@@ -37,23 +39,22 @@ def hand_box(points, frame_w, frame_h, pad=0.4, max_side_ratio=0.4):
     xs = np.asarray([p[0] for p in valid], np.float32)
     ys = np.asarray([p[1] for p in valid], np.float32)
 
-    # 用中位数中心 + MAD 剔除飞点（只保留 3σ 内的点）
-    cx0, cy0 = float(np.median(xs)), float(np.median(ys))
-    dx = np.abs(xs - cx0); dy = np.abs(ys - cy0)
-    mad_x = float(np.median(dx)) * 1.4826 + 1e-6
-    mad_y = float(np.median(dy)) * 1.4826 + 1e-6
-    keep = (dx <= 3.0 * mad_x) & (dy <= 3.0 * mad_y)
-    if keep.sum() < MIN_POINTS:
-        keep = np.ones(len(xs), bool)
-    xs, ys = xs[keep], ys[keep]
+    if robust:
+        cx0, cy0 = float(np.median(xs)), float(np.median(ys))
+        dx = np.abs(xs - cx0); dy = np.abs(ys - cy0)
+        mad_x = float(np.median(dx)) * 1.4826 + 1e-6
+        mad_y = float(np.median(dy)) * 1.4826 + 1e-6
+        keep = (dx <= 3.0 * mad_x) & (dy <= 3.0 * mad_y)
+        if keep.sum() >= MIN_POINTS:
+            xs, ys = xs[keep], ys[keep]
 
     x0, x1 = float(xs.min()), float(xs.max())
     y0, y1 = float(ys.min()), float(ys.max())
     cx = (x0 + x1) / 2.0; cy = (y0 + y1) / 2.0
     side = max(x1 - x0, y1 - y0)
-    side = max(side, 16.0)                                  # 退化手（点挤在一起）给个下限
+    side = max(side, 16.0)                                    # 退化手（点挤在一起）给个下限
     side = min(side, min(frame_w, frame_h) * max_side_ratio)  # 上限，避免半个画面
-    side *= (1.0 + 2.0 * pad)                               # 外扩，把手边工具/工件带进来
+    side *= (1.0 + 2.0 * pad)                                 # 外扩，把手边工具/工件带进来
 
     half = side / 2.0
     bx0 = max(0, int(round(cx - half))); by0 = max(0, int(round(cy - half)))
@@ -80,7 +81,7 @@ def main():
     ap.add_argument('--pad', type=float, default=0.4, help='ROI 裁图的外扩比例（要带进手里的工具/工件）')
     ap.add_argument('--limit', type=int, default=0, help='只处理前 N 帧，0=全部')
     ap.add_argument('--jpeg-quality', type=int, default=88)
-    ap.add_argument('--box-pad', type=float, default=0.10,
+    ap.add_argument('--box-pad', type=float, default=0.32,
                     help='回写到姿态 JSON 的显示框外扩比例（画面上要贴合手，不能和 ROI 一样大）')
     ap.add_argument('--write-boxes', action='store_true',
                     help='把 left_box / right_box 回写进 --pose 指向的姿态 JSON（前端据此在画面上画手框）')
@@ -123,9 +124,9 @@ def main():
         for key, tag in (('left_hand', 'L'), ('right_hand', 'R')):
             box = hand_box(row.get(key) or [], fw, fh, a.pad)
             if a.write_boxes:
-                # 显示框用更小的外扩，画面上才贴合手
+                # 显示框：不剔离群点（否则指尖会被切掉），外扩用更小的 box_pad
                 row['left_box' if tag == 'L' else 'right_box'] = hand_box(
-                    row.get(key) or [], fw, fh, a.box_pad)
+                    row.get(key) or [], fw, fh, a.box_pad, robust=False)
             if box is None:
                 continue
             x0, y0, x1, y1 = box

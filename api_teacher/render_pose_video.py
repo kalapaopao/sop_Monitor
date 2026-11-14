@@ -70,6 +70,30 @@ def draw_hand(frame, pts, color, label):
     cv2.putText(frame, label, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2, cv2.LINE_AA)
 
 
+def draw_box(frame, box, color, label):
+    """画手框。框坐标来自姿态 JSON 的 left_box / right_box（由 extract_roi.py 写入）。"""
+    if not box:
+        return
+    x0, y0, x1, y1 = [int(v) for v in box]
+    cv2.rectangle(frame, (x0, y0), (x1, y1), color, 2, cv2.LINE_AA)
+    # 标签贴在框左上角外侧，避免遮住手
+    ty = max(20, y0 - 8)
+    cv2.putText(frame, label, (x0 + 4, ty), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (20, 20, 20), 4, cv2.LINE_AA)
+    cv2.putText(frame, label, (x0 + 4, ty), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
+
+
+def box_at(rows, ts, idx_key, t, max_gap=0.25):
+    """取 t 时刻最近的框（不做插值：框是离散判定，插值反而会画出不存在的中间态）。"""
+    if len(ts) == 0:
+        return None
+    i = min(max(int(np.searchsorted(ts, t)), 0), len(ts) - 1)
+    for j in (i, i - 1):
+        if 0 <= j < len(rows):
+            if abs(ts[j] - t) <= max_gap:
+                return rows[j].get(idx_key)
+    return None
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--video', type=Path, required=True)
@@ -79,6 +103,8 @@ def main():
     ap.add_argument('--crf', type=int, default=20)
     ap.add_argument('--start', type=float, default=0)
     ap.add_argument('--duration', type=float, default=0, help='0 表示到视频结尾')
+    ap.add_argument('--boxes', action='store_true',
+                    help='把左右手框也烧进画面（框来自姿态 JSON 的 left_box/right_box）')
     a = ap.parse_args()
 
     ffmpeg = a.ffmpeg or shutil.which('ffmpeg')
@@ -86,6 +112,10 @@ def main():
         sys.exit('找不到 ffmpeg，请用 --ffmpeg 指定路径')
 
     data, ts, left, right = load_pose(a.pose)
+    rows = data['frames']
+    has_boxes = bool(a.boxes) and any(r.get('left_box') or r.get('right_box') for r in rows[:50])
+    if a.boxes and not has_boxes:
+        print('WARN: 姿态 JSON 里没有 left_box/right_box，先跑 extract_roi.py --write-boxes')
     cap = cv2.VideoCapture(str(a.video))
     fps = cap.get(cv2.CAP_PROP_FPS) or 25
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -103,6 +133,7 @@ def main():
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 
     drawn = 0
+    boxed = 0
     for idx in range(first, last):
         ok, frame = cap.read()
         if not ok:
@@ -113,11 +144,19 @@ def main():
             draw_hand(frame, lp, LEFT_COLOR, 'L'); drawn += 1
         if rp is not None:
             draw_hand(frame, rp, RIGHT_COLOR, 'R'); drawn += 1
+        if has_boxes:
+            lb = box_at(rows, ts, 'left_box', t)
+            rb = box_at(rows, ts, 'right_box', t)
+            if lb:
+                draw_box(frame, lb, LEFT_COLOR, 'L'); boxed += 1
+            if rb:
+                draw_box(frame, rb, RIGHT_COLOR, 'R'); boxed += 1
         proc.stdin.write(frame.tobytes())
     proc.stdin.close()
     code = proc.wait()
     cap.release()
-    print(json.dumps({'output': str(a.output), 'frames': last - first, 'hand_draws': drawn, 'ffmpeg_exit': code}))
+    print(json.dumps({'output': str(a.output), 'frames': last - first,
+                      'hand_draws': drawn, 'box_draws': boxed, 'ffmpeg_exit': code}))
 
 
 if __name__ == '__main__':
