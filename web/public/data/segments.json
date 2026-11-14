@@ -1,0 +1,104 @@
+{
+ "version": 1,
+ "video": "v2_5m_7m_pose.mp4",
+ "duration": 119.99,
+ "source": "ablation",
+ "note": "来自 ablation_14_A（固定 3 秒窗口，仅覆盖前 30 秒）",
+ "coverage": [
+  0.0,
+  30.0
+ ],
+ "steps": [
+  {
+   "idx": 0,
+   "step_id": "W00",
+   "name": "装配 · 黑色塑料壳体（疑似车灯组件）",
+   "start": 0.0,
+   "end": 3.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 0
+  },
+  {
+   "idx": 1,
+   "step_id": "W01",
+   "name": "screwing · black plastic housing (likely automotive headlamp assembly)",
+   "start": 3.0,
+   "end": 6.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 1
+  },
+  {
+   "idx": 2,
+   "step_id": "W02",
+   "name": "装配 · 黑色塑料壳体（疑似车灯组件）",
+   "start": 6.0,
+   "end": 12.0,
+   "kind": "step",
+   "source": "ablation",
+   "merged": 2,
+   "color": 2
+  },
+  {
+   "idx": 3,
+   "step_id": "W04",
+   "name": "线束整理/定位 · 黑色塑料壳体部件（含内部线束）",
+   "start": 12.0,
+   "end": 15.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 3
+  },
+  {
+   "idx": 4,
+   "step_id": "W05",
+   "name": "装配 · 黑色线束组件、黑色塑料接头",
+   "start": 15.0,
+   "end": 18.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 4
+  },
+  {
+   "idx": 5,
+   "step_id": "W06",
+   "name": "接头装配 · 黑色线缆、绿色塑料端子",
+   "start": 18.0,
+   "end": 21.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 5
+  },
+  {
+   "idx": 6,
+   "step_id": "W07",
+   "name": "装配 · 黑色线缆与黑色矩形连接器",
+   "start": 21.0,
+   "end": 24.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 6
+  },
+  {
+   "idx": 7,
+   "step_id": "W08",
+   "name": "装配 · 黑色线缆接头、设备接口（位于黑色外壳组件上）",
+   "start": 24.0,
+   "end": 27.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 7
+  },
+  {
+   "idx": 8,
+   "step_id": "W09",
+   "name": "装配准备 · 黑色小零件（疑似螺丝或卡扣），位于蓝色料盒及工作台面；右侧金属架上有多格黑色塑料件托盘",
+   "start": 27.0,
+   "end": 30.0,
+   "kind": "step",
+   "source": "ablation",
+   "color": 0
+  }
+ ]
+}

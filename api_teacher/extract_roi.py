@@ -77,9 +77,13 @@ def main():
     ap.add_argument('--pose', type=Path, required=True)
     ap.add_argument('--out', type=Path, required=True)
     ap.add_argument('--size', type=int, default=96, help='输出边长（正方形）')
-    ap.add_argument('--pad', type=float, default=0.4, help='手框外扩比例')
+    ap.add_argument('--pad', type=float, default=0.4, help='ROI 裁图的外扩比例（要带进手里的工具/工件）')
     ap.add_argument('--limit', type=int, default=0, help='只处理前 N 帧，0=全部')
     ap.add_argument('--jpeg-quality', type=int, default=88)
+    ap.add_argument('--box-pad', type=float, default=0.10,
+                    help='回写到姿态 JSON 的显示框外扩比例（画面上要贴合手，不能和 ROI 一样大）')
+    ap.add_argument('--write-boxes', action='store_true',
+                    help='把 left_box / right_box 回写进 --pose 指向的姿态 JSON（前端据此在画面上画手框）')
     a = ap.parse_args()
 
     pose = json.loads(a.pose.read_text(encoding='utf-8'))
@@ -118,6 +122,10 @@ def main():
         entry = {'i': i, 't': t, 'left': None, 'right': None}
         for key, tag in (('left_hand', 'L'), ('right_hand', 'R')):
             box = hand_box(row.get(key) or [], fw, fh, a.pad)
+            if a.write_boxes:
+                # 显示框用更小的外扩，画面上才贴合手
+                row['left_box' if tag == 'L' else 'right_box'] = hand_box(
+                    row.get(key) or [], fw, fh, a.box_pad)
             if box is None:
                 continue
             x0, y0, x1, y1 = box
@@ -135,6 +143,12 @@ def main():
         json.dumps({'video': str(a.video), 'size': a.size, 'pad': a.pad,
                     'score_thr': SCORE_THR, 'min_points': MIN_POINTS,
                     'frames': index}, ensure_ascii=False), encoding='utf-8')
+
+    if a.write_boxes:
+        pose['hand_box'] = {'size': a.size, 'roi_pad': a.pad, 'display_pad': a.box_pad,
+                            'score_thr': SCORE_THR, 'min_points': MIN_POINTS, 'max_side_ratio': 0.4}
+        a.pose.write_text(json.dumps(pose, ensure_ascii=False), encoding='utf-8')
+        print(json.dumps({'boxes_written': str(a.pose), 'frames': len(rows)}))
     left_ok = sum(1 for e in index if e.get('left'))
     right_ok = sum(1 for e in index if e.get('right'))
     print(json.dumps({'crops': saved, 'left_frames': left_ok, 'right_frames': right_ok,

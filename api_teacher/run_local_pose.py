@@ -56,10 +56,26 @@ def decode(outputs, meta):
     return points
 
 
-def keep_hand(points, frame_shape, score_thr=0.18, min_extent=30.0, border=8.0):
+PALM_BONES = [(0, 1), (0, 5), (0, 9), (0, 13), (0, 17)]  # 腕点 → 5 个掌指关节
+
+
+def palm_ratio(points, score_thr=0.18):
+    """掌骨长度 max/min。正常手 5 根掌骨长度接近（实测 p50≈2.8、p90≈5.0）；
+    关键点撒成"星形"时该比值会明显变大，可作为假检测的判据。"""
+    pts = {i: np.array([p[0], p[1]], np.float32) for i, p in enumerate(points) if p[2] > score_thr}
+    lengths = [float(np.linalg.norm(pts[a] - pts[b])) for a, b in PALM_BONES if a in pts and b in pts]
+    if len(lengths) < 4:
+        return None
+    lo = min(lengths)
+    if lo < 1e-3:
+        return 1e9
+    return max(lengths) / lo
+
+
+def keep_hand(points, frame_shape, score_thr=0.18, min_extent=30.0, border=8.0, max_palm_ratio=5.0):
     """过滤模型在遮挡/出框时给出的假检测。
 
-    两种情况视为无效：21 个点几乎重合（伸不出手的形状），或整只手贴在画面边缘（外推到边界）。
+    三种情况视为无效：21 个点几乎重合、整只手贴画面边缘、掌骨长度比例离谱（撒成星形）。
     返回过滤后的点列表，无效时返回空列表。
     """
     valid = [p for p in points if p[2] > score_thr]
@@ -70,6 +86,9 @@ def keep_hand(points, frame_shape, score_thr=0.18, min_extent=30.0, border=8.0):
     h, w = frame_shape[:2]
     near_border = any(x < border or y < border or x > w - border or y > h - border for x, y in zip(xs, ys))
     if extent < min_extent or near_border:
+        return []
+    ratio = palm_ratio(points, score_thr)
+    if max_palm_ratio and ratio is not None and ratio > max_palm_ratio:
         return []
     return points
 
@@ -84,6 +103,7 @@ def main():
     p.add_argument('--duration', type=float, default=30)
     p.add_argument('--rate', type=float, default=5)
     p.add_argument('--pad', type=float, default=0.1, help='人物框外扩比例，避免手贴边被裁掉')
+    p.add_argument('--max-palm-ratio', type=float, default=5.0, help='掌骨长度 max/min 上限，超过视为假检测；0=不过滤')
     a = p.parse_args()
 
     cap = cv2.VideoCapture(str(a.video))
@@ -109,8 +129,8 @@ def main():
                 left_pts = right_pts = []
             else:
                 points = decode(pose.run(None, {pose.get_inputs()[0].name: tensor}), meta)
-                left_pts = keep_hand(points[91:112], frame.shape)
-                right_pts = keep_hand(points[112:133], frame.shape)
+                left_pts = keep_hand(points[91:112], frame.shape, max_palm_ratio=a.max_palm_ratio)
+                right_pts = keep_hand(points[112:133], frame.shape, max_palm_ratio=a.max_palm_ratio)
             rows.append({'timestamp': round(t, 3), 'person': {'bbox': box, 'score': float(scores[i])},
                          'left_hand': left_pts, 'right_hand': right_pts})
         else:
