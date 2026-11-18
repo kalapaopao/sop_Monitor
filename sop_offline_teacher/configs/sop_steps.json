@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "note": "SOP 步骤表：这是「你定义的工序」与「识别系统输出」之间的唯一契约。教师/学生/前端都只认 step_id。改这张表不用改代码。（已按要求取消步骤间的强制先后顺序：判定只看画面，不假设 S1→S5 的固定次序）",
+  "source": "由 BORIS 标注 sop_installment_02 的 6 个行为归纳而来（v2.mp4 全片 38 段 / 7 个周期）",
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "name_cn": "取镜座组件",
+      "expected_sec": [
+        0.8,
+        5.0
+      ],
+      "boris_behavior": "Remove_eyepiece_assembly",
+      "aliases": [
+        "取镜座",
+        "拿起镜座",
+        "取出镜座",
+        "镜座组件",
+        "取出零件",
+        "取料",
+        "拿起零件"
+      ],
+      "criteria": {
+        "hand": "单手或双手把镜座从料位取出并翻转查看",
+        "object": "镜座离位、进入视野中央",
+        "tool": "无工具"
+      },
+      "verbs_any": [
+        "取",
+        "取出",
+        "取料",
+        "拿出",
+        "拿起",
+        "握住",
+        "翻转"
+      ],
+      "objects_any": [
+        "工件",
+        "料",
+        "镜座",
+        "镜座组件",
+        "零件"
+      ]
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "name_cn": "取镜座上盖",
+      "expected_sec": [
+        0.2,
+        2.0
+      ],
+      "boris_behavior": "Remove_the_upper_cover_of_the_eyepiece",
+      "aliases": [
+        "取上盖",
+        "拿起上盖",
+        "取出上盖",
+        "镜座上盖",
+        "取出盖子",
+        "取盖"
+      ],
+      "criteria": {
+        "hand": "捏住上盖边缘并取出",
+        "object": "上盖与镜座分离",
+        "tool": "无工具"
+      },
+      "verbs_any": [
+        "取",
+        "取出",
+        "拿起",
+        "捏住"
+      ],
+      "objects_any": [
+        "上盖",
+        "盖",
+        "盖子"
+      ]
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "name_cn": "组装镜座上盖",
+      "expected_sec": [
+        5.0,
+        9.0
+      ],
+      "boris_behavior": "Assemble_the_mirror_base_cover",
+      "aliases": [
+        "组装上盖",
+        "装上盖",
+        "压合上盖",
+        "上盖装入",
+        "安装上盖",
+        "盖板装入",
+        "装配上盖"
+      ],
+      "criteria": {
+        "hand": "双手对位并下压",
+        "object": "上盖落到镜座上并贴合",
+        "tool": "无工具（手掌按压）"
+      },
+      "verbs_any": [
+        "压合",
+        "合上",
+        "对位",
+        "扣合",
+        "组装",
+        "装上",
+        "装入",
+        "装配"
+      ],
+      "objects_any": [
+        "上盖",
+        "壳体",
+        "外壳",
+        "盖",
+        "盖板"
+      ]
+    },
+    {
+      "step_id": "S4",
+      "order": 4,
+      "name_cn": "组装镜座密封塞",
+      "expected_sec": [
+        3.5,
+        8.0
+      ],
+      "boris_behavior": "Assemble_the_mirror_base_sealing_plug",
+      "aliases": [
+        "装密封塞",
+        "压入密封塞",
+        "密封塞",
+        "组装密封塞",
+        "塞子压入",
+        "装入密封塞"
+      ],
+      "criteria": {
+        "hand": "捏住密封塞对准孔位压入",
+        "object": "密封塞到位、与孔口齐平",
+        "tool": "无工具（指压）"
+      },
+      "verbs_any": [
+        "压入",
+        "安装",
+        "组装",
+        "装入",
+        "装配"
+      ],
+      "objects_any": [
+        "塞",
+        "塞子",
+        "密封塞",
+        "小零件",
+        "胶塞"
+      ]
+    },
+    {
+      "step_id": "S5",
+      "order": 5,
+      "name_cn": "紧固镜子镜座",
+      "expected_sec": [
+        20.0,
+        45.0
+      ],
+      "boris_behavior": "Fasten_mirror_base",
+      "aliases": [
+        "紧固镜座",
+        "拧紧螺丝",
+        "打螺丝",
+        "锁紧",
+        "紧固",
+        "电动螺丝刀",
+        "拧螺丝",
+        "施力紧固"
+      ],
+      "criteria": {
+        "hand": "持工具持续施力，位置基本不动",
+        "object": "镜座被压紧、无位移",
+        "tool": "工具与紧固点持续接触"
+      },
+      "verbs_any": [
+        "打螺丝",
+        "拧紧",
+        "施力",
+        "旋",
+        "紧固",
+        "锁紧"
+      ],
+      "objects_any": [
+        "批头",
+        "电动螺丝刀",
+        "螺丝",
+        "螺丝刀"
+      ]
+    },
+    {
+      "step_id": "S6",
+      "order": 6,
+      "name_cn": "系上镜座扎带",
+      "expected_sec": [
+        8.0,
+        16.0
+      ],
+      "boris_behavior": "Fasten_tripod_strap",
+      "aliases": [
+        "系扎带",
+        "绕扎带",
+        "扎带收紧",
+        "镜座扎带",
+        "绑扎带",
+        "扎带"
+      ],
+      "criteria": {
+        "hand": "一手扶持、一手绕带并收紧",
+        "object": "扎带穿过并扣合",
+        "tool": "无工具或专用夹具"
+      },
+      "verbs_any": [
+        "扎",
+        "收紧",
+        "系",
+        "绑",
+        "绕"
+      ],
+      "objects_any": [
+        "扎带",
+        "绑带"
+      ]
+    }
+  ],
+  "fallback_steps": [
+    {
+      "step_id": "idle",
+      "name_cn": "循环外停留与准备",
+      "aliases": [
+        "空闲",
+        "等待",
+        "走动",
+        "无关",
+        "停留",
+        "准备"
+      ]
+    },
+    {
+      "step_id": "unknown",
+      "name_cn": "流程外或插入式局部处理",
+      "aliases": [
+        "无法确认",
+        "看不清",
+        "未识别物件",
+        "插入",
+        "局部处理"
+      ]
+    }
+  ],
+  "matching": {
+    "rule": "score = (命中任一动词 ? 1 : 0) + (命中任一物件 ? 1 : 0)；>=1.5 直接接受，==1 接受但标 need_review，<1 归 unknown/idle",
+    "why": "只用别名整串匹配会漏（模型说外壳/盖板，别名写的是镜座/上盖），实测映射率只有 11.8%"
+  }
+}

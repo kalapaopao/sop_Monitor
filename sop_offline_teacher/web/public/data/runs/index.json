@@ -1,0 +1,260 @@
+{
+ "version": 1,
+ "runs": [
+  {
+   "name": "free_clean",
+   "file": "free_clean.json",
+   "source_file": "api_runs/free_clean/segments_proposal.json",
+   "steps": 17,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.97
+   ],
+   "published_at": "2026-11-15 19:07:12"
+  },
+  {
+   "name": "mapped_clean",
+   "file": "mapped_clean.json",
+   "source_file": "api_runs/mapped_clean/segments_with_step.json",
+   "steps": 17,
+   "need_review": 4,
+   "coverage": [
+    0,
+    119.97
+   ],
+   "published_at": "2026-11-15 19:07:12"
+  },
+  {
+   "name": "runA_330",
+   "file": "runA_330.json",
+   "source_file": "api_runs/runA_330/segments_proposal.json",
+   "steps": 5,
+   "need_review": 0,
+   "coverage": [
+    30,
+    60
+   ],
+   "published_at": "2026-11-15 19:38:31"
+  },
+  {
+   "name": "perseg_gt",
+   "file": "perseg_gt.json",
+   "source_file": "api_runs/perseg_gt/segments_proposal.json",
+   "steps": 11,
+   "need_review": 0,
+   "coverage": [
+    5.805,
+    113.767
+   ],
+   "published_at": "2026-11-15 20:29:55"
+  },
+  {
+   "name": "perseg_60_120",
+   "file": "perseg_60_120.json",
+   "source_file": "api_runs/perseg_60_120/segments_proposal.json",
+   "steps": 15,
+   "need_review": 0,
+   "coverage": [
+    60,
+    119.99
+   ],
+   "published_at": "2026-11-15 20:36:29"
+  },
+  {
+   "name": "sm_local",
+   "file": "sm_local.json",
+   "source_file": "api_runs/sm_k8.json",
+   "steps": 27,
+   "need_review": 4,
+   "coverage": [
+    0,
+    120
+   ],
+   "published_at": "2026-11-15 22:38:20"
+  },
+  {
+   "name": "perseg_multi",
+   "file": "perseg_multi.json",
+   "source_file": "api_runs/perseg_multi/segments_proposal.json",
+   "steps": 11,
+   "need_review": 0,
+   "coverage": [
+    5.805,
+    113.767
+   ],
+   "published_at": "2026-11-15 22:44:53"
+  },
+  {
+   "name": "p3_pose",
+   "file": "p3_pose.json",
+   "source_file": "api_runs/p3_pose/segments_proposal.json",
+   "steps": 17,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 00:06:48"
+  },
+  {
+   "name": "p3_pose_v2",
+   "file": "p3_pose_v2.json",
+   "source_file": "api_runs/p3_pose_v2/segments_proposal.json",
+   "steps": 15,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 00:30:35"
+  },
+  {
+   "name": "p3_tcn",
+   "file": "p3_tcn.json",
+   "source_file": "api_runs/p3_tcn/segments_proposal.json",
+   "steps": 13,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 00:52:05"
+  },
+  {
+   "name": "p3_tcn_v3",
+   "file": "p3_tcn_v3.json",
+   "source_file": "api_runs/p3_tcn_v3/segments_proposal.json",
+   "steps": 14,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 02:10:47"
+  },
+  {
+   "name": "p3_tcn_v4",
+   "file": "p3_tcn_v4.json",
+   "source_file": "api_runs/p3_tcn_v4/segments_proposal.json",
+   "steps": 11,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 02:10:47"
+  },
+  {
+   "name": "p3_enriched",
+   "file": "p3_enriched.json",
+   "source_file": "api_runs/p3_enriched/segments_enriched.json",
+   "steps": 15,
+   "need_review": 8,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 12:03:21"
+  },
+  {
+   "name": "p3_mlp_hmm",
+   "file": "p3_mlp_hmm.json",
+   "source_file": "api_runs/p3_mlp_hmm/segments_proposal.json",
+   "steps": 15,
+   "need_review": 0,
+   "coverage": [
+    0,
+    119.99
+   ],
+   "published_at": "2026-11-16 15:20:04"
+  },
+  {
+   "name": "events_local_clip",
+   "file": "events_local_clip.json",
+   "source_file": "api_runs/events_enriched/segments_with_step.json",
+   "steps": 11,
+   "need_review": 9,
+   "coverage": [
+    0.0,
+    119.99
+   ],
+   "published_at": "2026-11-16 18:02:38"
+  },
+  {
+   "name": "hand_fused_clip",
+   "file": "hand_fused_clip.json",
+   "source_file": "api_runs/segs_pred_enriched/segments_with_step.json",
+   "steps": 21,
+   "need_review": 8,
+   "coverage": [
+    0.0,
+    119.99
+   ],
+   "published_at": "2026-11-16 21:01:32"
+  },
+  {
+   "name": "side2_hands",
+   "file": "side2_hands.json",
+   "source_file": "api_runs/side2_placeholder/segments_proposal.json",
+   "steps": 1,
+   "need_review": 1,
+   "coverage": [
+    0.0,
+    120.0
+   ],
+   "published_at": "2026-11-16 21:45:05"
+  },
+  {
+   "name": "pred_hmm_clip",
+   "file": "pred_hmm_clip.json",
+   "source_file": "api_runs/segs_pred_enriched/segments_with_step.json",
+   "steps": 21,
+   "need_review": 8,
+   "coverage": [
+    0.0,
+    119.99
+   ],
+   "published_at": "2026-11-16 22:07:10"
+  },
+  {
+   "name": "pred_hmm_full",
+   "file": "pred_hmm_full.json",
+   "source_file": "api_runs/segs_pred_enriched/segments_with_step.json",
+   "steps": 65,
+   "need_review": 24,
+   "coverage": [
+    4.2,
+    599.2
+   ],
+   "published_at": "2026-11-16 22:07:32"
+  },
+  {
+   "name": "pred_hmm_confirmed_test",
+   "label": "pred_hmm 确认逻辑修正对照",
+   "file": "pred_hmm_confirmed_test.json",
+   "source_file": "E:\\study\\SOP_train_model_resource\\sop_installment\\api_runs\\three_workers_20261118_codex\\pred_confirmed\\segments_with_step.json",
+   "steps": 66,
+   "need_review": 66,
+   "coverage": [
+    4.2,
+    599.2
+   ],
+   "published_at": "2026-11-18 11:29:24"
+  },
+  {
+   "name": "three_workers_side3",
+   "label": "三人归纳与复核 · side3 全片",
+   "file": "three_workers_side3.json",
+   "source_file": "E:\\study\\SOP_train_model_resource\\sop_installment\\api_runs\\three_workers_20261118_codex\\side3_segments_proposal.json",
+   "steps": 62,
+   "need_review": 62,
+   "coverage": [
+    0.0,
+    599.01
+   ],
+   "published_at": "2026-11-18 11:38:28"
+  }
+ ],
+ "active": "pred_hmm_full"
+}

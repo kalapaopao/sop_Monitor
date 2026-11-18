@@ -1,3 +1,9 @@
+# ⚠️ 遗留脚本（旧路线：让模型自由命名动作，无 SOP 步骤表）。
+# 已被取代：
+#   - 自由分段/直出 step_id  → scripts/run_teacher_segments.py
+#   - 逐段判定（GT/本地边界）  → scripts/run_teacher_per_segment.py
+# 保留仅为历史参考。新工作请勿基于本文件。
+
 """Run Qwen3-VL-Plus on sampled video frames and render a review page."""
 import argparse
 import base64

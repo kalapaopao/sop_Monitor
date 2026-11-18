@@ -1,126 +1,80 @@
-# SOP 装配识别（离线分析 + 网页回放）
+<div align="center">
 
-把工位装配视频做成"可回放的动作分析页"：视频上叠加左右手骨架，右侧显示动作语义卡片，
-底部用时间轴标出左右手识别片段。目标是复刻 `vedio/reference2.mp4` 那种效果。
+# SOP 装配步骤分析
 
-当前状态：**可演示**。骨架已经和原视频逐帧对齐（见下文"坐标坑"），网页播放的是
-已经烧好骨架的视频；Qwen-VL 的动作语义结果仍是固定 3 秒窗口，尚未接入 SOP 状态机。
+**从工位视频到步骤片段、时间轴与同步回放**
 
-📚 **详细文档在 [`docs/`](docs/README.md)**：
-- 开发者看 [`docs/给别的开发者的交接文档以及注意事项/`](docs/给别的开发者的交接文档以及注意事项)
-  （架构、目录、运行手册、数据结构、踩坑）
-- 项目负责人看 [`docs/给我看的文档/`](docs/给我看的文档)
-  （现状与决策、参考效果拆解与技术路线、提示词与 SOP 表、清理与审核清单）
+`Python · RTMW · MLP + HMM · Vue 3`
 
-## 数据链路
+[技术实现方案](docs/TECHNICAL_IMPLEMENTATION.md) · [文档导航](docs/README.md) · [完整效果录屏](docs/media/sop-demo.mp4)
 
-```text
-原始视频 (vedio/v2_5m_7m_h264.mp4, 1920x1080, 24.7fps, 120s)
-   │
-   ├─ YOLO(person) ──> 人物框
-   │        └─ RTMW whole-body(133点) ──> 左右手各 21 点（原视频像素坐标）
-   │                 └─> web/public/data/local_pose_2min.json   (5 Hz, 600 帧)
-   │                          ├─> render_pose_video.py ──> web/public/video/v2_5m_7m_pose.mp4（网页播放这一份）
-   │                          └─> 网页底部「左右手识别片段」进度条（按同一阈值切段）
-   │
-   └─ Qwen-VL(qwen3-vl-plus) 三组证据对照 A/B/C ──> web/public/data/ablation_14_{A,B,C}.json
-                                                   └─> 网页右侧卡片 + 工序时间轴
-```
+</div>
 
-## 目录结构
+[![SOP 步骤与画面同步回放，点击查看完整录屏](docs/media/sop-demo.gif)](docs/media/sop-demo.mp4)
+
+> 用户提供的约 66 秒效果录屏，动图展示其中 8 秒；画面选中的是严格确认对照 `pred_hmm_confirmed_test`（66段）。当前默认推荐结果为 **`pred_hmm_full`**：65 段，24 段标记待复核。这是离线分析后的同步回放，尚未验证在线实时 SOP 识别。
+
+## 当前主线
 
 ```text
-api_teacher/
-  run_local_pose.py     人数框 + RTMW 手部关键点，输出 local_pose_2min.json
-  render_pose_video.py  把手骨架烧进视频，输出可直接播放的 mp4
-  run_ablation.py       Qwen-VL 三组证据对照（A:纯画面 / B:+人物证据 / C:+手部证据）
-  run_video.py          早期版本：抽帧调用 Qwen-VL，生成 reference_style.html
-  build_dashboard.py    汇总生成 ablation_dashboard.html
-  serve_dashboard.py    用本地 HTTP 服务托管 api_runs（端口 8765）
-src/fastener_counter.py 紧固件计数（OpenCV 模板/轮廓）
-scripts/count_fasteners.py 计数脚本入口
-model/
-  yolo/best.onnx        人体检测权重（不入库）
-  rtmw_wholebody_256x192.onnx  RTMW 全身/手部关键点权重（不入库）
-web/                    前端（Vue 3 + Vite）
-  src/App.vue           单页应用：视频 / 卡片 / 时间轴 / 左右手识别片段条
-  src/style.css         样式（含时间轴与骨架条）
-  public/video/         网页播放的视频（不入库，需按下面命令生成）
-  public/data/          ablation JSON、姿态 JSON、抽帧图
-vedio/                  原始与参考视频（不入库）
-clips/                  测试片段（不入库）
-api_runs/               历史分析结果（不入库）
-tests/                  pytest 用例
+人工 SOP / 周期标注 ──────────────────┐
+工位视频 → 人体检测 + RTMW → 153维骨架特征 → MLP 帧分类
+                                      ↓
+                      HMM / Viterbi 整周期解码
+                                      ↓
+                0.1秒时间栅格 → 短段处理 → 时长先验 → 同类合并
+                                      ↓
+                    步骤查表 + 本地描述模板 → JSON → 网页回放
 ```
 
-> `web/dist/`、`web/node_modules/`、`.venv/`、`.ffmpeg*/`、`.backup/`、`api_runs/`、
-> `web/web/`（疑似误生成的嵌套副本）都在 `.gitignore` 里。
+保留原六步：取镜座、取上盖、装上盖、装密封塞、紧固、系扎带；另有循环外停留与准备。当前推荐结果的运行时链路不调用大模型。Qwen3-VL 的自由发现、细分和三工人归纳作为独立实验保留，未替代这条基线。
 
-## 快速开始
+| 核查项 | 当前结果 | 适用范围 |
+|---|---:|---|
+| 帧级准确率 | 88.62% | 已存预测文件的七周期留一验证；同一视频、人工周期及 invalid 屏蔽 |
+| GT 步骤命中 | 27 / 37，73.0% | 同类、IoU ≥ 0.3，一对一匹配，排除 nested_short |
+| 边界误差中位数 | 0.30 秒 | 已存分段与本视频 GT；±1.5 秒召回 86.5% |
+| 跨工人 / 新机位 / 在线识别 | 未验证 | 不将当前数字外推为生产准确率 |
 
-前置：Python 环境 `.venv`、Node.js、`ffmpeg`（仓库里可用
-`.ffmpeg/ffmpeg-9.0.2-essentials_build/bin/ffmpeg.exe`）。
+左右手与工具描述目前按步骤模板填写，并非每段独立识别。S2 仅命中 1/7，S6 为 0/1，仍需改进。严格确认试验另存为 `pred_hmm_confirmed_test`，默认基线保持不变。
+
+## 本地查看
+
+进入本目录后执行；只看已有结果不需要 Python、模型权重或 API Key。
 
 ```powershell
-cd E:\study\SOP_train_model_resource\sop_offline_teacher
-$py = ".venv\Scripts\python.exe"
-
-# 1) 前端（默认 http://127.0.0.1:5173/，host/port 写在 vite.config.js）
-cd web; npm install; npm run dev
-
-# 2) 重新提取手部关键点（约 90 秒 / 600 帧）
-& $py api_teacher\run_local_pose.py `
-  --video vedio\v2_5m_7m_h264.mp4 `
-  --person-model model\yolo\best.onnx `
-  --pose-model model\rtmw_wholebody_256x192.onnx `
-  --output web\public\data\local_pose_2min.json `
-  --start 0 --duration 120 --rate 5
-
-# 3) 重新渲染带骨架的视频（关键点会按相邻两帧插值到 25fps）
-& $py api_teacher\render_pose_video.py `
-  --video vedio\v2_5m_7m_h264.mp4 `
-  --pose web\public\data\local_pose_2min.json `
-  --output web\public\video\v2_5m_7m_pose.mp4 `
-  --ffmpeg .ffmpeg\ffmpeg-9.0.2-essentials_build\bin\ffmpeg.exe
-
-# 4) Qwen-VL 三组对照（需要 API Key，费用随 stride 上升）
-$env:DASHSCOPE_API_KEY="你的 Key"
-$env:DASHSCOPE_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"
-& $py api_teacher\run_ablation.py vedio\v2_5m_7m_h264.mp4 `
-  --observations <观测数据路径> --output api_runs\ablation_14_A --mode A --duration 30 --stride 3 --frames 3
+cd web
+npm ci
+npm run dev
 ```
 
-## 网页功能
+打开 [SOP 检测页](http://127.0.0.1:5173/?run=pred_hmm_full)。端口被占用时显式指定 `npm run dev -- --port 5174`；请通过 HTTP 打开页面。
 
-- **视频**：播放 `v2_5m_7m_pose.mp4`，骨架（L 青 / R 橙）已烧进画面，帧帧对齐。
-- **右侧卡片**：标准 SOP 描述 / 当前动作 / 左手 / 右手，随视频时间切换到对应 3 秒窗口。
-- **底部时间轴**：
-  - `工序` 一行是 0–30 秒抽样窗口的等宽分段（占位，后续改成不等长 SOP 片段）；
-  - `左右手识别片段` 条与视频同一时间轴（0–119.99 秒）：青色=左手识别到、橙色=右手识别到、
-    深灰=未识别，白色播放头随播放移动，点击任意位置可跳转。
-- **调试参数**：`http://127.0.0.1:5173/?t=45` 直接定位到第 45 秒，方便截图核对。
+**媒体准备：**源视频不入 Git。将与当前 GT 同一时间原点的完整基线源视频（本地为 `vedio/side3.mp4`，与 `web/public/video/v2_full.mp4` 的 SHA256 一致） 转成浏览器可播放的 H.264 文件，放到 `web/public/video/v2_full_h264.mp4`。仓库含步骤和姿态结果；缺视频时仍能读到步骤，但不能播放。示例（需要已安装 ffmpeg，不会自动下载）：
 
-## 坐标坑（重要）
+```powershell
+ffmpeg -i vedio/side3.mp4 -c:v libx264 -crf 23 -pix_fmt yuv420p -an -movflags +faststart web/public/video/v2_full_h264.mp4
+```
 
-`run_local_pose.py` 把人物框按比例缩放后**居中 letterbox** 到 192×256 再送进 RTMW，
-因此回算关键点时必须先扣掉 letterbox 的 `left/top` 留边再除以 `scale`。
-旧版本漏了这一步，关键点最多偏 57 像素，表现为"骨架贴在画面旁边"。
-现在 `crop_person()` 与 `decode()` 用同一组几何参数，成对修改时务必一起改。
+历史 run 使用各自的原始视频，不能只改文件名冒充对应输入。重复动作核对页的裁片属于可再生成素材，保留索引；配置本地源视频后可用 [裁片重建脚本](scripts/restore_review_clips.py) 恢复，详见技术文档。
 
-## 已知限制
+## 代码导航
 
-- Qwen-VL 结果只覆盖 0–30 秒（10 个 3 秒窗口），视频是 120 秒，两者时间基准不同。
-- 左右手识别片段区分度低：只要检测到人，两只手通常同时被判为有效（覆盖率约 76% / 84%），
-  目前表达的是"有没有手"，还表达不了"左手在扶、右手在拧"。
-- 模型在遮挡时会给出贴在画面边缘的假手，`keep_hand()` 用"点集范围过小/贴边"两个条件过滤，
-  阈值（`min_extent=30`、`border=8`）是经验值，换分辨率需要重调。
-- 关键点无长时序平滑，快速动作时仍有轻微抖动（靠渲染插值缓解）。
-- 尚未实现：工具/工件的目标检测、SOP 状态机、不等长动作片段合并。
+| 目录 / 入口 | 职责 |
+|---|---|
+| `api_teacher/run_local_pose.py` | 人体检测、RTMW 身体与双手关键点 |
+| `scripts/pose_features_v3.py` | 51 维基础特征及两组差分，共 153 维 |
+| `scripts/hmm_dtw_baseline.py` | 留一周期训练、MLP / HMM / DTW 对比、预测导出 |
+| `scripts/build_segments_from_pred.py` | 从帧标签生成步骤时间段，保留可选严格迟滞试验 |
+| `scripts/enrich_segments.py` | 本地模板或可选 Qwen 语义补充 |
+| `scripts/publish_segments.py` | 发布 run JSON、结果清单和默认数据 |
+| `web/` | 视频、步骤卡片、时间轴、人工编辑及 BORIS 导出 |
+| `configs/` | SOP 表与机位 ROI；更换机位需要重新校准 |
+| `docs/` | 当前实现、实测口径及历史实验记录 |
+| `tests/` | 现有紧固事件计数测试 |
 
-## 约定
+原始媒体、ONNX / MediaPipe 权重、虚拟环境、`api_runs/` 运行缓存与备份保留在本地，忽略规则阻止误提交。历史结论按实验时间阅读，**当前链路以技术实现方案为准**。
 
-- 视频、模型权重、`api_runs/` 等大文件不入库；需要时按上面命令本地生成或单独放置。
-- 千万不要把 `DASHSCOPE_API_KEY` 写进项目文件，也不要在日志里打印。
-- 网页只读 `web/public` 下的静态资源；换数据不需要改代码。
-- 改动 `run_local_pose.py` 的坐标逻辑后，必须重新生成姿态 JSON **和**骨架视频，
-  否则网页上的骨架与底部片段条会不一致。
+## 下一步优化
+
+沿用 MLP + HMM 主线，优先检查 S2 / S6 错例、关键点缺失、时长先验和标注边界。相机减少遮挡可能有帮助，但仍需重标 ROI 并验证分布变化。部署前需要保存最终模型及归一化参数，核查转移矩阵统计顺序，并改造整段 Viterbi 为有明确延迟的在线解码；当前未完成这些部署步骤。

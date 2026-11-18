@@ -1,0 +1,1640 @@
+{
+  "version": 1,
+  "video": "side3_discovered_h264.mp4",
+  "duration": 599.009991,
+  "source": "teacher-run:three_workers_side3",
+  "note": "来自 E:/study/SOP_train_model_resource/sop_installment/api_runs/three_workers_20261118_codex/side3_segments_proposal.json；共 62 段，其中 62 段需人工复核；4 段完全落在片段外已丢弃",
+  "coverage": [
+    0.0,
+    599.01
+  ],
+  "steps": [
+    {
+      "idx": 0,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 0.0,
+      "end": 45.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "工人持续手持黑色壳体与银灰部件在台面前方进行翻转、对准与小范围组合操作；白布定位座始终为空；未见壳体入座、悬挂工具接触或工件移出等定义动作",
+      "evidence": "3.00005s 工人右手持黑色壳体，左手持银灰部件，在台面中央上方进行对合尝试，定位座空置 ｜ 18.0003s 双手持续操作同一组部件，反复调整角度与相对位置，无夹具内定位或工具介入 ｜ 35.000584s 仍处于手持预装状态，部件未放入白布定位座，也未启动悬挂工具",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_000"
+      ],
+      "children": []
+    },
+    {
+      "idx": 1,
+      "step_id": "idle",
+      "name": "等待或循环外准备",
+      "start": 45.0,
+      "end": 68.001,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "工人站立于工位右侧，右手搭在绿色传送带边缘，左手置于台面白布上，无手部对工件或工具的交互动作；定位座为空，台面部件静置未动。",
+      "evidence": "45.000751s 工人右臂倚靠传送带，左手平放白布，未接触任何部件。",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_045"
+      ],
+      "children": []
+    },
+    {
+      "idx": 2,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 68.001,
+      "end": 69.001,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 3,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 69.001,
+      "end": 89.001,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "双手取用银灰件与黑色部件，在台面前方手持翻转、对准并组合；主体工件始终未放入中央白布定位座。",
+      "evidence": "70.001168s 右手从台面取黑色壳体，左手持银灰件，开始手持对合。 ｜ 78.001301s 双手持续手持组合中的银灰与黑色部件，白布定位座仍为空（符合A1定义）。 ｜ 87.001451s 将组合体翻转检查，仍为手持状态，未接触定位座。",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_045"
+      ],
+      "children": [
+        {
+          "name": "取件与初步对合",
+          "start": 69.001151,
+          "end": 75.001251
+        },
+        {
+          "name": "手持翻转与微调",
+          "start": 75.001251,
+          "end": 89.001
+        }
+      ]
+    },
+    {
+      "idx": 4,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 89.001,
+      "end": 90.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "工人将已组合的工件短暂置于台面白布上，随即拿起黑色壳体单独操作；此动作既非A1（因已组合体曾离手），也非A2（壳体未放入定位座），且未见夹具内工具作业。",
+      "evidence": "89.001468s 组合体被放下，右手拿起黑色壳体单独持握，左手空闲；定位座仍空。",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_045"
+      ],
+      "children": []
+    },
+    {
+      "idx": 5,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 90.0,
+      "end": 92.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "手持黑色壳体与银灰部件在台面前方进行取用、翻转和初步对准，白布定位座为空",
+      "evidence": "88.001468s 工人双手持黑色壳体与银灰件在台面操作，定位座空置 ｜ 91.001518s 左手持黑色壳体，右手持银灰部件，正对合准备；定位座仍空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090"
+      ],
+      "children": []
+    },
+    {
+      "idx": 6,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 92.002,
+      "end": 93.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "黑色壳体从手持状态移向定位座的过渡瞬间，未明确是否已放置到位",
+      "evidence": "92.001535s 壳体仍在手中，未见接触定位座表面 ｜ 93.001551s 壳体已在定位座内——此帧为A2起点，故前一帧间隙无法确认状态",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090"
+      ],
+      "children": []
+    },
+    {
+      "idx": 7,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 93.002,
+      "end": 98.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将黑色壳体放入白布定位座，随后将银灰部件移入夹具内对合定位并整理附着线缆",
+      "evidence": "93.001551s 黑色壳体已置于白布定位座中，工人右手持银灰部件靠近 ｜ 96.001601s 银灰部件正被压入黑色壳体内部，线缆可见附着于壳体 ｜ 98.001635s 银灰部件已部分嵌入壳体，工人双手扶持定位，定位座内为组合体",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090"
+      ],
+      "children": []
+    },
+    {
+      "idx": 8,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 98.002,
+      "end": 108.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "工件已定位完毕，工人手持工具准备就位，但悬挂工具尚未接触工件；期间有调整线缆与部件姿态动作",
+      "evidence": "99.001651s 双手持工件与线缆，无工具介入 ｜ 105.001751s 右手持黄色柄工具（非悬挂式）轻触工件，属手持器对准类短操作，不满足A3入口条件 ｜ 107.001785s 左手取小件，但未送入；悬挂工具仍未启动",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090"
+      ],
+      "children": []
+    },
+    {
+      "idx": 9,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 108.002,
+      "end": 130.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式电动工具接触夹具内工件作业，期间反复从蓝色料盒取小件送向工件或工具接口",
+      "evidence": "108.001801s 工人右手取悬挂工具，左手扶工件，工具尚未接触 ｜ 109.001818s 悬挂工具头已接触夹具内工件顶部，开始作业 ｜ 113.001885s 工具持续作用于工件，同时左手从蓝色料盒取小件（黑色颗粒） ｜ 127.002118s 工具仍在作业，右手持小件准备插入工件侧部接口 ｜ 130.002168s 工具刚离开工件，但工人仍持工件未移交，属本阶段收尾动作",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090"
+      ],
+      "children": [
+        {
+          "name": "取小件送入",
+          "start": 113.001885,
+          "end": 115.001918
+        },
+        {
+          "name": "取小件送入",
+          "start": 120.002002,
+          "end": 122.002035
+        },
+        {
+          "name": "取小件送入",
+          "start": 127.002118,
+          "end": 129.002152
+        }
+      ]
+    },
+    {
+      "idx": 10,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 130.002,
+      "end": 131.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 11,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 131.002,
+      "end": 147.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后，提起工件并移交至后方传送带，定位座露空",
+      "evidence": "131.002185s 工具已完全离位，工人双手提起组合工件 ｜ 132.002202s 工件被举离定位座，白布区域空出 ｜ 134.002235s 工件已移交至绿色传送带，工人手离开工件 ｜ 133.002218s 工人双手持已组装工件（银灰+黑色壳体），正从中央工作台向右后方传送带方向移动 ｜ 147.002435s 工件已放置于绿色传送带入口平台，工人手部离开工件，定位座空置",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_090",
+        "side3_135"
+      ],
+      "children": []
+    },
+    {
+      "idx": 12,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 147.002,
+      "end": 148.002,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "短暂空档：工件已移交，工人尚未取新件；画面中仅见工人右手悬停于传送带旁，无明确操作对象",
+      "evidence": "148.002469s 工人右手刚从传送带区域收回，左手未持物，中央定位座仍为空，无取件动作",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_135"
+      ],
+      "children": []
+    },
+    {
+      "idx": 13,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 148.002,
+      "end": 164.003,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "部件取用与手持预装：工人从右侧传送带取回一个银灰色金属件（非壳体），在台面前方手持翻转、对准，并与一个黑色小部件进行初步组合；全程未放入白布定位座",
+      "evidence": "148.002469s 工人双手从传送带侧取回一个银灰色金属件（带凸起结构），开始手持操作 ｜ 150.002502s 左手持银灰件，右手拿起台面黑色小部件，进行对合尝试 ｜ 155.002585s 持续手持翻转银灰件，调整角度；白布定位座仍为空 ｜ 164.002719s 完成初步对合，银灰件与黑色小件形成一体结构，仍手持于台面前方",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_135"
+      ],
+      "children": [
+        {
+          "name": "取黑色小件",
+          "start": 150.002502,
+          "end": 151.002519
+        },
+        {
+          "name": "手持对合调整",
+          "start": 152.002535,
+          "end": 163.002702
+        }
+      ]
+    },
+    {
+      "idx": 14,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 164.003,
+      "end": 170.003,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "壳体入夹具与组件定位：工人将黑色带线壳体放入白布定位座，随后将已预装的银灰+黑小件组合体移向壳体开口处进行对合定位；壳体先入座，银灰件后装入",
+      "evidence": "164.002719s 工人右手将黑色壳体（带线缆）放入中央白布定位座，左手仍持银灰组合件 ｜ 165.002752s 黑色壳体稳定位于定位座内，银灰组合件尚未接触 ｜ 167.002786s 工人将银灰组合件对准黑色壳体开口，开始插入定位 ｜ 170.002836s 银灰件已部分嵌入壳体，工人双手扶持调整；定位座内可见完整组合雏形",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_135"
+      ],
+      "children": []
+    },
+    {
+      "idx": 15,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 170.003,
+      "end": 180.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "夹具内工具作业与供小件：悬挂式气动工具（橙管连接）接触夹具内工件；期间工人从蓝色料盒取小件（疑似垫片/卡扣）并送入工件接口；工具反复接触，小件多次取放",
+      "evidence": "170.002836s 悬挂工具头下降，接触已定位的工件组合体 ｜ 172.002869s 工人右手从蓝色料盒取一黑色小件，左手持工件，准备送入 ｜ 174.002902s 小件已插入工件接口，悬挂工具仍在作用 ｜ 177.002952s 工人再次从料盒取小件，同时悬挂工具保持接触状态 ｜ 180.003002s 工具仍在工件上，工人右手持小件正准备插入；动作未完成但属同一轮作业",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_135"
+      ],
+      "children": [
+        {
+          "name": "取小件1",
+          "start": 172.002869,
+          "end": 173.002886
+        },
+        {
+          "name": "插入小件1",
+          "start": 173.002886,
+          "end": 174.002902
+        },
+        {
+          "name": "取小件2",
+          "start": 177.002952,
+          "end": 178.002969
+        }
+      ]
+    },
+    {
+      "idx": 16,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 180.0,
+      "end": 188.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将黑色壳体放入白布定位座，并将银灰部件移向壳体对合、定位；期间整理附着线缆",
+      "evidence": "180s 工人双手持黑色壳体与银灰部件，在定位座上方进行对合准备，白布定位座尚未被占据 ｜ 184s 黑色壳体已置于白布定位座内，银灰部件正被左手扶持靠近壳体开口处 ｜ 188s 银灰部件已部分嵌入黑色壳体，右手用黄色柄工具轻拨线缆，定位座内工件稳定",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_180"
+      ],
+      "children": []
+    },
+    {
+      "idx": 17,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 188.0,
+      "end": 189.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 18,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 189.0,
+      "end": 223.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式电动工具接触夹具内工件作业；期间反复从蓝色料盒取小件（黑色紧固件）送向工件或工具接口",
+      "evidence": "189s 右手启动悬挂工具，工具头下降接触夹具内工件，左手扶稳工件 ｜ 195s 左手从蓝色料盒取小件，右手持工具悬停，准备供件 ｜ 207s 工具再次接触工件，左手同时将小件递至工具接口附近 ｜ 213s 左手再次伸入蓝色料盒取小件，工具仍在工件上作用 ｜ 222s 工具完成最后一次接触，绿灯亮起，工人松开工具手柄",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_180"
+      ],
+      "children": [
+        {
+          "name": "取小件",
+          "start": 195.0,
+          "end": 196.0
+        },
+        {
+          "name": "取小件",
+          "start": 207.0,
+          "end": 208.0
+        },
+        {
+          "name": "取小件",
+          "start": 213.0,
+          "end": 214.0
+        },
+        {
+          "name": "取小件",
+          "start": 220.0,
+          "end": 221.0
+        }
+      ]
+    },
+    {
+      "idx": 19,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 223.0,
+      "end": 224.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 20,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 224.0,
+      "end": 225.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "工具离位后提起工件，准备移交至后方传送带",
+      "evidence": "224s 悬挂工具已抬升离开工件，工人双手握持组装完成的工件 ｜ 226s 工件被整体提起并转向后方，白布定位座露空，符合‘工件移离定位座’入口条件",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_180"
+      ],
+      "children": []
+    },
+    {
+      "idx": 21,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 225.0,
+      "end": 226.004,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "手持银灰件与黑色部件在台面前方进行对准、翻转和初步组合，白布定位座为空",
+      "evidence": "223.00372s 工人双手持银灰件与黑色部件，在台面中央白色垫布上方操作，定位座空置 ｜ 225.003753s 持续手持对合，未放入定位座；背景中定位座仍为空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_225"
+      ],
+      "children": []
+    },
+    {
+      "idx": 22,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 226.004,
+      "end": 230.004,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将黑色壳体放入白布定位座，随后将银灰部件移向壳体进行对合定位",
+      "evidence": "226.003786s 工人将黑色壳体放置于白布定位座内（可见定位座凹槽容纳壳体） ｜ 229.00382s 左手持银灰部件，右手扶壳体，将银灰件对准壳体开口处准备嵌入",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_225"
+      ],
+      "children": []
+    },
+    {
+      "idx": 23,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 230.004,
+      "end": 257.004,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂工具接触夹具内工件，期间反复从蓝色料盒取小件并送向工件；含多次工具触碰与手动调整",
+      "evidence": "230.003836s 悬挂式电动工具（橙管连接）下压接触定位座内已组合的工件 ｜ 238.00397s 工人右手从蓝色料盒取小黑件，左手持工件，准备插入 ｜ 248.004137s 工具再次下压作业，同时工人用手指微调工件姿态 ｜ 252.004203s 工具离位后，工人手持工件检查，随即又取小件插入——属A3内部供小件动作",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_225"
+      ],
+      "children": [
+        {
+          "name": "取小件并插入",
+          "start": 238.00397,
+          "end": 239.003987
+        },
+        {
+          "name": "工具二次触碰",
+          "start": 248.004137,
+          "end": 249.004153
+        },
+        {
+          "name": "取小件并插入",
+          "start": 252.004203,
+          "end": 253.00422
+        }
+      ]
+    },
+    {
+      "idx": 24,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 257.004,
+      "end": 270.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "工具离位后整理线缆与部件，提起工件并移交至后方传送带区域",
+      "evidence": "257.004287s 悬挂工具已完全上抬离开工件，工人双手持工件进行最后整理 ｜ 258.004304s 工人将工件提离白布定位座，定位座露空 ｜ 260.004337s 使用黄色手柄工具（非悬挂式）对工件线缆做局部理线，属收尾整理 ｜ 269.004487s 工件已移至右侧绿色传送带边缘，准备移交",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_225"
+      ],
+      "children": [
+        {
+          "name": "理线整理",
+          "start": 260.004337,
+          "end": 262.00437
+        }
+      ]
+    },
+    {
+      "idx": 25,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 270.0,
+      "end": 299.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂工具接触夹具内工件，期间反复从蓝色料盒取小件送向工件或工具",
+      "evidence": "275s 工人左手持工件置于白布定位座内，右手操作悬挂式电动工具接触工件顶部；同时左手旁蓝色料盒可见，为供小件准备状态 ｜ 282s 悬挂工具持续作用于夹具内工件，工人右手取小件（黑色颗粒）放入工件开口处 ｜ 290s 工人再次从蓝色料盒取小件，送入工件内部；悬挂工具仍处于接触状态",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_270"
+      ],
+      "children": [
+        {
+          "name": "取小件",
+          "start": 272.0,
+          "end": 273.0
+        },
+        {
+          "name": "取小件",
+          "start": 279.0,
+          "end": 280.0
+        },
+        {
+          "name": "取小件",
+          "start": 289.0,
+          "end": 290.0
+        },
+        {
+          "name": "取小件",
+          "start": 298.0,
+          "end": 299.0
+        }
+      ]
+    },
+    {
+      "idx": 26,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 299.0,
+      "end": 300.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 27,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 300.0,
+      "end": 304.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后提起工件并移出定位座，移交至后方传送带区域",
+      "evidence": "300s 悬挂工具已完全上抬离开工件，工人双手抓取工件主体，开始提离白布定位座 ｜ 302s 工件已完全离开定位座，工人转身向右后方传送带方向移动 ｜ 304s 工件被放置于绿色传送带台面，定位座空出",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_270"
+      ],
+      "children": []
+    },
+    {
+      "idx": 28,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 304.0,
+      "end": 305.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 29,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 305.0,
+      "end": 321.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "在前方台面取用新银灰件与黑色部件，进行手持翻转、对准和预组合",
+      "evidence": "305s 工人左手拿起银灰色金属壳体，右手拿起黑色线缆组件，在台面前方手持操作 ｜ 306s 双手将银灰件与黑色部件对合，白布定位座仍为空，符合A1定义 ｜ 314s 持续手持对合状态，未放入定位座；背景中前一工件已在传送带，当前工件仍在台面前方处理 ｜ 315s 工人左手持银灰色金属结构件，右手从台面取黑色小件，二者尚未接触；白布定位座空置 ｜ 318s 双手持银灰件与黑色部件在台面前方对准，无夹具参与；背景中定位座仍为空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_270",
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 30,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 321.0,
+      "end": 322.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 31,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 322.0,
+      "end": 327.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "工人从右侧取透明塑料袋，内含白色标签与小件；未见明确部件取用或对合动作，无法匹配A1/A2定义",
+      "evidence": "322s 工人双手展开透明塑料袋，袋内有白色标签及若干小件，但未取出用于工件；定位座仍空 ｜ 326s 持续处理塑料袋，未与银灰/黑色部件交互；无壳体入座迹象",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 32,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 327.0,
+      "end": 328.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 33,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 328.0,
+      "end": 341.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "重新开始手持银灰件与黑色部件的对合操作；台面操作，定位座仍空",
+      "evidence": "328s 工人将银灰件置于台面，右手取黑色小件靠近；白布定位座空 ｜ 333s 双手持银灰件与黑色部件进行嵌套式对合，动作连续；无夹具介入 ｜ 340s 完成初步组合，手持整体件检查；定位座仍为空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 34,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 341.0,
+      "end": 342.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 35,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 342.0,
+      "end": 350.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将已组合的银灰+黑色部件（即‘较大壳体’）放入白布定位座；随后调整线缆并整理附着结构",
+      "evidence": "342s 工人将组合件从手中移向白布定位座，开始放置；定位座此前为空 ｜ 344s 组合件已稳定置于白布定位座中；工人右手整理其附着线缆 ｜ 348s 双手扶持定位座内工件，微调位置；符合‘将银灰部件移向壳体对合、定位’定义",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 36,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 350.0,
+      "end": 351.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 37,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 351.0,
+      "end": 356.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂工具（橙色软管末端工具头）接触定位座内工件；期间从蓝色料盒取小件并送向工件",
+      "evidence": "351s 工人右手持悬挂工具头抵住定位座内工件；左手同时从蓝色料盒取小黑件 ｜ 353s 工具头持续压接工件，左手将小件递至工件接口处；符合‘悬挂工具接触夹具内工件，期间反复取小件供向工件’ ｜ 355s 工具头仍在作用，工人调整小件位置；定位座内工件未移动",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 38,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 356.0,
+      "end": 357.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 39,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 357.0,
+      "end": 360.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后，提起工件并移向后方传送带；定位座露空",
+      "evidence": "357s 工具头已抬起离开工件；工人双手提起组合件离开定位座 ｜ 359s 工件被举至传送带高度，准备移交；白布定位座完全空出",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_315"
+      ],
+      "children": []
+    },
+    {
+      "idx": 40,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 360.006,
+      "end": 364.006,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "手持黑色壳体与银灰部件在台面前方进行对准、翻转和初步组合，白布定位座为空",
+      "evidence": "360.006005s 工人双手持黑色壳体与银灰件，在台面中央上方对合，定位座仍空置 ｜ 362.006038s 左手持黑色壳体，右手用工具轻触银灰件边缘，仍在台面前方操作，未放入定位座",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_360"
+      ],
+      "children": []
+    },
+    {
+      "idx": 41,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 364.006,
+      "end": 367.006,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将黑色壳体放入白布定位座，随后将银灰部件移向壳体进行对合定位",
+      "evidence": "364.006072s 黑色壳体被放置于白布定位座内（可见白色布面被压下），银灰件仍在手中 ｜ 366.006105s 银灰部件已部分嵌入定位座内的黑色壳体，双手扶持对位",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_360"
+      ],
+      "children": []
+    },
+    {
+      "idx": 42,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 367.006,
+      "end": 399.007,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式电动工具接触夹具内工件作业；期间多次从蓝色料盒取小件送入工件接口",
+      "evidence": "367.006122s 右手启动悬挂工具，工具头接触定位座内工件，左手扶稳组件 ｜ 376.006272s 左手从蓝色料盒取小黑件，右手持工具持续作用于工件 ｜ 381.006372s 工具仍在工件上作业，左手再次伸向料盒取件 ｜ 392.006539s 工具头压入工件，左手同时将小件递至接口处 ｜ 399.006639s 工具完成最后一次接触后被松开，手仍扶工件",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_360"
+      ],
+      "children": [
+        {
+          "name": "取小件供入",
+          "start": 376.006272,
+          "end": 377.006288
+        },
+        {
+          "name": "取小件供入",
+          "start": 381.006372,
+          "end": 382.006389
+        },
+        {
+          "name": "取小件供入",
+          "start": 388.006472,
+          "end": 389.006489
+        },
+        {
+          "name": "取小件供入",
+          "start": 392.006539,
+          "end": 393.006555
+        }
+      ]
+    },
+    {
+      "idx": 43,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 399.007,
+      "end": 400.007,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 44,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 400.007,
+      "end": 405.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后整理线缆与工件，提起工件并移交至后方传送带，定位座露空",
+      "evidence": "400.006672s 工具已脱离工件，工人右手整理附着线缆，左手扶工件 ｜ 402.006722s 工人将工件整体提起，移向右侧绿色传送带方向 ｜ 404.006739s 工件已离开定位座区域，置于传送带入口附近，定位座白布完全可见 ｜ 405.006756s 工人右手持另一银灰件准备，原工件已移交完毕",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_360"
+      ],
+      "children": []
+    },
+    {
+      "idx": 45,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 405.007,
+      "end": 429.007,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "手持银灰件与黑色部件在台面前方进行取用、翻转、对准和初步组合；白布定位座始终为空，未放入任何壳体或组件",
+      "evidence": "405.006756s 工人双手持银灰金属件与黑色小壳体，在台面白色垫布上方对合，定位座空置 ｜ 415.006922s 持续手持两部件调整相对位置，无夹具介入，未接触悬挂工具 ｜ 428.007139s 完成初步对合后将组合体暂放台面，仍处于手持预装阶段，定位座仍空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_405"
+      ],
+      "children": []
+    },
+    {
+      "idx": 46,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 429.007,
+      "end": 437.007,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将已预装的黑色带线壳体（含银灰件）放入白布定位座；随后左手扶壳体，右手整理附着线缆并微调银灰部件位置",
+      "evidence": "429.007173s 工人从台面拿起已组合的黑-银部件，移向中央白布定位座 ｜ 430.007189s 黑色壳体已稳定置于白布定位座内，银灰件部分外露，工人双手仍在调整 ｜ 435.007256s 右手持黄色线缆接头靠近壳体开口处整理线束，左手固定壳体，符合‘整理附着线缆’定义",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_405"
+      ],
+      "children": []
+    },
+    {
+      "idx": 47,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 437.007,
+      "end": 450.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式电动工具接触夹具内工件作业；期间反复从蓝色料盒取小件（黑色螺钉类）送入工件接口；工具持续作用于定位座内组合体",
+      "evidence": "437.007289s 工人右手启动悬挂工具，工具头接触定位座内黑色壳体顶部，开始作业 ｜ 447.007473s 左手从蓝色料盒取小件（黑色颗粒状），右手持工具仍在工件上，属同一轮工具作业中的供小件动作 ｜ 449.007489s 工具仍在工件上施力，工人左手辅助扶稳，未离位，符合A3‘工具接触+供小件’内部操作特征",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_405"
+      ],
+      "children": []
+    },
+    {
+      "idx": 48,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 450.008,
+      "end": 482.008,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式电动工具接触夹具内工件，期间左手扶持工件、右手操作工具，多次从蓝色料盒取小件（黑色颗粒状）送向工件与工具作用点",
+      "evidence": "450.007506s 工人右手持悬挂工具对准夹具内银灰部件，左手扶稳工件；工件位于白布定位座中，已组装壳体与银灰件 ｜ 458.00764s 右手操作工具下压，左手从蓝色料盒取小件并递向工具-工件接触区 ｜ 466.007773s 重复取小件动作，工具持续接触工件；定位座内工件未移动，仍处于夹具约束中 ｜ 479.00799s 工具仍在作业，左手调整工件姿态，右手控制工具行程；无离位迹象",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_450"
+      ],
+      "children": []
+    },
+    {
+      "idx": 49,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 482.008,
+      "end": 495.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后，双手提起工件脱离定位座，进行局部整理（翻转、擦拭），并向后方传送带移交",
+      "evidence": "482.00804s 右手松开工具手柄，工具悬停未接触工件；左手已托住工件底部，准备提离 ｜ 486.008107s 工件完全离开白布定位座，被双手持于空中；定位座空出，可见白色衬垫 ｜ 492.008207s 工人将工件翻转检查，右手持黄色小工具轻触工件表面（非紧固/压接，属整理） ｜ 495.008257s 工件被移至绿色传送带上方，即将移交；定位座仍为空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_450"
+      ],
+      "children": []
+    },
+    {
+      "idx": 50,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 495.0,
+      "end": 506.008,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "双手持银灰件与黑色部件在台面前方翻转、对准、初步组合；白布定位座为空，未放入任何壳体或组件",
+      "evidence": "495.008257s 工人双手持银灰件（带散热格栅）与黑色部件，在台面白色垫布上方进行对合调整，定位座仍空 ｜ 502.00834s 左手持银灰件，右手取黑色部件套入，仍在台面操作，未接触定位座",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_495"
+      ],
+      "children": []
+    },
+    {
+      "idx": 51,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 506.008,
+      "end": 519.009,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将黑色壳体放入白布定位座，随后将已预装的银灰部件移向壳体并进行对合定位；线缆附着整理同步进行",
+      "evidence": "507.008457s 工人将黑色壳体放置于白布定位座内（可见定位座边缘与壳体底部贴合），银灰件仍手持 ｜ 511.008524s 银灰件被带向定位座内黑色壳体，双手扶持对合；线缆可见从壳体引出并被手整理 ｜ 517.008624s 银灰件已部分嵌入黑色壳体，工人用手指按压接口处，定位座内工件完整可见",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_495"
+      ],
+      "children": []
+    },
+    {
+      "idx": 52,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 519.009,
+      "end": 538.009,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂工具（橙色气管连接的电动工具）作用于夹具内工件；期间反复从蓝色料盒取小件（黑色圆柱形）送入工件接口；使用黄色柄工具辅助压入",
+      "evidence": "524.00874s 悬挂工具头已接触定位座内工件顶部，工人左手扶工件，右手持黄色柄工具辅助 ｜ 528.008807s 工人右手从蓝色料盒取小黑件，左手持工件，小件正送向工件侧面开口 ｜ 533.008891s 悬挂工具再次下压，同时右手持小件插入另一侧接口；动作连续，属同一轮工具作业周期",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_495"
+      ],
+      "children": [
+        {
+          "name": "取小件并送入",
+          "start": 528.008807,
+          "end": 529.008824
+        },
+        {
+          "name": "取小件并送入",
+          "start": 533.008891,
+          "end": 534.008907
+        }
+      ]
+    },
+    {
+      "idx": 53,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 538.009,
+      "end": 540.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后，工人提起已装配工件，准备移交；定位座露空",
+      "evidence": "539.008991s 悬挂工具已抬升离开工件，工人右手握持工件主体，左手辅助托底，工件整体脱离定位座 ｜ 540.009007s 工件被举至半空，定位座完全可见且空置；工人转向右侧传送带方向",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_495"
+      ],
+      "children": []
+    },
+    {
+      "idx": 54,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 540.0,
+      "end": 562.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂工具接触夹具内工件，左手反复从蓝色料盒取小件（黑色颗粒）送向工件与工具作用点；工具持续下压作业，工件被白布包裹固定于定位座中。",
+      "evidence": "540s 右手持悬挂工具下压至夹具内工件，左手伸向蓝色料盒取小件。 ｜ 548s 工具仍在工件上作用，左手将小件递入工具与工件间隙。 ｜ 555s 工具持续压接，左手再次从料盒取小件准备供入。 ｜ 561s 最后一次取小件动作完成，工具仍接触工件。",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_540"
+      ],
+      "children": []
+    },
+    {
+      "idx": 55,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 562.0,
+      "end": 563.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 56,
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "start": 563.0,
+      "end": 585.0,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 3,
+      "need_review": true,
+      "action": "悬挂工具离位后，工人双手提起工件，移出白布定位座，置于前方台面；随后翻转、整理线缆与附着部件，最终将工件移交至后方传送带区域。",
+      "evidence": "563s 右手松开悬挂工具，左手扶住工件，开始提离定位座。 ｜ 566s 工件已完全离开定位座，置于台面前部白色垫布上。 ｜ 575s 双手持工件翻转，检查/整理银灰部件与黑色壳体结合处。 ｜ 582s 工件被举高，朝向后方绿色传送带方向移动，准备移交。 ｜ 585s 工件悬于传送带入口上方，右手持一环形小件（疑似密封圈），尚未完成移交但明显进入收尾阶段。",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_540"
+      ],
+      "children": []
+    },
+    {
+      "idx": 57,
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "start": 585.01,
+      "end": 590.01,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 0,
+      "need_review": true,
+      "action": "手持银灰件与黑色部件在台面前方进行翻转、对准与预装；白布定位座为空，工件未入座",
+      "evidence": "585.009758s 工人左手持黑色壳体，右手取一环形银灰件（疑似密封圈/垫片），在台面白色布上方操作；定位座空置 ｜ 588.009808s 将环形银灰件套入黑色壳体开口端，双手协同调整；工件仍在手中，未接触定位座 ｜ 590.009841s 完成环形件装配后，右手短暂离开工件，左手仍持壳体；定位座仍空",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_585"
+      ],
+      "children": []
+    },
+    {
+      "idx": 58,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 590.01,
+      "end": 591.01,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 59,
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "start": 591.01,
+      "end": 596.01,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 1,
+      "need_review": true,
+      "action": "将已预装的黑色壳体放入白布定位座，并将银灰部件（含线缆）移向壳体对合、定位；线缆附着整理同步进行",
+      "evidence": "591.009858s 工人右手将黑色壳体从手中移向白布定位座，左手辅助引导；定位座首次出现工件 ｜ 593.009891s 壳体已稳置于定位座中，工人左手持银灰部件（带线缆结构）靠近壳体开口，准备对合 ｜ 595.009925s 银灰部件已部分嵌入壳体，右手持工具（黄色手柄小钳/镊）微调线缆走向；工件整体在定位座内",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_585"
+      ],
+      "children": []
+    },
+    {
+      "idx": 60,
+      "step_id": "unknown",
+      "name": "待确认区间",
+      "start": 596.01,
+      "end": 597.01,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 7,
+      "need_review": true,
+      "action": "模型片段之间的支持间隔，边界待核对",
+      "evidence": "",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "coverage-gap",
+      "source_jobs": [],
+      "children": []
+    },
+    {
+      "idx": 61,
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "start": 597.01,
+      "end": 599.01,
+      "kind": "step",
+      "source": "teacher:three_workers_side3",
+      "color": 2,
+      "need_review": true,
+      "action": "悬挂式工具（橙色气管连接的电动工具）接触夹具内工件；同时右手从蓝色料盒取小件并送向工件接口处",
+      "evidence": "597.009958s 悬挂工具头已下压至工件顶部，左手扶稳工件；右手伸向左侧蓝色料盒（含黑色小件） ｜ 598.009975s 右手持一小黑件（疑似螺钉/卡扣）靠近工件接口，悬挂工具仍在接触工件；符合‘供小件与工具接触同阶段’定义 ｜ 599.009991s 右手将小件按入工件接口，悬挂工具持续作用；动作连贯，属同一工具作业轮次",
+      "state_change": "unknown",
+      "left_hand": "",
+      "right_hand": "",
+      "confidence": null,
+      "semantic_source": "qwen-with-reviewed-catalog",
+      "source_jobs": [
+        "side3_585"
+      ],
+      "children": []
+    }
+  ],
+  "pose": "pose_empty_three_workers.json",
+  "station": "ST01",
+  "sop_catalog": [
+    {
+      "step_id": "A1",
+      "name": "部件取用与手持预装",
+      "visual_definition": "在前方台面或手中取用、翻转、对准和组合银灰件与黑色部件，此阶段的主体工件尚未放入中央白布定位座。",
+      "entry_evidence": "手持或台面上的部件被取用。",
+      "completion_evidence": "工人开始将较大的壳体带向定位座，或转入夹具内组件定位。",
+      "do_not_confuse_with": "手持器对准可以是准备中的短操作，不能归为夹具内工具紧固。",
+      "worker_variations": "取件、拆包装、手持器对准和手持对合的次序及持续时间允许不同。",
+      "cross_worker_support": [
+        "side_1",
+        "side2",
+        "side3"
+      ],
+      "optional": false,
+      "examples": [
+        {
+          "video": "side3",
+          "time_s": 78,
+          "observed": "手持部件在台面前方处理，白布定位座为空。"
+        },
+        {
+          "video": "side_1",
+          "time_s": 76,
+          "observed": "手持部件进行预装。"
+        }
+      ]
+    },
+    {
+      "step_id": "A2",
+      "name": "壳体入夹具与组件定位",
+      "visual_definition": "较大黑色带线壳体放入白布定位座，随后将银灰部件移向夹具内壳体对合、定位和整理附着线缆。先放壳体时不能宣称已完成组合。",
+      "entry_evidence": "黑色壳体从手持转为位于白布定位座中。",
+      "completion_evidence": "转入悬挂工具作业，或准备在夹具内供小件。",
+      "do_not_confuse_with": "前方台面的手持预装；已对合整体直接入座与单壳先入座须按图像区分。",
+      "worker_variations": "工人可能先放壳体再装入银灰件，也可能同步扶持定位。",
+      "cross_worker_support": [
+        "side_1",
+        "side2",
+        "side3"
+      ],
+      "optional": false,
+      "examples": [
+        {
+          "video": "side3",
+          "time_s": 94,
+          "observed": "黑色壳体在定位座内，其他部件仍在台面。"
+        },
+        {
+          "video": "side3",
+          "time_s": 98,
+          "observed": "将银灰部件带向壳体组合。"
+        }
+      ]
+    },
+    {
+      "step_id": "A3",
+      "name": "夹具内工具作业与供小件",
+      "visual_definition": "悬挂式工具接触夹具内工件，期间可反复从蓝色料盒取小件并送向工件或工具。取小件和工具接触是该阶段内部操作。",
+      "entry_evidence": "悬挂工具开始作用于夹具内工件，或在其间紧接着供小件。",
+      "completion_evidence": "工具结束这一轮操作并离位，转为收尾整理或移出。",
+      "do_not_confuse_with": "手持器指向手中银灰件；附着线状物不应当成独立工具。",
+      "worker_variations": "取小件的手、工具接触次数和中间调整可不同，不据此生成新的主SOP。",
+      "cross_worker_support": [
+        "side_1",
+        "side2",
+        "side3"
+      ],
+      "optional": false,
+      "examples": [
+        {
+          "video": "side3",
+          "time_s": 110,
+          "observed": "悬挂工具接触夹具内工件。"
+        },
+        {
+          "video": "side2",
+          "time_s": 121,
+          "observed": "悬挂工具在夹具内作业。"
+        }
+      ]
+    },
+    {
+      "step_id": "A5",
+      "name": "收尾整理与工件移出",
+      "visual_definition": "悬挂工具离位后做局部整理，将工件提离定位座并向后方传送带移交，定位座重新露空。",
+      "entry_evidence": "工具离位后进入收尾操作，或已经开始提起工件。",
+      "completion_evidence": "工件移离白布定位座并移交，下一件取用另归准备阶段。",
+      "do_not_confuse_with": "工具暂停或取小件不能当成下料；未看到质量结果不能称成品检验合格。",
+      "worker_variations": "局部整理时长和移交手法不同。",
+      "cross_worker_support": [
+        "side_1",
+        "side2",
+        "side3"
+      ],
+      "optional": false,
+      "examples": [
+        {
+          "video": "side3",
+          "time_s": 132,
+          "observed": "提起并移出工件。"
+        },
+        {
+          "video": "side_1",
+          "time_s": 130,
+          "observed": "工件离开定位座。"
+        }
+      ]
+    }
+  ],
+  "step_options": [
+    {
+      "step_id": "A1",
+      "name_cn": "部件取用与手持预装"
+    },
+    {
+      "step_id": "A2",
+      "name_cn": "壳体入夹具与组件定位"
+    },
+    {
+      "step_id": "A3",
+      "name_cn": "夹具内工具作业与供小件"
+    },
+    {
+      "step_id": "A5",
+      "name_cn": "收尾整理与工件移出"
+    },
+    {
+      "step_id": "idle",
+      "name_cn": "等待或循环外准备"
+    },
+    {
+      "step_id": "unknown",
+      "name_cn": "待确认区间"
+    }
+  ],
+  "show_rois": false,
+  "examples_url": "/three-workers-sop.html",
+  "catalog_note": "模型草稿5类，经画面复核合并供小件子动作、修订部件状态后为4类。此处为候选工序，类别及边界仍需核对。"
+}

@@ -1,0 +1,600 @@
+{
+  "steps": [
+    {
+      "id": "side_1_F1",
+      "display_name": "side_1 · 手持银灰带筋件在台面用扫码枪扫描",
+      "observable_definition": "操作员左手持银灰带筋件（金属质感、带加强筋结构），右手持黑色扫码枪，对准该件侧面进行多次扫描动作；部件置于白色台面中央偏左，未接触定位座；此动作持续约6秒（60.04–66.52s）且两周期均出现。"
+    },
+    {
+      "id": "side_1_F2",
+      "display_name": "side_1 · 从绿色传送带取黑色壳片并放置于台面",
+      "observable_definition": "操作员右手从右侧绿色传送带取下黑色壳片（光滑曲面塑料件），左手辅助稳定，随后将其轻放于白色台面右下方；动作完成于单次抓取+放置，时长约2秒；两周期均可见（cycle1: 67.04–68.52s；cycle2: 135.04–136.52s）。"
+    },
+    {
+      "id": "side_1_F3",
+      "display_name": "side_1 · 撕开黑色壳片的透明塑封袋",
+      "observable_definition": "操作员双手持黑色壳片及塑封袋，用拇指与食指沿袋口边缘撕开密封层；塑封袋为半透明薄塑料，撕开后露出壳片表面；动作集中于手部精细操作，无工具介入；两周期均发生（cycle1: 69.04–72.04s；cycle2: 136.52–139.04s）。"
+    },
+    {
+      "id": "side_1_F4",
+      "display_name": "side_1 · 将黑色壳片与银灰带筋件在台面手动对准贴合",
+      "observable_definition": "操作员左手持已去塑封的黑色壳片，右手持银灰带筋件，将二者凹凸结构边缘缓慢靠近、旋转调整，实现初步物理贴合；部件始终悬空于台面上方，未压入定位座；两周期中该动作持续时间较长（cycle1: 73.04–82.04s；cycle2: 141.04–156.04s），但内部存在连续微调动作，无明显子动作分界，故视为单一连续操作。"
+    },
+    {
+      "id": "v2_F1",
+      "display_name": "v2 · 取银灰带筋件与黑色壳片并置于台面",
+      "observable_definition": "操作员从右侧绿色传送带取下银灰带筋件（金属质感、带加强筋结构），左手持该件；右手从同一位置取黑色壳片（哑光黑、弧形外壳），双手将两件并排置于前方白色台面布上。"
+    },
+    {
+      "id": "v2_F2",
+      "display_name": "v2 · 手持银灰带筋件对准黑色壳片开口进行初步嵌合",
+      "observable_definition": "操作员左手持黑色壳片固定于台面，右手持银灰带筋件，将其一端插入黑色壳片前端开口处，反复微调角度与深度，使两者形成松配合状态；此过程持续约8秒，无工具介入，仅靠手部施力与目视校准。"
+    },
+    {
+      "id": "v2_F3",
+      "display_name": "v2 · 将银灰带筋件完全压入黑色壳片并调整周向位置",
+      "observable_definition": "在F2基础上，操作员用双手拇指与食指施加压力，将银灰带筋件沿轴向完全推入黑色壳片内腔，直至其限位台阶接触壳片内壁；随后旋转银灰带筋件约30度，使其筋条与壳片内凹槽对齐；动作结束时两件已形成稳定卡接，但未锁紧。"
+    },
+    {
+      "id": "v2_F4",
+      "display_name": "v2 · 取黑色环形件并套入银灰带筋件外露端",
+      "observable_definition": "操作员右手从台面左侧蓝色料盒旁取一黑色环形件（扁平圆环、表面光滑），左手稳住已组合的壳片+带筋件，右手将环形件从外露端轴向套入银灰带筋件，至其抵住带筋件凸缘；全程在台面布上完成，无定位座参与。"
+    },
+    {
+      "id": "v2_F5",
+      "display_name": "v2 · 旋转黑色环形件使其卡入银灰带筋件卡槽",
+      "observable_definition": "操作员用右手拇指拨动黑色环形件，使其绕银灰带筋件轴线旋转约90度，环形件上可见缺口与带筋件上的径向卡舌对齐并卡入；完成后环形件不再自由转动，形成机械止转结构。"
+    }
+  ],
+  "clips": [
+    {
+      "step_id": "side_1_F1",
+      "name": "手持银灰带筋件在台面用扫码枪扫描",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 60.0397,
+      "end": 66.519667,
+      "start_frame": 1501,
+      "end_frame": 1663,
+      "url": "/sop-refinement/side_1_00.mp4",
+      "evidence": [
+        {
+          "time_s": 60.0397,
+          "observed": "左手持银灰带筋件，右手持扫码枪刚接触部件侧面，准备扫描"
+        },
+        {
+          "time_s": 64.03968,
+          "observed": "扫码枪持续对准银灰带筋件侧面，手指按压触发键，部件保持稳定"
+        }
+      ],
+      "warnings": [
+        "复核发现起点包含上一件下料，模型边界需修正；扫码结果无法从画面确认。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 6.48
+    },
+    {
+      "step_id": "side_1_F2",
+      "name": "从绿色传送带取黑色壳片并放置于台面",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 67.039665,
+      "end": 68.519657,
+      "start_frame": 1676,
+      "end_frame": 1713,
+      "url": "/sop-refinement/side_1_01.mp4",
+      "evidence": [
+        {
+          "time_s": 67.039665,
+          "observed": "右手伸向绿色传送带，指尖触碰黑色壳片边缘"
+        },
+        {
+          "time_s": 68.03966,
+          "observed": "黑色壳片已被取下，正被移至白色台面右下方，尚未放下"
+        }
+      ],
+      "warnings": [
+        "取件来源与部件身份需复核，部分证据帧显示银灰件在台面。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 1.48
+    },
+    {
+      "step_id": "side_1_F3",
+      "name": "撕开黑色壳片的透明塑封袋",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 69.039655,
+      "end": 72.03964,
+      "start_frame": 1726,
+      "end_frame": 1801,
+      "url": "/sop-refinement/side_1_02.mp4",
+      "evidence": [
+        {
+          "time_s": 69.039655,
+          "observed": "双手持塑封袋包裹的黑色壳片，拇指开始撬开袋口密封边"
+        },
+        {
+          "time_s": 71.039645,
+          "observed": "塑封袋已部分撕开，黑色壳片表面局部暴露，手仍在继续撕扯"
+        }
+      ],
+      "warnings": [],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 3.0
+    },
+    {
+      "step_id": "side_1_F4",
+      "name": "将黑色壳片与银灰带筋件在台面手动对准贴合",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 73.039635,
+      "end": 82.03959,
+      "start_frame": 1826,
+      "end_frame": 2051,
+      "url": "/sop-refinement/side_1_03.mp4",
+      "evidence": [
+        {
+          "time_s": 73.039635,
+          "observed": "左手持黑色壳片，右手持银灰带筋件，二者首次接触，开始对位"
+        },
+        {
+          "time_s": 78.03961,
+          "observed": "两部件已部分嵌合，操作员用拇指按压接缝处，持续微调角度"
+        },
+        {
+          "time_s": 81.039595,
+          "observed": "最终贴合完成，双手仍握持组合体，准备下一步动作"
+        }
+      ],
+      "warnings": [
+        "此段仍包含圆端局部处理，模型可能细分不足。"
+      ],
+      "over_10s_reason": "连续对准操作，无工具更换、无部件分离、无状态突变；手部动作平滑过渡，符合‘同一连续操作’定义。",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 9.0
+    },
+    {
+      "step_id": "side_1_F1",
+      "name": "手持银灰带筋件在台面用扫码枪扫描",
+      "video": "side_1",
+      "cycle": 2,
+      "start": 132.03934,
+      "end": 134.519327,
+      "start_frame": 3301,
+      "end_frame": 3363,
+      "url": "/sop-refinement/side_1_04.mp4",
+      "evidence": [
+        {
+          "time_s": 132.03934,
+          "observed": "右手持扫码枪指向银灰带筋件，左手稳持部件，初始扫描姿态"
+        },
+        {
+          "time_s": 133.519332,
+          "observed": "扫码枪持续照射部件侧面，操作员轻微转动部件以覆盖不同区域"
+        }
+      ],
+      "warnings": [
+        "复核发现起点包含上一件下料，模型边界需修正；扫码结果无法从画面确认。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 2.48
+    },
+    {
+      "step_id": "side_1_F2",
+      "name": "从绿色传送带取黑色壳片并放置于台面",
+      "video": "side_1",
+      "cycle": 2,
+      "start": 135.039325,
+      "end": 136.519317,
+      "start_frame": 3376,
+      "end_frame": 3413,
+      "url": "/sop-refinement/side_1_05.mp4",
+      "evidence": [
+        {
+          "time_s": 135.039325,
+          "observed": "右手伸向传送带，即将取黑色壳片"
+        },
+        {
+          "time_s": 136.03932,
+          "observed": "黑色壳片已离传送带，正被移向台面右下方"
+        }
+      ],
+      "warnings": [
+        "取件来源与部件身份需复核，部分证据帧显示银灰件在台面。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 1.48
+    },
+    {
+      "step_id": "side_1_F3",
+      "name": "撕开黑色壳片的透明塑封袋",
+      "video": "side_1",
+      "cycle": 2,
+      "start": 136.519317,
+      "end": 139.039305,
+      "start_frame": 3413,
+      "end_frame": 3476,
+      "url": "/sop-refinement/side_1_06.mp4",
+      "evidence": [
+        {
+          "time_s": 136.519317,
+          "observed": "双手持塑封袋，开始撕开袋口"
+        },
+        {
+          "time_s": 138.03931,
+          "observed": "塑封袋已撕开约2/3，黑色壳片大部分露出"
+        }
+      ],
+      "warnings": [],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 2.52
+    },
+    {
+      "step_id": "side_1_F4",
+      "name": "将黑色壳片与银灰带筋件在台面手动对准贴合",
+      "video": "side_1",
+      "cycle": 2,
+      "start": 141.039295,
+      "end": 156.03922,
+      "start_frame": 3526,
+      "end_frame": 3901,
+      "url": "/sop-refinement/side_1_07.mp4",
+      "evidence": [
+        {
+          "time_s": 141.039295,
+          "observed": "左手持黑色壳片，右手持银灰带筋件，首次接触对位"
+        },
+        {
+          "time_s": 147.039265,
+          "observed": "两部件已初步嵌合，操作员用指尖压紧接缝，持续旋转微调"
+        },
+        {
+          "time_s": 154.03923,
+          "observed": "最终贴合完成，双手仍握持组合体，准备放置"
+        }
+      ],
+      "warnings": [
+        "此段仍包含圆端局部处理，模型可能细分不足。"
+      ],
+      "over_10s_reason": "同F4-cycle1：连续对准操作，无中断、无工具介入、无状态跳变；手部动作连贯，属同一子步骤。",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 15.0
+    },
+    {
+      "step_id": "v2_F1",
+      "name": "取银灰带筋件与黑色壳片并置于台面",
+      "video": "v2",
+      "cycle": 1,
+      "start": 68.001134,
+      "end": 69.52116,
+      "start_frame": 1700,
+      "end_frame": 1738,
+      "url": "/sop-refinement/v2_00.mp4",
+      "evidence": [
+        {
+          "time_s": 68.001134,
+          "observed": "操作员右手伸向右侧绿色传送带，尚未接触部件"
+        },
+        {
+          "time_s": 69.001151,
+          "observed": "右手已持黑色壳片，左手正从传送带取银灰带筋件；两件均悬空未触台面"
+        },
+        {
+          "time_s": 69.52116,
+          "observed": "两件已并排放于白色台面布上，左手仍轻扶银灰带筋件"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 1.52
+    },
+    {
+      "step_id": "v2_F2",
+      "name": "手持银灰带筋件对准黑色壳片开口进行初步嵌合",
+      "video": "v2",
+      "cycle": 1,
+      "start": 69.52116,
+      "end": 77.001284,
+      "start_frame": 1738,
+      "end_frame": 1925,
+      "url": "/sop-refinement/v2_01.mp4",
+      "evidence": [
+        {
+          "time_s": 70.001168,
+          "observed": "右手持银灰带筋件前端已插入黑色壳片开口约1/3深度，左手扶壳片"
+        },
+        {
+          "time_s": 74.001234,
+          "observed": "银灰带筋件插入深度约2/3，操作员低头目视接口处，右手微调角度"
+        },
+        {
+          "time_s": 77.001284,
+          "observed": "插入完成，两件呈松配合状态，银灰件可轻微晃动"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "连续手动对准与试探性插入，无中间停顿或工具介入，属单一子动作",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 7.48
+    },
+    {
+      "step_id": "v2_F3",
+      "name": "将银灰带筋件完全压入黑色壳片并调整周向位置",
+      "video": "v2",
+      "cycle": 1,
+      "start": 77.001284,
+      "end": 83.001384,
+      "start_frame": 1925,
+      "end_frame": 2075,
+      "url": "/sop-refinement/v2_02.mp4",
+      "evidence": [
+        {
+          "time_s": 77.521293,
+          "observed": "双手同时施力，银灰带筋件明显向内推进，壳片被压稳"
+        },
+        {
+          "time_s": 80.001334,
+          "observed": "银灰带筋件已完全进入壳片，操作员右手开始小幅度旋转该件"
+        },
+        {
+          "time_s": 83.001384,
+          "observed": "旋转停止，两件相对位置固定，筋条与壳片内壁凹槽视觉对齐"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "压入与旋转为连贯操作：先轴向压紧再周向对位，无工具切换，手部动作无缝衔接",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 6.0
+    },
+    {
+      "step_id": "v2_F4",
+      "name": "取黑色环形件并套入银灰带筋件外露端",
+      "video": "v2",
+      "cycle": 1,
+      "start": 83.001384,
+      "end": 88.001468,
+      "start_frame": 2075,
+      "end_frame": 2200,
+      "url": "/sop-refinement/v2_03.mp4",
+      "evidence": [
+        {
+          "time_s": 83.521393,
+          "observed": "右手从台面左下方取黑色环形件（此前被遮挡），左手持组合件"
+        },
+        {
+          "time_s": 85.001418,
+          "observed": "环形件已套入银灰带筋件外露端，距凸缘约2mm"
+        },
+        {
+          "time_s": 88.001468,
+          "observed": "环形件抵住凸缘，套入动作完成"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 5.0
+    },
+    {
+      "step_id": "v2_F5",
+      "name": "旋转黑色环形件使其卡入银灰带筋件卡槽",
+      "video": "v2",
+      "cycle": 1,
+      "start": 88.001468,
+      "end": 90.001501,
+      "start_frame": 2200,
+      "end_frame": 2250,
+      "url": "/sop-refinement/v2_04.mp4",
+      "evidence": [
+        {
+          "time_s": 88.521477,
+          "observed": "右手拇指开始拨动环形件，出现初始旋转角"
+        },
+        {
+          "time_s": 89.521493,
+          "observed": "环形件已旋转约90度，缺口与卡舌接近对齐"
+        },
+        {
+          "time_s": 90.001501,
+          "observed": "环形件到位，手指松开，无回弹，卡接完成"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 2.0
+    },
+    {
+      "step_id": "v2_F1",
+      "name": "取银灰带筋件与黑色壳片并置于台面",
+      "video": "v2",
+      "cycle": 2,
+      "start": 147.002452,
+      "end": 148.522477,
+      "start_frame": 3675,
+      "end_frame": 3713,
+      "url": "/sop-refinement/v2_05.mp4",
+      "evidence": [
+        {
+          "time_s": 147.002452,
+          "observed": "操作员右手从右侧传送带取银灰带筋件"
+        },
+        {
+          "time_s": 148.002469,
+          "observed": "左手持黑色壳片，右手持银灰带筋件，两件悬空"
+        },
+        {
+          "time_s": 148.522477,
+          "observed": "两件已放于台面布上，位置与cycle1一致"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 1.52
+    },
+    {
+      "step_id": "v2_F2",
+      "name": "手持银灰带筋件对准黑色壳片开口进行初步嵌合",
+      "video": "v2",
+      "cycle": 2,
+      "start": 148.522477,
+      "end": 155.002585,
+      "start_frame": 3713,
+      "end_frame": 3875,
+      "url": "/sop-refinement/v2_06.mp4",
+      "evidence": [
+        {
+          "time_s": 149.002485,
+          "observed": "银灰带筋件前端插入壳片开口，深度约1/4"
+        },
+        {
+          "time_s": 152.002535,
+          "observed": "插入深度达2/3，操作员头部前倾观察接口"
+        },
+        {
+          "time_s": 155.002585,
+          "observed": "松配合状态达成，与cycle1 F2终点一致"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "同cycle1，为连续手动对准插入，无中断",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 6.48
+    },
+    {
+      "step_id": "v2_F3",
+      "name": "将银灰带筋件完全压入黑色壳片并调整周向位置",
+      "video": "v2",
+      "cycle": 2,
+      "start": 155.002585,
+      "end": 161.002669,
+      "start_frame": 3875,
+      "end_frame": 4025,
+      "url": "/sop-refinement/v2_07.mp4",
+      "evidence": [
+        {
+          "time_s": 155.522594,
+          "observed": "双手施力压入，银灰件明显深入"
+        },
+        {
+          "time_s": 158.002635,
+          "observed": "压入完成，右手开始旋转银灰件"
+        },
+        {
+          "time_s": 161.002669,
+          "observed": "旋转停止，筋条与壳片凹槽对齐，状态稳定"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "压入与旋转连续，手部动作无停顿",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 6.0
+    },
+    {
+      "step_id": "v2_F4",
+      "name": "取黑色环形件并套入银灰带筋件外露端",
+      "video": "v2",
+      "cycle": 2,
+      "start": 161.002669,
+      "end": 166.002769,
+      "start_frame": 4025,
+      "end_frame": 4150,
+      "url": "/sop-refinement/v2_08.mp4",
+      "evidence": [
+        {
+          "time_s": 161.522694,
+          "observed": "右手取黑色环形件（从相同位置）"
+        },
+        {
+          "time_s": 163.002719,
+          "observed": "环形件套入中，距凸缘约3mm"
+        },
+        {
+          "time_s": 166.002769,
+          "observed": "环形件抵住凸缘，套入完成"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 5.0
+    },
+    {
+      "step_id": "v2_F5",
+      "name": "旋转黑色环形件使其卡入银灰带筋件卡槽",
+      "video": "v2",
+      "cycle": 2,
+      "start": 166.002769,
+      "end": 169.002819,
+      "start_frame": 4150,
+      "end_frame": 4225,
+      "url": "/sop-refinement/v2_09.mp4",
+      "evidence": [
+        {
+          "time_s": 166.522778,
+          "observed": "拇指拨动环形件起始旋转"
+        },
+        {
+          "time_s": 168.002802,
+          "observed": "旋转约70度，缺口接近卡舌"
+        },
+        {
+          "time_s": 169.002819,
+          "observed": "卡接完成，手指松开，环形件无位移"
+        }
+      ],
+      "warnings": [
+        "模型原始候选待复核，描述中的插入深度、旋转角度及内部卡接结构缺乏可验证证据。"
+      ],
+      "over_10s_reason": "",
+      "model_needs_review": false,
+      "needs_review": true,
+      "rendered_duration": 3.0
+    }
+  ],
+  "issues": []
+}

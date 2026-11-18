@@ -1,0 +1,1263 @@
+{
+ "source_gt": "web/public/data/gt_segments.json",
+ "only_clip": false,
+ "win": 2.0,
+ "idle_margin": 2.0,
+ "frames_per_window": 3,
+ "clip_offset": 300.0,
+ "clip_duration": 120.0,
+ "counts": {
+  "total": 49,
+  "by_label": {
+   "idle": 12,
+   "Remove_eyepiece_assembly": 9,
+   "Remove_the_upper_cover_of_the_eyepiece": 7,
+   "Assemble_the_mirror_base_cover": 7,
+   "Assemble_the_mirror_base_sealing_plug": 7,
+   "Fasten_mirror_base": 6,
+   "Fasten_tripod_strap": 1
+  },
+  "by_kind": {
+   "idle": 12,
+   "normal": 29,
+   "short": 8
+  },
+  "skipped": 1
+ },
+ "windows": [
+  {
+   "idx": 0,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 34.3,
+   "end": 36.3,
+   "win_dur": 2.0,
+   "frames": [
+    34.501,
+    35.3,
+    36.1
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": -265.7,
+   "clip_end": -263.7,
+   "clip_frames": [
+    -265.499,
+    -264.7,
+    -263.9
+   ]
+  },
+  {
+   "idx": 1,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 71.221,
+   "end": 73.221,
+   "win_dur": 2.0,
+   "frames": [
+    71.421,
+    72.221,
+    73.021
+   ],
+   "src_seg": 0,
+   "cycle_id": 0,
+   "short": false,
+   "clip": false,
+   "clip_start": -228.779,
+   "clip_end": -226.779,
+   "clip_frames": [
+    -228.579,
+    -227.779,
+    -226.979
+   ]
+  },
+  {
+   "idx": 2,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 74.761,
+   "end": 75.361,
+   "win_dur": 0.6,
+   "frames": [
+    74.821,
+    75.061,
+    75.301
+   ],
+   "src_seg": 1,
+   "cycle_id": 0,
+   "short": true,
+   "clip": false,
+   "clip_start": -225.239,
+   "clip_end": -224.639,
+   "clip_frames": [
+    -225.179,
+    -224.939,
+    -224.699
+   ]
+  },
+  {
+   "idx": 3,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 78.601,
+   "end": 80.601,
+   "win_dur": 2.0,
+   "frames": [
+    78.801,
+    79.601,
+    80.401
+   ],
+   "src_seg": 2,
+   "cycle_id": 0,
+   "short": false,
+   "clip": false,
+   "clip_start": -221.399,
+   "clip_end": -219.399,
+   "clip_frames": [
+    -221.199,
+    -220.399,
+    -219.599
+   ]
+  },
+  {
+   "idx": 4,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 85.781,
+   "end": 87.781,
+   "win_dur": 2.0,
+   "frames": [
+    85.981,
+    86.781,
+    87.581
+   ],
+   "src_seg": 3,
+   "cycle_id": 0,
+   "short": false,
+   "clip": false,
+   "clip_start": -214.219,
+   "clip_end": -212.219,
+   "clip_frames": [
+    -214.019,
+    -213.219,
+    -212.419
+   ]
+  },
+  {
+   "idx": 5,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 95.642,
+   "end": 97.642,
+   "win_dur": 2.0,
+   "frames": [
+    95.842,
+    96.642,
+    97.442
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": -204.358,
+   "clip_end": -202.358,
+   "clip_frames": [
+    -204.158,
+    -203.358,
+    -202.558
+   ]
+  },
+  {
+   "idx": 6,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 117.222,
+   "end": 119.222,
+   "win_dur": 2.0,
+   "frames": [
+    117.422,
+    118.222,
+    119.022
+   ],
+   "src_seg": 4,
+   "cycle_id": 0,
+   "short": false,
+   "clip": false,
+   "clip_start": -182.778,
+   "clip_end": -180.778,
+   "clip_frames": [
+    -182.578,
+    -181.778,
+    -180.978
+   ]
+  },
+  {
+   "idx": 7,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 139.382,
+   "end": 141.382,
+   "win_dur": 2.0,
+   "frames": [
+    139.582,
+    140.382,
+    141.182
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": -160.618,
+   "clip_end": -158.618,
+   "clip_frames": [
+    -160.418,
+    -159.618,
+    -158.818
+   ]
+  },
+  {
+   "idx": 8,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 149.822,
+   "end": 151.822,
+   "win_dur": 2.0,
+   "frames": [
+    150.022,
+    150.822,
+    151.623
+   ],
+   "src_seg": 5,
+   "cycle_id": 1,
+   "short": false,
+   "clip": false,
+   "clip_start": -150.178,
+   "clip_end": -148.178,
+   "clip_frames": [
+    -149.978,
+    -149.178,
+    -148.377
+   ]
+  },
+  {
+   "idx": 9,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 155.083,
+   "end": 155.803,
+   "win_dur": 0.72,
+   "frames": [
+    155.155,
+    155.443,
+    155.731
+   ],
+   "src_seg": 6,
+   "cycle_id": 1,
+   "short": true,
+   "clip": false,
+   "clip_start": -144.917,
+   "clip_end": -144.197,
+   "clip_frames": [
+    -144.845,
+    -144.557,
+    -144.269
+   ]
+  },
+  {
+   "idx": 10,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 158.903,
+   "end": 160.903,
+   "win_dur": 2.0,
+   "frames": [
+    159.103,
+    159.903,
+    160.703
+   ],
+   "src_seg": 7,
+   "cycle_id": 1,
+   "short": false,
+   "clip": false,
+   "clip_start": -141.097,
+   "clip_end": -139.097,
+   "clip_frames": [
+    -140.897,
+    -140.097,
+    -139.297
+   ]
+  },
+  {
+   "idx": 11,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 166.903,
+   "end": 168.903,
+   "win_dur": 2.0,
+   "frames": [
+    167.103,
+    167.903,
+    168.703
+   ],
+   "src_seg": 8,
+   "cycle_id": 1,
+   "short": false,
+   "clip": false,
+   "clip_start": -133.097,
+   "clip_end": -131.097,
+   "clip_frames": [
+    -132.897,
+    -132.097,
+    -131.297
+   ]
+  },
+  {
+   "idx": 12,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 176.403,
+   "end": 178.403,
+   "win_dur": 2.0,
+   "frames": [
+    176.603,
+    177.403,
+    178.203
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": -123.597,
+   "clip_end": -121.597,
+   "clip_frames": [
+    -123.397,
+    -122.597,
+    -121.797
+   ]
+  },
+  {
+   "idx": 13,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 203.863,
+   "end": 205.863,
+   "win_dur": 2.0,
+   "frames": [
+    204.063,
+    204.863,
+    205.663
+   ],
+   "src_seg": 9,
+   "cycle_id": 1,
+   "short": false,
+   "clip": false,
+   "clip_start": -96.137,
+   "clip_end": -94.137,
+   "clip_frames": [
+    -95.937,
+    -95.137,
+    -94.337
+   ]
+  },
+  {
+   "idx": 14,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 230.144,
+   "end": 232.144,
+   "win_dur": 2.0,
+   "frames": [
+    230.344,
+    231.144,
+    231.944
+   ],
+   "src_seg": 10,
+   "cycle_id": 2,
+   "short": false,
+   "clip": false,
+   "clip_start": -69.856,
+   "clip_end": -67.856,
+   "clip_frames": [
+    -69.656,
+    -68.856,
+    -68.056
+   ]
+  },
+  {
+   "idx": 15,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 238.164,
+   "end": 238.364,
+   "win_dur": 0.2,
+   "frames": [
+    238.184,
+    238.264,
+    238.344
+   ],
+   "src_seg": 11,
+   "cycle_id": 2,
+   "short": true,
+   "clip": false,
+   "clip_start": -61.836,
+   "clip_end": -61.636,
+   "clip_frames": [
+    -61.816,
+    -61.736,
+    -61.656
+   ]
+  },
+  {
+   "idx": 16,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 242.744,
+   "end": 244.744,
+   "win_dur": 2.0,
+   "frames": [
+    242.944,
+    243.744,
+    244.544
+   ],
+   "src_seg": 12,
+   "cycle_id": 2,
+   "short": false,
+   "clip": false,
+   "clip_start": -57.256,
+   "clip_end": -55.256,
+   "clip_frames": [
+    -57.056,
+    -56.256,
+    -55.456
+   ]
+  },
+  {
+   "idx": 17,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 252.364,
+   "end": 254.364,
+   "win_dur": 2.0,
+   "frames": [
+    252.564,
+    253.364,
+    254.164
+   ],
+   "src_seg": 13,
+   "cycle_id": 2,
+   "short": false,
+   "clip": false,
+   "clip_start": -47.636,
+   "clip_end": -45.636,
+   "clip_frames": [
+    -47.436,
+    -46.636,
+    -45.836
+   ]
+  },
+  {
+   "idx": 18,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 262.344,
+   "end": 264.344,
+   "win_dur": 2.0,
+   "frames": [
+    262.544,
+    263.344,
+    264.144
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": -37.656,
+   "clip_end": -35.656,
+   "clip_frames": [
+    -37.456,
+    -36.656,
+    -35.856
+   ]
+  },
+  {
+   "idx": 19,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 284.304,
+   "end": 286.304,
+   "win_dur": 2.0,
+   "frames": [
+    284.504,
+    285.304,
+    286.104
+   ],
+   "src_seg": 14,
+   "cycle_id": 2,
+   "short": false,
+   "clip": true,
+   "clip_start": -15.696,
+   "clip_end": -13.696,
+   "clip_frames": [
+    -15.496,
+    -14.696,
+    -13.896
+   ]
+  },
+  {
+   "idx": 20,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 305.925,
+   "end": 307.925,
+   "win_dur": 2.0,
+   "frames": [
+    306.125,
+    306.925,
+    307.725
+   ],
+   "src_seg": 15,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 5.925,
+   "clip_end": 7.925,
+   "clip_frames": [
+    6.125,
+    6.925,
+    7.725
+   ]
+  },
+  {
+   "idx": 21,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 312.925,
+   "end": 313.285,
+   "win_dur": 0.36,
+   "frames": [
+    312.961,
+    313.105,
+    313.249
+   ],
+   "src_seg": 16,
+   "cycle_id": 3,
+   "short": true,
+   "clip": true,
+   "clip_start": 12.925,
+   "clip_end": 13.285,
+   "clip_frames": [
+    12.961,
+    13.105,
+    13.249
+   ]
+  },
+  {
+   "idx": 22,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 316.185,
+   "end": 318.185,
+   "win_dur": 2.0,
+   "frames": [
+    316.385,
+    317.185,
+    317.985
+   ],
+   "src_seg": 18,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 16.185,
+   "clip_end": 18.185,
+   "clip_frames": [
+    16.385,
+    17.185,
+    17.985
+   ]
+  },
+  {
+   "idx": 23,
+   "kind": "short",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 321.965,
+   "end": 322.725,
+   "win_dur": 0.76,
+   "frames": [
+    322.041,
+    322.345,
+    322.649
+   ],
+   "src_seg": 19,
+   "cycle_id": 3,
+   "short": true,
+   "clip": true,
+   "clip_start": 21.965,
+   "clip_end": 22.725,
+   "clip_frames": [
+    22.041,
+    22.345,
+    22.649
+   ]
+  },
+  {
+   "idx": 24,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 325.185,
+   "end": 327.185,
+   "win_dur": 2.0,
+   "frames": [
+    325.385,
+    326.185,
+    326.985
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 25.185,
+   "clip_end": 27.185,
+   "clip_frames": [
+    25.385,
+    26.185,
+    26.985
+   ]
+  },
+  {
+   "idx": 25,
+   "kind": "normal",
+   "label": "Fasten_tripod_strap",
+   "name_cn": "系上镜座扎带",
+   "start": 334.625,
+   "end": 336.625,
+   "win_dur": 2.0,
+   "frames": [
+    334.825,
+    335.625,
+    336.425
+   ],
+   "src_seg": 20,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 34.625,
+   "clip_end": 36.625,
+   "clip_frames": [
+    34.825,
+    35.625,
+    36.425
+   ]
+  },
+  {
+   "idx": 26,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 345.906,
+   "end": 347.906,
+   "win_dur": 2.0,
+   "frames": [
+    346.106,
+    346.906,
+    347.706
+   ],
+   "src_seg": 21,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 45.906,
+   "clip_end": 47.906,
+   "clip_frames": [
+    46.106,
+    46.906,
+    47.706
+   ]
+  },
+  {
+   "idx": 27,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 354.346,
+   "end": 356.346,
+   "win_dur": 2.0,
+   "frames": [
+    354.546,
+    355.346,
+    356.146
+   ],
+   "src_seg": 22,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 54.346,
+   "clip_end": 56.346,
+   "clip_frames": [
+    54.546,
+    55.346,
+    56.146
+   ]
+  },
+  {
+   "idx": 28,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 364.326,
+   "end": 366.326,
+   "win_dur": 2.0,
+   "frames": [
+    364.526,
+    365.326,
+    366.126
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 64.326,
+   "clip_end": 66.326,
+   "clip_frames": [
+    64.526,
+    65.326,
+    66.126
+   ]
+  },
+  {
+   "idx": 29,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 386.047,
+   "end": 388.047,
+   "win_dur": 2.0,
+   "frames": [
+    386.247,
+    387.047,
+    387.847
+   ],
+   "src_seg": 23,
+   "cycle_id": 3,
+   "short": false,
+   "clip": true,
+   "clip_start": 86.047,
+   "clip_end": 88.047,
+   "clip_frames": [
+    86.247,
+    87.047,
+    87.847
+   ]
+  },
+  {
+   "idx": 30,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 405.827,
+   "end": 407.827,
+   "win_dur": 2.0,
+   "frames": [
+    406.027,
+    406.827,
+    407.627
+   ],
+   "src_seg": 24,
+   "cycle_id": 4,
+   "short": false,
+   "clip": true,
+   "clip_start": 105.827,
+   "clip_end": 107.827,
+   "clip_frames": [
+    106.027,
+    106.827,
+    107.627
+   ]
+  },
+  {
+   "idx": 31,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 413.487,
+   "end": 413.767,
+   "win_dur": 0.28,
+   "frames": [
+    413.515,
+    413.627,
+    413.739
+   ],
+   "src_seg": 25,
+   "cycle_id": 4,
+   "short": true,
+   "clip": true,
+   "clip_start": 113.487,
+   "clip_end": 113.767,
+   "clip_frames": [
+    113.515,
+    113.627,
+    113.739
+   ]
+  },
+  {
+   "idx": 32,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 417.207,
+   "end": 419.207,
+   "win_dur": 2.0,
+   "frames": [
+    417.407,
+    418.207,
+    419.007
+   ],
+   "src_seg": 26,
+   "cycle_id": 4,
+   "short": false,
+   "clip": true,
+   "clip_start": 117.207,
+   "clip_end": 119.207,
+   "clip_frames": [
+    117.407,
+    118.207,
+    119.007
+   ]
+  },
+  {
+   "idx": 33,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 425.507,
+   "end": 427.507,
+   "win_dur": 2.0,
+   "frames": [
+    425.707,
+    426.507,
+    427.307
+   ],
+   "src_seg": 27,
+   "cycle_id": 4,
+   "short": false,
+   "clip": false,
+   "clip_start": 125.507,
+   "clip_end": 127.507,
+   "clip_frames": [
+    125.707,
+    126.507,
+    127.307
+   ]
+  },
+  {
+   "idx": 34,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 435.407,
+   "end": 437.407,
+   "win_dur": 2.0,
+   "frames": [
+    435.607,
+    436.407,
+    437.207
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 135.407,
+   "clip_end": 137.407,
+   "clip_frames": [
+    135.607,
+    136.407,
+    137.207
+   ]
+  },
+  {
+   "idx": 35,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 463.447,
+   "end": 465.447,
+   "win_dur": 2.0,
+   "frames": [
+    463.647,
+    464.447,
+    465.248
+   ],
+   "src_seg": 28,
+   "cycle_id": 4,
+   "short": false,
+   "clip": false,
+   "clip_start": 163.447,
+   "clip_end": 165.447,
+   "clip_frames": [
+    163.647,
+    164.447,
+    165.248
+   ]
+  },
+  {
+   "idx": 36,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 487.568,
+   "end": 489.568,
+   "win_dur": 2.0,
+   "frames": [
+    487.768,
+    488.568,
+    489.368
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 187.568,
+   "clip_end": 189.568,
+   "clip_frames": [
+    187.768,
+    188.568,
+    189.368
+   ]
+  },
+  {
+   "idx": 37,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 493.088,
+   "end": 495.088,
+   "win_dur": 2.0,
+   "frames": [
+    493.288,
+    494.088,
+    494.888
+   ],
+   "src_seg": 29,
+   "cycle_id": 5,
+   "short": false,
+   "clip": false,
+   "clip_start": 193.088,
+   "clip_end": 195.088,
+   "clip_frames": [
+    193.288,
+    194.088,
+    194.888
+   ]
+  },
+  {
+   "idx": 38,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 498.368,
+   "end": 500.368,
+   "win_dur": 2.0,
+   "frames": [
+    498.568,
+    499.368,
+    500.168
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 198.368,
+   "clip_end": 200.368,
+   "clip_frames": [
+    198.568,
+    199.368,
+    200.168
+   ]
+  },
+  {
+   "idx": 39,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 502.528,
+   "end": 504.368,
+   "win_dur": 1.84,
+   "frames": [
+    502.712,
+    503.448,
+    504.184
+   ],
+   "src_seg": 30,
+   "cycle_id": 5,
+   "short": false,
+   "clip": false,
+   "clip_start": 202.528,
+   "clip_end": 204.368,
+   "clip_frames": [
+    202.712,
+    203.448,
+    204.184
+   ]
+  },
+  {
+   "idx": 40,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 507.909,
+   "end": 509.909,
+   "win_dur": 2.0,
+   "frames": [
+    508.108,
+    508.909,
+    509.709
+   ],
+   "src_seg": 31,
+   "cycle_id": 5,
+   "short": false,
+   "clip": false,
+   "clip_start": 207.909,
+   "clip_end": 209.909,
+   "clip_frames": [
+    208.108,
+    208.909,
+    209.709
+   ]
+  },
+  {
+   "idx": 41,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 515.709,
+   "end": 517.709,
+   "win_dur": 2.0,
+   "frames": [
+    515.909,
+    516.709,
+    517.509
+   ],
+   "src_seg": 32,
+   "cycle_id": 5,
+   "short": false,
+   "clip": false,
+   "clip_start": 215.709,
+   "clip_end": 217.709,
+   "clip_frames": [
+    215.909,
+    216.709,
+    217.509
+   ]
+  },
+  {
+   "idx": 42,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 525.609,
+   "end": 527.609,
+   "win_dur": 2.0,
+   "frames": [
+    525.809,
+    526.609,
+    527.409
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 225.609,
+   "clip_end": 227.609,
+   "clip_frames": [
+    225.809,
+    226.609,
+    227.409
+   ]
+  },
+  {
+   "idx": 43,
+   "kind": "normal",
+   "label": "Fasten_mirror_base",
+   "name_cn": "紧固镜子镜座",
+   "start": 548.069,
+   "end": 550.069,
+   "win_dur": 2.0,
+   "frames": [
+    548.269,
+    549.069,
+    549.869
+   ],
+   "src_seg": 33,
+   "cycle_id": 5,
+   "short": false,
+   "clip": false,
+   "clip_start": 248.069,
+   "clip_end": 250.069,
+   "clip_frames": [
+    248.269,
+    249.069,
+    249.869
+   ]
+  },
+  {
+   "idx": 44,
+   "kind": "normal",
+   "label": "Remove_eyepiece_assembly",
+   "name_cn": "取镜座组件",
+   "start": 568.469,
+   "end": 570.469,
+   "win_dur": 2.0,
+   "frames": [
+    568.669,
+    569.469,
+    570.269
+   ],
+   "src_seg": 34,
+   "cycle_id": 6,
+   "short": false,
+   "clip": false,
+   "clip_start": 268.469,
+   "clip_end": 270.469,
+   "clip_frames": [
+    268.669,
+    269.469,
+    270.269
+   ]
+  },
+  {
+   "idx": 45,
+   "kind": "short",
+   "label": "Remove_the_upper_cover_of_the_eyepiece",
+   "name_cn": "取镜座上盖",
+   "start": 576.05,
+   "end": 576.65,
+   "win_dur": 0.6,
+   "frames": [
+    576.11,
+    576.35,
+    576.59
+   ],
+   "src_seg": 35,
+   "cycle_id": 6,
+   "short": true,
+   "clip": false,
+   "clip_start": 276.05,
+   "clip_end": 276.65,
+   "clip_frames": [
+    276.11,
+    276.35,
+    276.59
+   ]
+  },
+  {
+   "idx": 46,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_cover",
+   "name_cn": "组装镜座上盖",
+   "start": 580.37,
+   "end": 582.37,
+   "win_dur": 2.0,
+   "frames": [
+    580.57,
+    581.37,
+    582.17
+   ],
+   "src_seg": 36,
+   "cycle_id": 6,
+   "short": false,
+   "clip": false,
+   "clip_start": 280.37,
+   "clip_end": 282.37,
+   "clip_frames": [
+    280.57,
+    281.37,
+    282.17
+   ]
+  },
+  {
+   "idx": 47,
+   "kind": "normal",
+   "label": "Assemble_the_mirror_base_sealing_plug",
+   "name_cn": "组装镜座密封塞",
+   "start": 587.83,
+   "end": 589.83,
+   "win_dur": 2.0,
+   "frames": [
+    588.03,
+    588.83,
+    589.63
+   ],
+   "src_seg": 37,
+   "cycle_id": 6,
+   "short": false,
+   "clip": false,
+   "clip_start": 287.83,
+   "clip_end": 289.83,
+   "clip_frames": [
+    288.03,
+    288.83,
+    289.63
+   ]
+  },
+  {
+   "idx": 48,
+   "kind": "idle",
+   "label": "idle",
+   "name_cn": "空闲/无事件",
+   "start": 597.537,
+   "end": 599.537,
+   "win_dur": 2.0,
+   "frames": [
+    597.737,
+    598.537,
+    599.337
+   ],
+   "src_seg": null,
+   "cycle_id": null,
+   "short": false,
+   "clip": false,
+   "clip_start": 297.537,
+   "clip_end": 299.537,
+   "clip_frames": [
+    297.737,
+    298.537,
+    299.337
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "reason": "nested_short",
+   "behavior": "Remove_the_upper_cover_of_the_eyepiece",
+   "start": 314.845,
+   "end": 315.605,
+   "dur": 0.76
+  }
+ ]
+}

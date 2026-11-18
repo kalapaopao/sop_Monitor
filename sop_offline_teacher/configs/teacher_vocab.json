@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "note": "教师模型的 L1-L3 约束配置。注意：out_of_scope_objects 里的物体是**画面里真实存在但不属于 SOP** 的，允许模型描述，但要求它标明「与当前SOP步骤无关」；whitelist 才是 SOP 关心的物件。",
+  "whitelist": [
+    "镜座组件",
+    "镜座上盖",
+    "镜子镜座",
+    "镜座扎带",
+    "镜座密封塞",
+    "螺丝刀",
+    "夹具",
+    "手"
+  ],
+  "banned_synonyms": {
+    "外壳": "镜座组件",
+    "电机壳": "镜座组件",
+    "电机外壳": "镜座组件",
+    "盖板": "镜座上盖",
+    "镜壳": "镜座组件",
+    "支架": "镜子镜座",
+    "金属支架": "镜子镜座",
+    "密封塞": "镜座密封塞",
+    "扎带": "镜座扎带"
+  },
+  "states": [
+    "inserted",
+    "removed",
+    "fastened",
+    "none"
+  ],
+  "unknown_action": "无法确认",
+  "unknown_object": "未识别物件",
+  "min_seg_sec": 0.4,
+  "max_seg_sec": 40.0,
+  "require_evidence": true,
+  "out_of_scope_objects": [
+    "扫码枪",
+    "塑料袋",
+    "料盒",
+    "线缆",
+    "线束",
+    "电机外壳",
+    "电动螺丝刀",
+    "气压机",
+    "夹具底座"
+  ],
+  "out_of_scope_note": "这些物体真实存在于工位，但不参与 SOP 判定；若模型把它们当成 SOP 物件并给出 state_change != none，视为张冠李戴，需要复核。"
+}

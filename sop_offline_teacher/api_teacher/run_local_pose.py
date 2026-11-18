@@ -104,7 +104,18 @@ def main():
     p.add_argument('--rate', type=float, default=10,
                    help='采样频率 Hz。10 比 5 明显更顺（5Hz 时框每 0.2s 才更新一次），耗时约 2 倍')
     p.add_argument('--pad', type=float, default=0.1, help='人物框外扩比例，避免手贴边被裁掉')
-    p.add_argument('--max-palm-ratio', type=float, default=5.0, help='掌骨长度 max/min 上限，超过视为假检测；0=不过滤')
+    p.add_argument('--max-palm-ratio', type=float, default=12.0,
+                   help='掌骨长度 max/min 上限，超过视为假检测；0=不过滤。'
+                        '原来是 5.0，是按一个视角调出来的，侧视角透视会误杀真手（实测 40s 内 91 次），'
+                        '放到 12.0 后双手覆盖率 74.0%→87.8%')
+    p.add_argument('--border', type=float, default=2.0,
+                   help='keep_hand 的贴边阈值（像素），原来 8。侧机位手常靠近画面边缘，8 会误杀')
+    p.add_argument('--conf', type=float, default=0.15,
+                   help='YOLO person 置信度，原来写死 0.25')
+    p.add_argument('--bbox-fallback', type=float, default=3.0,
+                   help='YOLO 本帧没框到人时，复用最近 N 秒内的框继续跑 RTMW；0=关闭。'
+                        '实测这是「人一动就丢手」最直接的补法：坏窗口覆盖率 42.7%→81.8%，'
+                        '且恢复出的手与最后一次真实检出位移中位仅 14px（不是硬凑）')
     a = p.parse_args()
 
     cap = cv2.VideoCapture(str(a.video))
@@ -115,27 +126,58 @@ def main():
     pose = ort.InferenceSession(str(a.pose_model), providers=['CPUExecutionProvider'])
     rows = []
     t = a.start
+    # 顺序解码：原来每 tick 用 cap.set(POS_MSEC) 定位，实测每次 seek 约 130ms，
+    # 比推理还贵 8 倍。改成顺序 grab 后同样结果、整段快 4~7 倍。
+    cursor = -1
+    last_box, last_box_t = None, -1e9
     while t < total:
-        cap.set(cv2.CAP_PROP_POS_MSEC, t * 1000); ok, frame = cap.read()
-        if not ok:
+        want_f = int(round(t * fps))
+        while cursor < want_f:
+            if not cap.grab():
+                break
+            cursor += 1
+        ok, frame = cap.retrieve() if cursor >= want_f else (False, None)
+        if not ok or frame is None:
             break
-        result = next(iter(person.predict(frame, conf=.25, verbose=False)))
+        result = next(iter(person.predict(frame, conf=a.conf, verbose=False)))
         boxes = result.boxes.xyxy.cpu().numpy() if result.boxes is not None else np.empty((0, 4))
         scores = result.boxes.conf.cpu().numpy() if result.boxes is not None else np.empty(0)
+        body_pts = {}
         if len(boxes):
             i = int(np.argmax(scores))
             box = boxes[i].tolist()
+            box_score = float(scores[i])
+            box_src = 'yolo'
+            last_box, last_box_t = box, t
+        elif a.bbox_fallback > 0 and last_box is not None and (t - last_box_t) <= a.bbox_fallback:
+            # 人不会瞬移：本帧没框到人就用最近的框继续跑，别整帧把信息丢掉
+            box, box_score, box_src = last_box, 0.0, 'fallback'
+        else:
+            box, box_score, box_src = None, 0.0, 'none'
+        if box is not None:
             tensor, meta = crop_person(frame, box, a.pad)
             if tensor is None:
                 left_pts = right_pts = []
             else:
                 points = decode(pose.run(None, {pose.get_inputs()[0].name: tensor}), meta)
-                left_pts = keep_hand(points[91:112], frame.shape, max_palm_ratio=a.max_palm_ratio)
-                right_pts = keep_hand(points[112:133], frame.shape, max_palm_ratio=a.max_palm_ratio)
-            rows.append({'timestamp': round(t, 3), 'person': {'bbox': box, 'score': float(scores[i])},
-                         'left_hand': left_pts, 'right_hand': right_pts})
+                left_pts = keep_hand(points[91:112], frame.shape, border=a.border,
+                                     max_palm_ratio=a.max_palm_ratio)
+                right_pts = keep_hand(points[112:133], frame.shape, border=a.border,
+                                      max_palm_ratio=a.max_palm_ratio)
+                # 身体关键点（RTMW wholebody 133 点的 0-22 为身体）：
+                #   5/6=左右肩 7/8=左右肘 9/10=左右腕 11/12=左右髋
+                def _p(idx):
+                    q = points[idx]
+                    return [float(v) for v in q] if isinstance(q, (list, tuple)) else list(np.asarray(q).ravel()[:3])
+                body_pts = {k: _p(i) for k, i in (
+                    ('shoulder_l', 5), ('shoulder_r', 6), ('elbow_l', 7), ('elbow_r', 8),
+                    ('wrist_l', 9), ('wrist_r', 10), ('hip_l', 11), ('hip_r', 12))}
+            rows.append({'timestamp': round(t, 3),
+                         'person': {'bbox': box, 'score': box_score, 'src': box_src},
+                         'left_hand': left_pts, 'right_hand': right_pts, 'body': body_pts})
         else:
-            rows.append({'timestamp': round(t, 3), 'person': None, 'left_hand': [], 'right_hand': []})
+            rows.append({'timestamp': round(t, 3), 'person': None, 'left_hand': [],
+                         'right_hand': [], 'body': {}})
         t += 1 / a.rate
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps({'video': str(a.video), 'fps': fps, 'duration': video_duration,

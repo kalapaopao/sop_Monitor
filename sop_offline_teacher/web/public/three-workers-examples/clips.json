@@ -1,0 +1,691 @@
+{
+  "steps": [
+    {
+      "id": "side_1",
+      "display_name": "side_1 代表周期",
+      "observable_definition": "模型独立提出的局部分段，名称和边界仍需核对。共同词表经画面复核后用于检测页。"
+    },
+    {
+      "id": "side2",
+      "display_name": "side2 代表周期",
+      "observable_definition": "模型独立提出的局部分段，名称和边界仍需核对。共同词表经画面复核后用于检测页。"
+    },
+    {
+      "id": "side3",
+      "display_name": "side3 代表周期",
+      "observable_definition": "模型独立提出的局部分段，名称和边界仍需核对。共同词表经画面复核后用于检测页。"
+    }
+  ],
+  "clips": [
+    {
+      "step_id": "side_1",
+      "name": "银色金属壳体手持预装与定位",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 60.0,
+      "end": 67.0,
+      "start_frame": 1501,
+      "end_frame": 1676,
+      "url": "/three-workers-examples/side_1_00.mp4",
+      "evidence": [
+        {
+          "time_s": 60,
+          "observed": "工人右手持黑色塑料件（暂放绿色传送带），左手持银色金属壳体，二者分离"
+        },
+        {
+          "time_s": 64,
+          "observed": "工人双手持银色金属壳体，翻转检查，壳体内部可见结构，无其他部件附着"
+        },
+        {
+          "time_s": 67,
+          "observed": "壳体仍被手持，未放置于定位座；定位座内仍为空（仅白布覆盖）"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "黑色塑料件拆包与手持预处理",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 69.0,
+      "end": 78.0,
+      "start_frame": 1726,
+      "end_frame": 1951,
+      "url": "/three-workers-examples/side_1_01.mp4",
+      "evidence": [
+        {
+          "time_s": 69,
+          "observed": "工人双手持透明塑料袋包裹的黑色塑料件"
+        },
+        {
+          "time_s": 71,
+          "observed": "正在撕开包装膜，黑色件部分露出"
+        },
+        {
+          "time_s": 75,
+          "observed": "已完全取出黑色塑料件，手持观察，其内侧有金属支架结构"
+        },
+        {
+          "time_s": 78,
+          "observed": "黑色件仍在手中，未放置；定位座仍为空"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "黑色塑料件置入定位座并固定",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 84.0,
+      "end": 86.0,
+      "start_frame": 2101,
+      "end_frame": 2151,
+      "url": "/three-workers-examples/side_1_02.mp4",
+      "evidence": [
+        {
+          "time_s": 84,
+          "observed": "工人右手持黑色塑料件，正移向定位座"
+        },
+        {
+          "time_s": 85,
+          "observed": "黑色塑料件已置于白布上，双手按压使其贴合定位座"
+        },
+        {
+          "time_s": 86,
+          "observed": "黑色件稳定位于定位座中央，白布被压住，形成装配基座"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "银色金属壳体与黑色塑料件对合装配",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 87.0,
+      "end": 92.0,
+      "start_frame": 2176,
+      "end_frame": 2301,
+      "url": "/three-workers-examples/side_1_03.mp4",
+      "evidence": [
+        {
+          "time_s": 87,
+          "observed": "银色壳体被手持，正对准定位座内黑色件顶部"
+        },
+        {
+          "time_s": 88,
+          "observed": "壳体已扣在黑色件上，工人双手扶正，二者形成组合体"
+        },
+        {
+          "time_s": 92,
+          "observed": "组合体稳定在定位座上，壳体与黑色件边缘对齐，无工具介入"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "线束插入黑色塑料件预留孔位",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 88.0,
+      "end": 95.0,
+      "start_frame": 2201,
+      "end_frame": 2376,
+      "url": "/three-workers-examples/side_1_04.mp4",
+      "evidence": [
+        {
+          "time_s": 88,
+          "observed": "工人右手持线束（黄黑相间外皮），左手指引黑色件插口"
+        },
+        {
+          "time_s": 90,
+          "observed": "线束端部已插入黑色件侧面孔位，导线可见伸出"
+        },
+        {
+          "time_s": 93,
+          "observed": "线束完全插入，工人用手指轻压固定"
+        },
+        {
+          "time_s": 95,
+          "observed": "线束稳固连接，未使用工具；壳体仍覆盖其上"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "气动螺丝刀紧固组合体螺钉",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 96.0,
+      "end": 118.0,
+      "start_frame": 2401,
+      "end_frame": 2951,
+      "url": "/three-workers-examples/side_1_05.mp4",
+      "evidence": [
+        {
+          "time_s": 96,
+          "observed": "工人左手取蓝盒中螺钉，右手持气动螺丝刀就位"
+        },
+        {
+          "time_s": 98,
+          "observed": "螺丝刀头接触第一颗螺钉，开始旋转紧固"
+        },
+        {
+          "time_s": 102,
+          "observed": "完成第一颗，移至第二颗位置；螺钉为黑色十字槽"
+        },
+        {
+          "time_s": 112,
+          "observed": "再次取钉，准备第三颗紧固"
+        },
+        {
+          "time_s": 118,
+          "observed": "最后一颗螺钉紧固完成，螺丝刀抬起"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "手动调整线束与壳体间隙",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 119.0,
+      "end": 129.0,
+      "start_frame": 2976,
+      "end_frame": 3226,
+      "url": "/three-workers-examples/side_1_06.mp4",
+      "evidence": [
+        {
+          "time_s": 119,
+          "observed": "工人双手离开螺丝刀，开始触摸壳体边缘"
+        },
+        {
+          "time_s": 122,
+          "observed": "左手按压壳体一侧，右手整理线束弯曲处"
+        },
+        {
+          "time_s": 126,
+          "observed": "用拇指沿壳体与黑色件接缝滑动，检查贴合度"
+        },
+        {
+          "time_s": 129,
+          "observed": "调整结束，双手准备取件"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "组合体移出定位座",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 130.0,
+      "end": 132.0,
+      "start_frame": 3251,
+      "end_frame": 3301,
+      "url": "/three-workers-examples/side_1_07.mp4",
+      "evidence": [
+        {
+          "time_s": 130,
+          "observed": "双手托起组合体，脱离白布定位座"
+        },
+        {
+          "time_s": 131,
+          "observed": "组合体已离开工位中心，移向右方传送带"
+        },
+        {
+          "time_s": 132,
+          "observed": "组合体放置于绿色传送带上，工人手收回"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side_1",
+      "name": "新银色壳体取用与准备",
+      "video": "side_1",
+      "cycle": 1,
+      "start": 133.0,
+      "end": 134.0,
+      "start_frame": 3326,
+      "end_frame": 3351,
+      "url": "/three-workers-examples/side_1_08.mp4",
+      "evidence": [
+        {
+          "time_s": 133,
+          "observed": "工人右手从绿色传送带取银色壳体（与P1同型）"
+        },
+        {
+          "time_s": 134,
+          "observed": "壳体置于台面，左手准备操作；定位座已空"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "银色金属壳体取放与初置",
+      "video": "side2",
+      "cycle": 1,
+      "start": 81.0,
+      "end": 83.0,
+      "start_frame": 2025,
+      "end_frame": 2075,
+      "url": "/three-workers-examples/side2_00.mp4",
+      "evidence": [
+        {
+          "time_s": 81,
+          "observed": "右手持银色金属壳体从右侧绿色传送带取下"
+        },
+        {
+          "time_s": 83,
+          "observed": "银色壳体被放置于中央白布定位座内，定位座此前为空"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "黑色塑料盖取用与手持对合",
+      "video": "side2",
+      "cycle": 1,
+      "start": 84.0,
+      "end": 95.0,
+      "start_frame": 2100,
+      "end_frame": 2375,
+      "url": "/three-workers-examples/side2_01.mp4",
+      "evidence": [
+        {
+          "time_s": 84,
+          "observed": "左手持银色壳体，右手从右侧取黑色塑料盖（透明袋中取出）"
+        },
+        {
+          "time_s": 88,
+          "observed": "双手持黑盖与银壳在空中对合，未接触定位座；黑盖有开孔，银壳有凸缘结构可见"
+        },
+        {
+          "time_s": 95,
+          "observed": "对合动作结束，黑盖仍由手持有，银壳仍在定位座内"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "黑盖-银壳组合件装入定位座",
+      "video": "side2",
+      "cycle": 1,
+      "start": 105.0,
+      "end": 107.0,
+      "start_frame": 2625,
+      "end_frame": 2675,
+      "url": "/three-workers-examples/side2_02.mp4",
+      "evidence": [
+        {
+          "time_s": 105,
+          "observed": "工人双手持黑盖+银壳组合件，位于定位座上方"
+        },
+        {
+          "time_s": 106,
+          "observed": "组合件被压入白布定位座，定位座内现同时存在黑盖与银壳"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": true
+    },
+    {
+      "step_id": "side2",
+      "name": "线缆插入黑盖-银壳组合件",
+      "video": "side2",
+      "cycle": 1,
+      "start": 109.0,
+      "end": 115.0,
+      "start_frame": 2725,
+      "end_frame": 2875,
+      "url": "/three-workers-examples/side2_03.mp4",
+      "evidence": [
+        {
+          "time_s": 109,
+          "observed": "右手持黄黑线缆，左手指引插头对准组合件顶部开口"
+        },
+        {
+          "time_s": 112,
+          "observed": "插头已部分插入，线缆弯曲进入组合件腔体"
+        },
+        {
+          "time_s": 115,
+          "observed": "线缆插接完成，手仍持线缆尾部，未释放"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "气动螺丝刀紧固组合件",
+      "video": "side2",
+      "cycle": 1,
+      "start": 118.0,
+      "end": 137.0,
+      "start_frame": 2950,
+      "end_frame": 3425,
+      "url": "/three-workers-examples/side2_04.mp4",
+      "evidence": [
+        {
+          "time_s": 118,
+          "observed": "右手取气动螺丝刀，左手从蓝盒取螺钉"
+        },
+        {
+          "time_s": 120,
+          "observed": "螺丝刀头接触组合件黑盖侧缘，开始旋转；左手按压组合件"
+        },
+        {
+          "time_s": 125,
+          "observed": "第一次紧固结束，换位准备第二次；螺钉盒中螺钉数量减少"
+        },
+        {
+          "time_s": 137,
+          "observed": "最后一次气动紧固完成，工具抬起"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "手动工具补拧与检查",
+      "video": "side2",
+      "cycle": 1,
+      "start": 140.0,
+      "end": 157.0,
+      "start_frame": 3500,
+      "end_frame": 3925,
+      "url": "/three-workers-examples/side2_05.mp4",
+      "evidence": [
+        {
+          "time_s": 140,
+          "observed": "右手持黄柄螺丝刀，左手扶组合件，刀头接触黑盖边缘"
+        },
+        {
+          "time_s": 146,
+          "observed": "刀头在不同位置短促旋转，无螺钉掉落或取出迹象"
+        },
+        {
+          "time_s": 155,
+          "observed": "最后以指腹轻压黑盖表面，似做密封/贴合检查"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "组合件移出定位座",
+      "video": "side2",
+      "cycle": 1,
+      "start": 158.0,
+      "end": 159.0,
+      "start_frame": 3950,
+      "end_frame": 3975,
+      "url": "/three-workers-examples/side2_06.mp4",
+      "evidence": [
+        {
+          "time_s": 158,
+          "observed": "双手抓取组合件，从白布定位座提起"
+        },
+        {
+          "time_s": 159,
+          "observed": "组合件被移至右侧绿色传送带上方，即将放置"
+        },
+        {
+          "time_s": 160,
+          "observed": "定位座内仅余白布，无工件"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side2",
+      "name": "新银壳取放准备下一周期",
+      "video": "side2",
+      "cycle": 1,
+      "start": 162.0,
+      "end": 164.0,
+      "start_frame": 4050,
+      "end_frame": 4100,
+      "url": "/three-workers-examples/side2_07.mp4",
+      "evidence": [
+        {
+          "time_s": 162,
+          "observed": "右手从右侧传送带取新银色壳体"
+        },
+        {
+          "time_s": 163,
+          "observed": "银壳置于台面，定位座仍空"
+        },
+        {
+          "time_s": 164,
+          "observed": "工人手悬停，片段终止；未完成装入"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side3",
+      "name": "银色金属支架与黑色塑料壳体手持对合",
+      "video": "side3",
+      "cycle": 1,
+      "start": 69.0,
+      "end": 88.0,
+      "start_frame": 1725,
+      "end_frame": 2200,
+      "url": "/three-workers-examples/side3_00.mp4",
+      "evidence": [
+        {
+          "time_s": 69,
+          "observed": "工人右手取黑色壳体，左手持银色支架，开始靠近"
+        },
+        {
+          "time_s": 75,
+          "observed": "两部件在手中对齐，银色件凸台插入黑色件凹槽"
+        },
+        {
+          "time_s": 82,
+          "observed": "持续按压使两件贴合，形成一体结构"
+        },
+        {
+          "time_s": 88,
+          "observed": "组合体已稳定持握，准备放置"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side3",
+      "name": "组合体置入白布定位座并手调就位",
+      "video": "side3",
+      "cycle": 1,
+      "start": 89.0,
+      "end": 92.0,
+      "start_frame": 2225,
+      "end_frame": 2300,
+      "url": "/three-workers-examples/side3_01.mp4",
+      "evidence": [
+        {
+          "time_s": 89,
+          "observed": "组合体离开手持状态，向定位座移动"
+        },
+        {
+          "time_s": 90,
+          "observed": "组合体落入白布覆盖区域，部分被遮挡"
+        },
+        {
+          "time_s": 92,
+          "observed": "双手扶正组合体，使其稳定坐于定位座中"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side3",
+      "name": "黑色线缆组件插入与黄线工具压接",
+      "video": "side3",
+      "cycle": 1,
+      "start": 93.0,
+      "end": 107.0,
+      "start_frame": 2325,
+      "end_frame": 2675,
+      "url": "/three-workers-examples/side3_02.mp4",
+      "evidence": [
+        {
+          "time_s": 93,
+          "observed": "工人右手持黑色线缆组件，对准组合体顶部孔位"
+        },
+        {
+          "time_s": 95,
+          "observed": "线缆插头已插入，黄黑线从组件引出并悬垂"
+        },
+        {
+          "time_s": 100,
+          "observed": "工人用拇指沿黄线方向推压组合体内侧结构，黄线随动"
+        },
+        {
+          "time_s": 106,
+          "observed": "黄线仍附着在线缆上，未脱离；工人结束压接动作"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side3",
+      "name": "悬挂式电动螺丝刀多点紧固",
+      "video": "side3",
+      "cycle": 1,
+      "start": 108.0,
+      "end": 130.0,
+      "start_frame": 2700,
+      "end_frame": 3250,
+      "url": "/three-workers-examples/side3_03.mp4",
+      "evidence": [
+        {
+          "time_s": 108,
+          "observed": "工人取下悬挂螺丝刀，左手扶组合体"
+        },
+        {
+          "time_s": 109,
+          "observed": "刀头接触第一处螺钉孔，开始拧紧"
+        },
+        {
+          "time_s": 113,
+          "observed": "右手从蓝色料盒取新螺钉，装入刀头"
+        },
+        {
+          "time_s": 116,
+          "observed": "第二处拧紧动作，位置明显偏移"
+        },
+        {
+          "time_s": 128,
+          "observed": "第四次拧紧完成，刀头抬起"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    },
+    {
+      "step_id": "side3",
+      "name": "成品移出定位座并移交下游",
+      "video": "side3",
+      "cycle": 1,
+      "start": 131.0,
+      "end": 136.0,
+      "start_frame": 3275,
+      "end_frame": 3400,
+      "url": "/three-workers-examples/side3_04.mp4",
+      "evidence": [
+        {
+          "time_s": 131,
+          "observed": "工人双手托起组合体，脱离定位座"
+        },
+        {
+          "time_s": 132,
+          "observed": "组合体被举高，转向右侧传送带"
+        },
+        {
+          "time_s": 134,
+          "observed": "工件置于绿色传送带起始段，工人松手"
+        },
+        {
+          "time_s": 136,
+          "observed": "工人双手返回，准备下一周期"
+        }
+      ],
+      "warnings": [
+        "模型局部自由分段待核对，可能与其他阶段重叠，工具类型和内部状态描述可能补猜。"
+      ],
+      "context_added": false
+    }
+  ]
+}

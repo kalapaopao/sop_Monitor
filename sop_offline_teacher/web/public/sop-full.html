@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>if(location.protocol==='file:')location.replace('http://127.0.0.1:5174/sop-full.html');</script>
+<title>全片 SOP 捕捉</title>
+<style>
+:root{color-scheme:dark;font-family:"Microsoft YaHei",sans-serif;background:#101718;color:#eef2ed;--accent:#c6ea7d}*{box-sizing:border-box}body{margin:0}header{padding:26px 4vw;border-bottom:1px solid #34413d}h1{margin:0;font-size:28px}header p,#coverage{color:#bac8bf;line-height:1.8}a{color:var(--accent)}main{padding:22px 4vw;max-width:1720px;margin:auto}.filters{display:flex;flex-wrap:wrap;gap:14px;align-items:center;position:sticky;top:0;background:#101718f5;padding:16px 0;z-index:2}label{font-size:14px}select,button{font:inherit;padding:9px;border:1px solid #53645b;border-radius:5px;background:#1d2925;color:#edf2ed}select{max-width:360px}button{cursor:pointer}button:disabled{opacity:.4}#grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:18px}article{background:#17211d;border:1px solid #3a4a41;border-radius:8px;overflow:hidden}video{width:100%;aspect-ratio:16/9;display:block;background:#050908}.text{padding:16px}h2{font-size:18px;margin:0 0 10px}article p{font-size:14px;line-height:1.7;color:#b7c8bc}.tag{color:#c6ea7d!important}.review{color:#efc38b!important}details{font-size:13px;line-height:1.8}summary{cursor:pointer;color:#b4c7bc}.paging{display:flex;gap:16px;align-items:center;margin:24px 0}#status{line-height:1.8}#timeline{display:flex;height:18px;background:#303b36;overflow:hidden;border-radius:3px;margin:12px 0}#timeline span{height:100%;cursor:pointer;border-right:1px solid #101718}#timeline span:focus{outline:2px solid white}@media(max-width:760px){#grid{grid-template-columns:1fr}select{max-width:240px}}
+</style>
+<header><h1>全片 SOP 捕捉</h1><p>固定六步 SOP · 步骤内查看手、物件、工具交互 · 模型候选待复核</p><a href="/sop-discovery.html">原版代表片段</a> · <a href="/sop-refinement.html">预处理细分实验</a></header>
+<main><div id="status" role="status">正在读取全片结果…</div><div class="filters">
+<label>视频 <select id="video"><option>side_1</option><option>v2</option></select></label>
+<label>周期 <select id="cycle"><option value="">全部候选周期</option></select></label>
+<label>阶段 <select id="parent"><option value="">全部阶段</option></select></label>
+<label>动作 <select id="name"><option value="">全部动作名称</option></select></label>
+<label><input id="other" type="checkbox"> 显示等待与无法确认</label>
+</div><div id="coverage"></div><details id="gaps"><summary>查看未覆盖区间</summary><p id="gap-text"></p></details><div id="timeline" aria-label="点击时间轴查看所在片段"></div><div class="paging"><button id="prev">上一页</button><span id="page"></span><button id="next">下一页</button></div><div id="grid"></div><div class="paging"><button id="top">回到筛选栏</button></div></main>
+<script type="module">
+const byId=id=>document.getElementById(id);
+const colors=['#c6ea7d','#75d6c1','#80a7ee','#ca9ce6','#e9b16e','#a6b7a6'];
+let data,filtered=[],page=0;const pageSize=16;
+function options(id,values,label){const select=byId(id);select.replaceChildren(new Option(label,''));for(const value of values)select.append(new Option(value,value));}
+function videoChanged(){
+  const segments=data.segments.filter(s=>s.video===byId('video').value);
+  const cycles=new Map(segments.map(s=>[s.cycle_id,s.cycle_label]));
+  byId('cycle').replaceChildren(new Option('全部候选周期',''));
+  for(const [id,label] of cycles)byId('cycle').append(new Option(label,id));
+  options('parent',[...new Set(segments.map(s=>s.parent))],'全部阶段');
+  parentChanged();
+  const coverage=data.videos.find(v=>v.video===byId('video').value);
+  byId('coverage').textContent=`采样范围 0–${coverage.sampled_end.toFixed(1)} 秒 · ${coverage.samples} 张图 · 模型输出 ${coverage.segments} 段 · 未覆盖 ${coverage.uncovered_seconds.toFixed(1)} 秒`;
+  byId('gap-text').textContent=coverage.uncovered_intervals.map(([a,b])=>`${a.toFixed(1)}–${b.toFixed(1)} 秒`).join('、') || '当前结果无未覆盖区间';
+  const timeline=byId('timeline');timeline.replaceChildren();
+  let cursor=0;
+  for(const segment of segments){
+    if(segment.start>cursor){const gap=document.createElement('span');gap.style.width=`${(segment.start-cursor)/coverage.sampled_end*100}%`;gap.title='未覆盖';timeline.append(gap);}
+    const block=document.createElement('span');block.tabIndex=0;
+    block.style.width=`${(segment.end-segment.start)/coverage.sampled_end*100}%`;
+    block.style.background=segment.kind==='step'?colors[Math.abs(segment.parent.length)%colors.length]:'#58645d';
+    block.title=`${segment.start.toFixed(1)}–${segment.end.toFixed(1)} 秒 ${segment.name}`;
+    const jump=()=>{byId('parent').value='';byId('cycle').value='';options('name',[],'全部动作名称');byId('other').checked=true;filter();const index=filtered.findIndex(s=>s.id===segment.id);page=Math.floor(index/pageSize);render();byId(segment.id)?.scrollIntoView({behavior:'smooth',block:'center'});};
+    block.onclick=jump;block.onkeydown=e=>{if(e.key==='Enter')jump();};timeline.append(block);cursor=Math.max(cursor,segment.end);
+  }
+}
+function parentChanged(){const segments=data.segments.filter(s=>s.video===byId('video').value&&(!byId('parent').value||s.parent===byId('parent').value));options('name',[...new Set(segments.map(s=>s.name))],'全部动作名称');filter();}
+function filter(){filtered=data.segments.filter(s=>s.video===byId('video').value&&(!byId('cycle').value||s.cycle_id===byId('cycle').value)&&(!byId('parent').value||s.parent===byId('parent').value)&&(!byId('name').value||s.name===byId('name').value)&&(byId('other').checked||s.kind==='step'));page=0;render();}
+function render(){
+  const grid=byId('grid');for(const video of grid.querySelectorAll('video'))video.pause();grid.replaceChildren();
+  byId('page').textContent=`${filtered.length} 段 · 第 ${page+1}/${Math.max(1,Math.ceil(filtered.length/pageSize))} 页`;
+  byId('prev').disabled=page===0;byId('next').disabled=(page+1)*pageSize>=filtered.length;
+  for(const segment of filtered.slice(page*pageSize,(page+1)*pageSize)){
+    const card=document.createElement('article');card.id=segment.id;
+    const video=document.createElement('video');video.controls=true;video.playsInline=true;video.preload='none';video.src=segment.url;video.poster=segment.url.replace(/\.mp4$/,'.jpg');
+    video.onplay=()=>{for(const other of grid.querySelectorAll('video'))if(other!==video)other.pause();};
+    const text=document.createElement('div');text.className='text';
+    const title=document.createElement('h2');title.textContent=(segment.step_id==='unknown'?'待确认 · ':segment.step_id+' · ')+segment.name;
+    const tag=document.createElement('p');tag.className='tag';tag.textContent=`${segment.parent} · ${segment.video} · ${segment.start.toFixed(2)}–${segment.end.toFixed(2)} 秒 · ${(segment.end-segment.start).toFixed(1)} 秒`;
+    const note=document.createElement('p');note.className='review';note.textContent=segment.cycle_label+' · 模型类别、周期与边界待复核'+((segment.extends_before||segment.extends_after)?' · 动作跨分析窗口':'')+(segment.sequence_flags.length?' · '+segment.sequence_flags.join('；'):'');
+    const interactions=document.createElement('div');
+    const repeatCounts=new Map();
+    for(const child of segment.children||[]){const relation=child.hand_object_interaction;if(relation){const key=[relation.object,relation.contact].filter(Boolean).join(' · ');if(key)repeatCounts.set(key,(repeatCounts.get(key)||0)+1);}}
+    const repeats=[...repeatCounts].filter(([,count])=>count>1);
+    if(repeats.length){const p=document.createElement('p');p.textContent='本步骤内重复交互 '+repeats.map(([name,count])=>`${name} × ${count}`).join(' / ');interactions.append(p);}
+    let stopAt=null;
+    video.addEventListener('timeupdate',()=>{if(stopAt!==null&&video.currentTime>=stopAt){video.pause();stopAt=null;}});
+    video.addEventListener('seeking',()=>{if(stopAt!==null&&video.currentTime>stopAt)stopAt=null;});
+    for(const child of segment.children||[]){
+      const row=document.createElement('div');row.style.cssText='border-top:1px solid #39483e;padding:12px 0';
+      const button=document.createElement('button');button.textContent=`${child.start.toFixed(1)}–${child.end.toFixed(1)} 秒 · ${child.name}`;
+      button.onclick=()=>{const ratio=segment.rendered_duration/(segment.end-segment.start);video.currentTime=Math.max(0,(child.start-segment.start)*ratio);stopAt=(child.end-segment.start)*ratio;video.play().catch(error=>{note.textContent='播放失败 '+error.message;});};
+      row.append(button);
+      const interaction=child.hand_object_interaction;
+      if(interaction){const p=document.createElement('p');p.textContent=[interaction.hand,interaction.object,interaction.tool,interaction.contact].filter(Boolean).join(' · ');if(interaction.before||interaction.after)p.textContent+=' · '+(interaction.before||'未说明')+' → '+(interaction.after||'未说明');row.append(p);}
+      interactions.append(row);
+    }
+    const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='模型画面证据';details.append(summary);
+    for(const evidence of segment.evidence||[]){const p=document.createElement('p');p.textContent=`${evidence.time_s} 秒 · ${evidence.observed}`;details.append(p);}
+    if(segment.end-segment.start>10&&segment.over_10s_reason){const p=document.createElement('p');p.textContent=segment.over_10s_reason;details.append(p);}
+    text.append(title,tag,note,interactions,details);card.append(video,text);grid.append(card);
+  }
+}
+byId('video').onchange=videoChanged;byId('cycle').onchange=filter;byId('parent').onchange=parentChanged;byId('name').onchange=filter;byId('other').onchange=filter;
+byId('prev').onclick=()=>{page--;render();};byId('next').onclick=()=>{page++;render();};byId('top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+try{const response=await fetch('/sop-full/segments.json',{cache:'no-store'});if(!response.ok)throw new Error(`HTTP ${response.status}`);data=await response.json();byId('status').textContent=`分析完成 ${data.jobs_parsed}/${data.jobs_total} 个窗口 · 两个视频共 ${data.segments.filter(s=>s.kind==='step').length} 段作业候选 · ${data.issues.length} 项数据检查问题。六步名称固定，未匹配动作单列待确认。`;videoChanged();}catch(error){byId('status').textContent='全片结果尚未发布，请稍后刷新。'+error.message;}
+</script></html>

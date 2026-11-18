@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  // Opening this HTML from Explorer needs the local server for JSON and video URLs.
+  if (location.protocol === 'file:') {
+    location.replace('http://localhost:5174/three-workers-sop.html?review=1' + location.hash);
+  }
+</script>
+<title>三位工人工序对照</title>
+<style>
+  :root{color-scheme:dark;font-family:"Microsoft YaHei",sans-serif;background:#101718;color:#edf2ed;--accent:#c6ea7d}
+  *{box-sizing:border-box}body{margin:0}header{padding:28px 4vw 20px;border-bottom:1px solid #34413d}header p{color:#a7b7ad;font-size:14px;line-height:1.8;margin:8px 0}h1{font-size:28px;margin:0;font-weight:600}a{color:var(--accent)}
+  nav{position:sticky;top:0;z-index:2;display:flex;gap:10px;padding:14px 4vw;background:#101718f5;border-bottom:1px solid #34413d;overflow:auto}button{font:inherit;cursor:pointer;border:1px solid #53645b;background:#1d2925;color:#edf2ed;padding:10px 16px;border-radius:6px;white-space:nowrap}button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#142017}button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+  main{padding:24px 4vw 48px;max-width:1720px;margin:auto}h2{margin:0;font-size:23px}#definition{color:#b4c4ba;line-height:1.8;max-width:1000px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:22px}article{border:1px solid #3a4a41;border-radius:9px;overflow:hidden;background:#17211d}video{width:100%;aspect-ratio:16/9;background:#050908;display:block}.caption{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 18px}.caption h3{font-size:17px;margin:0 0 6px}.caption p{font-size:13px;color:#a8b9ad;margin:0}.caption button{padding:8px 12px}.error{color:#ffbaae}#status{color:#b4c4ba}footer{font-size:13px;color:#a8b9ad;margin-top:24px;line-height:1.8}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:23px}nav{padding-inline:4vw}}
+</style>
+<header><h1>三位工人工序对照</h1><p>Qwen 独立观察每位工人的代表周期 · 局部分段候选待复核</p><a href="/?run=three_workers_side3">查看共同词表及 side3 全片检测</a> · <a href="/?run=pred_hmm_full">查看 pred_hmm_full 基线</a></header>
+<nav id="tabs" aria-label="工序选择"></nav>
+<main><p id="status" role="status">正在读取片段…</p><h2 id="heading"></h2><p id="definition"></p><div class="grid" id="clips"></div><footer>这里保留模型独立提出的阶段名称和边界，部分名称含有待核对的工具类型或内部状态，部分阶段可能重叠。<br>只有一帧支持的阶段补前后各1秒上下文供查看。共同工序词表另经画面复核，已在检测页注明修订。</footer></main>
+<script type="module">
+const tabs = document.querySelector('#tabs');
+const container = document.querySelector('#clips');
+const status = document.querySelector('#status');
+let data;
+function selectStep(id) {
+  const step = data.steps.find(s => s.id === id) || data.steps[0];
+  for (const video of container.querySelectorAll('video')) video.pause();
+  document.querySelector('#heading').textContent = step.display_name;
+  document.querySelector('#definition').textContent = step.observable_definition;
+  for (const button of tabs.children) button.setAttribute('aria-pressed', String(button.dataset.id === step.id));
+  container.replaceChildren();
+  const clips = data.clips.filter(c => c.step_id === step.id);
+  for (const clip of clips) {
+    const card = document.createElement('article');
+    const video = document.createElement('video');
+    video.controls = true;
+    video.preload = 'metadata';
+    video.playsInline = true;
+    video.src = clip.url;
+    video.poster = clip.url.replace(/\.mp4$/, '.jpg');
+    video.setAttribute('aria-label', `${clip.name} ${clip.video} 周期 ${clip.cycle}`);
+    video.addEventListener('play', () => {
+      for (const other of container.querySelectorAll('video')) if (other !== video) other.pause();
+    });
+    const caption = document.createElement('div');
+    caption.className = 'caption';
+    const text = document.createElement('div');
+    const title = document.createElement('h3');
+    title.textContent = clip.name;
+    const range = document.createElement('p');
+    range.textContent = `原视频约 ${clip.start}–${clip.end} 秒${clip.context_added ? ' · 已补前后上下文' : ''}`;
+    text.append(title, range);
+    const replay = document.createElement('button');
+    replay.textContent = '重播片段';
+    replay.addEventListener('click', async () => {
+      video.currentTime = 0;
+      try { await video.play(); } catch (error) { status.textContent = `播放失败 ${error.message}`; }
+    });
+    video.addEventListener('error', () => { range.textContent = '视频加载失败，请刷新重试'; range.className = 'error'; });
+    caption.append(text, replay);
+    card.append(video, caption);
+    const review = document.createElement('div');
+    review.style.cssText = 'padding:0 18px 18px;line-height:1.8;color:#e8bf80;font-size:13px';
+    const warning = document.createElement('p');
+    warning.textContent = (clip.warnings || []).join(' ') || '模型候选，名称及边界待复核。';
+    review.append(warning);
+    if (clip.over_10s_reason && clip.end - clip.start > 10) {
+      const reason = document.createElement('p');
+      reason.textContent = '模型保留长段的理由 ' + clip.over_10s_reason;
+      review.append(reason);
+    }
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = '查看模型证据';
+    details.append(summary);
+    for (const evidence of clip.evidence || []) {
+      const line = document.createElement('p');
+      line.textContent = evidence.time_s.toFixed(2) + ' 秒 · ' + evidence.observed;
+      details.append(line);
+    }
+    review.append(details);
+    card.append(review);
+    container.append(card);
+  }
+  status.textContent = `${clips.length} 个片段 · 这位工人的局部候选阶段`;
+  history.replaceState(null, '', `#${step.id}`);
+}
+try {
+  const response = await fetch('/three-workers-examples/clips.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  data = await response.json();
+  for (const step of data.steps) {
+    const button = document.createElement('button');
+    button.textContent = step.display_name;
+    button.dataset.id = step.id;
+    button.addEventListener('click', () => selectStep(step.id));
+    tabs.append(button);
+  }
+  selectStep(location.hash.slice(1));
+} catch (error) { status.textContent = `片段读取失败 ${error.message}`; status.className = 'error'; }
+</script>
+</html>

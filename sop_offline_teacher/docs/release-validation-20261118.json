@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-18",
+  "default_run": "pred_hmm_full",
+  "default_segments": 65,
+  "recording_run": "pred_hmm_confirmed_test",
+  "recording_segments": 66,
+  "protected_nx_files_unchanged": 94,
+  "json_parsed": 54,
+  "python_syntax_checked": 70,
+  "runs_dependency_checked": 21,
+  "credential_pattern_hits": 0,
+  "max_file_under_100MiB": true,
+  "current_document_links_resolve": true,
+  "baseline_reproduced_exact_boundaries": true,
+  "segment_hit": {
+    "hit": 27,
+    "total": 37,
+    "iou": 0.3
+  },
+  "unittest": {
+    "passed": 3
+  },
+  "pytest": "not installed; unittest fallback used",
+  "restore_clip_checks": "actual 10-frame clip/poster + existing skip + missing-source/path-escape rejection; 172 missing media dry-run passed in release checkout",
+  "full_training_rerun": false,
+  "online_nx_sop_verified": false
+}

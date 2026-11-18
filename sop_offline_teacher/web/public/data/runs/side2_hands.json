@@ -1,0 +1,32 @@
+{
+ "version": 1,
+ "video": "side2_120s_v2.mp4",
+ "duration": 120.0,
+ "source": "teacher-run:side2_hands",
+ "note": "来自 api_runs/side2_placeholder/segments_proposal.json；共 1 段，其中 1 段需人工复核",
+ "coverage": [
+  0.0,
+  120.0
+ ],
+ "steps": [
+  {
+   "idx": 0,
+   "step_id": "unknown",
+   "name": "流程外或插入式局部处理",
+   "start": 0.0,
+   "end": 120.0,
+   "kind": "step",
+   "source": "teacher:side2_hands",
+   "color": 6,
+   "need_review": true,
+   "action": "本视频只做手部识别验收，未做 SOP 分段（无人工标注）",
+   "evidence": "side2.mp4 侧面机位；RTMW 双手覆盖 86.1%、至少一只手 91.3%；融合 MediaPipe 后 93.5%",
+   "state_change": "none",
+   "left_hand": "",
+   "right_hand": "",
+   "confidence": null
+  }
+ ],
+ "pose": "local_pose_side2_web2.json",
+ "station": "ST02"
+}

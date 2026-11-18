@@ -1,0 +1,388 @@
+{
+ "version": 1,
+ "video": "v2_5m_7m_pose.mp4",
+ "duration": 119.99,
+ "source": "teacher-run:p3_enriched",
+ "note": "来自 api_runs/p3_enriched/segments_enriched.json；共 15 段，其中 8 段需人工复核",
+ "coverage": [
+  0.0,
+  119.99
+ ],
+ "steps": [
+  {
+   "idx": 0,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 0.0,
+   "end": 5.8,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "双手在传送带旁操作黑色部件，部件被放置后未固定",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "扶住黑色部件",
+    "holding": "未识别",
+    "target": "传送带上的部件"
+   },
+   "right_hand": {
+    "action": "调整部件位置",
+    "holding": "未识别",
+    "target": "传送带上的部件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 1,
+   "step_id": "S1",
+   "name": "取镜座组件",
+   "start": 5.8,
+   "end": 11.7,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 0,
+   "need_review": false,
+   "action": "右手从料位取出镜座组件并翻转查看，镜座离位进入视野中央",
+   "evidence": "",
+   "state_change": "removed",
+   "left_hand": {
+    "action": "空手悬停在工位上方",
+    "holding": "空手",
+    "target": "未作用于任何物件"
+   },
+   "right_hand": {
+    "action": "抓取并翻转镜座组件",
+    "holding": "镜座组件",
+    "target": "料位中的镜座"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 2,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 11.7,
+   "end": 14.7,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "右手持黑色壳体部件移动，左手未参与操作",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "静止悬停",
+    "holding": "空手",
+    "target": "工作台面"
+   },
+   "right_hand": {
+    "action": "握持并移动黑色壳体",
+    "holding": "黑色壳体部件",
+    "target": "工作台面区域"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 3,
+   "step_id": "S4",
+   "name": "组装镜座密封塞",
+   "start": 14.7,
+   "end": 18.7,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 3,
+   "need_review": true,
+   "action": "右手捏密封塞对准镜座孔位压入，密封塞未完全到位",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "扶稳镜座组件",
+    "holding": "镜座组件",
+    "target": "镜座主体"
+   },
+   "right_hand": {
+    "action": "捏住密封塞压入孔位",
+    "holding": "密封塞",
+    "target": "镜座孔位"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 4,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 18.7,
+   "end": 43.1,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "双手整理零件袋并取出金属件，物件未安装",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "扶住零件袋开口",
+    "holding": "未识别",
+    "target": "透明零件袋"
+   },
+   "right_hand": {
+    "action": "从袋中取出金属件",
+    "holding": "金属小零件",
+    "target": "零件袋"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 5,
+   "step_id": "S4",
+   "name": "组装镜座密封塞",
+   "start": 43.1,
+   "end": 47.1,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 3,
+   "need_review": false,
+   "action": "右手捏密封塞对准镜座孔位压入，密封塞已到位齐平",
+   "evidence": "",
+   "state_change": "inserted",
+   "left_hand": {
+    "action": "扶稳镜座本体",
+    "holding": "空手",
+    "target": "镜座外壳"
+   },
+   "right_hand": {
+    "action": "捏住密封塞压入孔位",
+    "holding": "密封塞",
+    "target": "镜座孔位"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 6,
+   "step_id": "S3",
+   "name": "组装镜座上盖",
+   "start": 47.1,
+   "end": 50.0,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 2,
+   "need_review": false,
+   "action": "双手对位并下压上盖，上盖已落至镜座并贴合",
+   "evidence": "",
+   "state_change": "fastened",
+   "left_hand": {
+    "action": "扶稳镜座底座",
+    "holding": "空手",
+    "target": "镜座底座"
+   },
+   "right_hand": {
+    "action": "按压上盖中心",
+    "holding": "空手",
+    "target": "上盖"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 7,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 50.0,
+   "end": 53.3,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "右手持黑色环形件靠近工件，左手空置未操作",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "静止悬停",
+    "holding": "空手",
+    "target": "无"
+   },
+   "right_hand": {
+    "action": "持环形件对准工件",
+    "holding": "黑色环形件",
+    "target": "金属工件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 8,
+   "step_id": "S4",
+   "name": "组装镜座密封塞",
+   "start": 53.3,
+   "end": 57.4,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 3,
+   "need_review": false,
+   "action": "右手捏密封塞对准镜座孔位压入，密封塞逐步到位",
+   "evidence": "",
+   "state_change": "inserted",
+   "left_hand": {
+    "action": "扶稳镜座本体",
+    "holding": "空手",
+    "target": "镜座组件"
+   },
+   "right_hand": {
+    "action": "捏住密封塞压入孔位",
+    "holding": "密封塞",
+    "target": "镜座孔"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 9,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 57.4,
+   "end": 72.9,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "双手持黑色部件进行对位安装，部件尚未固定",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "托住黑色部件底部",
+    "holding": "黑色部件",
+    "target": "黑色部件"
+   },
+   "right_hand": {
+    "action": "调整黑色部件上部位置",
+    "holding": "黑色部件",
+    "target": "黑色部件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 10,
+   "step_id": "S5",
+   "name": "紧固镜子镜座",
+   "start": 72.9,
+   "end": 101.0,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 4,
+   "need_review": false,
+   "action": "右手持电动工具对镜座持续施力紧固，镜座被压紧无位移",
+   "evidence": "",
+   "state_change": "fastened",
+   "left_hand": {
+    "action": "扶稳镜座组件",
+    "holding": "空手",
+    "target": "镜座底座"
+   },
+   "right_hand": {
+    "action": "持电动工具紧固螺丝",
+    "holding": "电动螺丝刀",
+    "target": "镜座紧固点"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 11,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 101.0,
+   "end": 105.3,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "双手将已装配件从工位取走，放入右侧传送带",
+   "evidence": "",
+   "state_change": "removed",
+   "left_hand": {
+    "action": "托住物件底部",
+    "holding": "未识别",
+    "target": "黑色装配件"
+   },
+   "right_hand": {
+    "action": "推动物件入传送带",
+    "holding": "未识别",
+    "target": "黑色装配件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 12,
+   "step_id": "S1",
+   "name": "取镜座组件",
+   "start": 105.3,
+   "end": 108.3,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 0,
+   "need_review": false,
+   "action": "右手拿起镜座组件并翻转查看，镜座已离位进入视野中央",
+   "evidence": "",
+   "state_change": "removed",
+   "left_hand": {
+    "action": "扶住镜座组件",
+    "holding": "镜座组件",
+    "target": "镜座组件"
+   },
+   "right_hand": {
+    "action": "拿起并翻转镜座组件",
+    "holding": "镜座组件",
+    "target": "镜座组件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 13,
+   "step_id": "idle",
+   "name": "循环外停留与准备",
+   "start": 108.3,
+   "end": 117.6,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 7,
+   "need_review": true,
+   "action": "右手持工具在金属件上操作，左手扶稳金属件",
+   "evidence": "",
+   "state_change": "none",
+   "left_hand": {
+    "action": "扶住金属件",
+    "holding": "空手",
+    "target": "金属件"
+   },
+   "right_hand": {
+    "action": "用工具操作金属件",
+    "holding": "未识别",
+    "target": "金属件"
+   },
+   "confidence": null
+  },
+  {
+   "idx": 14,
+   "step_id": "S3",
+   "name": "组装镜座上盖",
+   "start": 117.6,
+   "end": 119.99,
+   "kind": "step",
+   "source": "teacher:p3_enriched",
+   "color": 2,
+   "need_review": false,
+   "action": "双手对位镜座上盖并下压，上盖已贴合镜座",
+   "evidence": "",
+   "state_change": "fastened",
+   "left_hand": {
+    "action": "扶住镜座上盖左侧",
+    "holding": "空手",
+    "target": "镜座上盖"
+   },
+   "right_hand": {
+    "action": "按压上盖右侧",
+    "holding": "空手",
+    "target": "镜座上盖"
+   },
+   "confidence": null
+  }
+ ]
+}

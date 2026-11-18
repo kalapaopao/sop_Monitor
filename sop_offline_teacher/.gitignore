@@ -12,9 +12,20 @@ npm-debug.log*
 
 # ===== 大体积媒体与模型权重（本地放置或按 README 生成，不入库）=====
 vedio/*.mp4
+vedio/**/*.mp4
 clips/*.mp4
-web/public/video/*.mp4
+clips/**/*.mp4
+web/public/**/*.mp4
+web/public/sop-discovery/**/*.jpg
+web/public/sop-refinement/**/*.jpg
+web/public/sop-full/**/*.jpg
+web/public/three-workers-examples/**/*.jpg
+/效果视频.mp4
 *.onnx
+*.task
+*.pt
+*.pth
+*.ckpt
 ffmpeg-download.zip
 .ffmpeg/
 .ffmpeg2/
@@ -24,8 +35,17 @@ api_runs/
 # 手部 ROI 裁图：由姿态 JSON + 视频 4 秒重算得出（api_teacher/extract_roi.py），不入库
 web/public/data/roi/
 web/public/data/station_roi/
-# 疑似误生成的嵌套副本（web/web/public 与 web/public 内容重复），确认后应删除
+# 已确认无文件的旧嵌套目录，防止误生成后入库
 web/web/
+
+# 完整姿态中间缓存；网页使用 *_web*.json，训练基准保留已跟踪输入
+web/public/data/local_pose_fused*.json
+web/public/data/local_pose_mp*.json
+web/public/data/local_pose_side2_fused*.json
+!web/public/data/local_pose_fused_clip.json
+
+# 文档演示是有意发布的压缩素材
+!docs/media/*.mp4
 
 # ===== 本地备份 / 临时文件 =====
 .backup/
@@ -43,3 +63,6 @@ tmp/
 .idea/
 .DS_Store
 Thumbs.db
+
+# 网页编辑器的自动备份（运行时生成）
+web/public/data/runs/*.bak.json

@@ -14,7 +14,19 @@
 
 C++17 + TensorRT FP16 的实时推理工程：输入工位视频，联合 OBB 检测螺丝刀与手部，RTMW 输出人体及双手关键点；四路共享一套引擎按批调度，**四路合计最高 66.8 次新识别/秒**。
 
-## 效果预览
+## SOP 装配步骤分析 · 离线演示
+
+**装配视频 → 步骤片段 → 时间轴与画面同步回放**
+
+[![SOP步骤分析效果，点击观看完整录屏](sop_offline_teacher/docs/media/sop-demo.gif)](sop_offline_teacher/docs/media/sop-demo.mp4)
+
+[观看完整效果录屏](sop_offline_teacher/docs/media/sop-demo.mp4) · [项目与本地运行](sop_offline_teacher/README.md) · [技术实现方案](sop_offline_teacher/docs/TECHNICAL_IMPLEMENTATION.md)
+
+当前展示采用 **RTMW骨架特征 + MLP帧分类 + HMM时序解码**，输出装配步骤与起止时间，支持回放核对和人工编辑。保留原六步SOP，录屏选中严格确认对照（66段），默认结果 `pred_hmm_full` 共65段；Qwen自由发现与细分保留为独立实验。
+
+> 这是离线分析结果的同步回放。段级同类IoU≥0.3命中27/37；帧级88.62%来自同一视频七周期留一验证，使用人工周期及invalid屏蔽。跨工人、在线完整SOP及NX部署尚未验证；左右手卡片为步骤模板。下方NX性能只对应检测与姿态链路。
+
+## NX 检测与姿态 · 效果预览
 
 **双路实时**（联合 OBB + RTMW）
 
